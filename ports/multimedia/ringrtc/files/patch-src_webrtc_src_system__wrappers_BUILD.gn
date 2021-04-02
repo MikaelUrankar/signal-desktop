@@ -1,0 +1,15 @@
+--- src/webrtc/src/system_wrappers/BUILD.gn.orig	2021-01-28 23:16:17 UTC
++++ src/webrtc/src/system_wrappers/BUILD.gn
+@@ -56,11 +56,9 @@ rtc_library("system_wrappers") {
+   }
+ 
+   if (is_linux) {
+-    if (!build_with_chromium) {
++    if (!build_with_chromium && !is_bsd) {
+       deps += [ ":cpu_features_linux" ]
+     }
+-
+-    libs += [ "rt" ]
+   }
+ 
+   if (is_win) {
