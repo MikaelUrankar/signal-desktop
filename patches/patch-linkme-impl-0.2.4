@@ -1,0 +1,106 @@
+https://github.com/dtolnay/linkme/tree/HEAD/impl
+
+
+--- src/declaration.rs	2021-01-11 23:45:33.000000000 +0100
++++ src/declaration.rs	2021-02-25 14:33:19.146017000 +0100
+@@ -56,6 +56,10 @@ pub fn expand(input: TokenStream) -> TokenStream {
+         Err(err) => return err.to_compile_error(),
+     };
+ 
++    let freebsd_section = linker::freebsd::section(&ident);
++    let freebsd_section_start = linker::freebsd::section_start(&ident);
++    let freebsd_section_stop = linker::freebsd::section_stop(&ident);
++
+     let linux_section = linker::linux::section(&ident);
+     let linux_section_start = linker::linux::section_start(&ident);
+     let linux_section_stop = linker::linux::section_stop(&ident);
+@@ -80,13 +84,15 @@ pub fn expand(input: TokenStream) -> TokenStream {
+     quote! {
+         #(#attrs)*
+         #vis static #ident: #linkme_path::DistributedSlice<#ty> = {
+-            #[cfg(any(target_os = "none", target_os = "linux", target_os = "macos", target_os = "illumos"))]
++            #[cfg(any(target_os = "none", target_os = "freebsd", target_os = "linux", target_os = "macos", target_os = "illumos"))]
+             extern "C" {
++                #[cfg_attr(target_os = "freebsd", link_name = #freebsd_section_start)]
+                 #[cfg_attr(any(target_os = "none", target_os = "linux"), link_name = #linux_section_start)]
+                 #[cfg_attr(target_os = "macos", link_name = #macos_section_start)]
+                 #[cfg_attr(target_os = "illumos", link_name = #illumos_section_start)]
+                 static LINKME_START: <#ty as #linkme_path::private::Slice>::Element;
+ 
++                #[cfg_attr(target_os = "freebsd", link_name = #freebsd_section_stop)]
+                 #[cfg_attr(any(target_os = "none", target_os = "linux"), link_name = #linux_section_stop)]
+                 #[cfg_attr(target_os = "macos", link_name = #macos_section_stop)]
+                 #[cfg_attr(target_os = "illumos", link_name = #illumos_section_stop)]
+@@ -107,7 +113,7 @@ pub fn expand(input: TokenStream) -> TokenStream {
+             #[used]
+             static LINKME_PLEASE: [<#ty as #linkme_path::private::Slice>::Element; 0] = [];
+ 
+-            #[cfg(not(any(target_os = "none", target_os = "linux", target_os = "macos", target_os = "windows", target_os = "illumos")))]
++            #[cfg(not(any(target_os = "none", target_os = "freebsd", target_os = "linux", target_os = "macos", target_os = "windows", target_os = "illumos")))]
+             #unsupported_platform
+ 
+             unsafe {
+--- src/derive.rs	2021-01-11 23:45:33.000000000 +0100
++++ src/derive.rs	2021-02-25 14:13:54.433731000 +0100
+@@ -51,6 +51,7 @@ pub fn expand(input: Enum) -> TokenStream {
+     let ident = input.linkme_ident;
+     let ident_macro = input.linkme_macro;
+ 
++    let freebsd_section = linker::freebsd::section(&ident);
+     let linux_section = linker::linux::section(&ident);
+     let macos_section = linker::macos::section(&ident);
+     let windows_section = linker::windows::section(&ident);
+@@ -66,6 +67,7 @@ pub fn expand(input: Enum) -> TokenStream {
+                 $item:item
+             ) => {
+                 $macro ! {
++                    #![linkme_freebsd_section = concat!(#freebsd_section, $key)]
+                     #![linkme_linux_section = concat!(#linux_section, $key)]
+                     #![linkme_macos_section = concat!(#macos_section, $key)]
+                     #![linkme_windows_section = concat!(#windows_section, $key)]
+@@ -74,6 +76,7 @@ pub fn expand(input: Enum) -> TokenStream {
+                 }
+             };
+             (
++                #![linkme_freebsd_section = $freebsd_section:expr]
+                 #![linkme_linux_section = $linux_section:expr]
+                 #![linkme_macos_section = $macos_section:expr]
+                 #![linkme_windows_section = $windows_section:expr]
+@@ -81,6 +84,7 @@ pub fn expand(input: Enum) -> TokenStream {
+                 $item:item
+             ) => {
+                 #[used]
++                #[cfg_attr(target_os = "freebsd", link_section = $freebsd_section)]
+                 #[cfg_attr(any(target_os = "none", target_os = "linux"), link_section = $linux_section)]
+                 #[cfg_attr(target_os = "macos", link_section = $macos_section)]
+                 #[cfg_attr(target_os = "windows", link_section = $windows_section)]
+@@ -89,6 +93,7 @@ pub fn expand(input: Enum) -> TokenStream {
+             };
+             ($item:item) => {
+                 #[used]
++                #[cfg_attr(target_os = "freebsd", link_section = #freebsd_section)]
+                 #[cfg_attr(any(target_os = "none", target_os = "linux"), link_section = #linux_section)]
+                 #[cfg_attr(target_os = "macos", link_section = #macos_section)]
+                 #[cfg_attr(target_os = "windows", link_section = #windows_section)]
+--- src/linker.rs	2021-01-11 23:45:33.000000000 +0100
++++ src/linker.rs	2021-02-25 14:11:20.930105000 +0100
+@@ -1,3 +1,19 @@
++pub mod freebsd {
++    use syn::Ident;
++
++    pub fn section(ident: &Ident) -> String {
++        format!("linkme_{}", ident)
++    }
++
++    pub fn section_start(ident: &Ident) -> String {
++        format!("__start_linkme_{}", ident)
++    }
++
++    pub fn section_stop(ident: &Ident) -> String {
++        format!("__stop_linkme_{}", ident)
++    }
++}
++
+ pub mod linux {
+     use syn::Ident;
+ 
