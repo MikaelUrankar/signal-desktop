@@ -1,0 +1,371 @@
+Mix of instructions and things to check / fix to build Signal Desktop 1.40.1 on FreeBSD
+everything seems so wrong and bad designed in signal-desktop...
+
+# XXX there are probably missing packages
+# python2.7 is needed because node-gyp is really old and doesn't work with python3
+#   XXX try to bump node-gyp to 5.1.1 (and rm yarn.lock ; yarn install ; yarn install --frozen-lockfile)
+pkg install node12 npm-node12 yarn-node12 electron11 git git-lfs zkgroup python27 vips devel/app-builder openssl zkgroup
+
+# clear ~/.cache and set up git lfs
+# 'git lfs install' is needed to download sqlcipher-amalgamation-3033000.tar.gz
+rm -rf ~/.cache
+git lfs install
+
+# set a few env variables (XXX check python3 and node-gyp 5.1.1)
+setenv PYTHON /usr/local/bin/python2.7 (doesn't seem to work, just ln python2.7 python for now)
+setenv ELECTRON_SKIP_BINARY_DOWNLOAD true
+setenv USE_SYSTEM_APP_BUILDER true
+
+# create the chromedriver archive (cf node_modules/electron-download/readme.md for env variables)
+mkdir chromedriver-v3.0.0-freebsd-x64
+cd chromedriver-v3.0.0-freebsd-x64
+cp /usr/local/share/electron11/LICENSE* .
+cp /usr/local/share/electron11/chromedriver .
+zip ../chromedriver-v3.0.0-freebsd-x64.zip *
+cd ..
+mkdir -p ~/.cache/electron
+cp chromedriver-v3.0.0-freebsd-x64.zip ~/.cache/electron
+sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electron/SHASUMS256.txt-3.0.0
+
+# clone my repo with the needed ports / patches:
+git clone https://github.com/MikaelUrankar/signal-desktop.git
+
+# build some required dependencies
+# (ringrtc doesn't build with poudriere, the port is currently messy and needs network access)
+make -C signal-desktop.git/ports/multimedia/ringrtc 
+make -C signal-desktop.git/ports/net-im/libsignal-client-node
+
+# fetch Signal Desktop 1.40.1
+fetch https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v1.40.1.tar.gz
+tar xf v1.40.1.tar.gz 
+cd Signal-Desktop-1.40.1
+
+# replace 12.21.0 with www/node12 version
+sed -i '' 's#12.18.3#12.21.0#g' package.json
+
+# apply FreeBSD patches:
+patch -s < signal-desktop.git/patches/patch-signal-deskop
+
+# Per the documentation, exec 'yarn install' and wait for it to fail (that's expected)
+yarn install --frozen-lockfile
+
+# apply other patches:
+patch -s < signal-desktop.git/patches/patch-node__modules_app-builder-lib
+patch -s < signal-desktop.git/patches/patch-node__modules_electron_index.js
+patch -s < signal-desktop.git/patches/patch-node__modules_electron-builder_out_cli_install-app-deps.js
+
+# XXX, untested
+# patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_extract.py
+# patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_sqlite3.gyp
+
+# recreate the sqlcipher-amalgamation-3033000.tar.gz archive with FreeBSD lib
+cd node_modules/@journeyapps/sqlcipher/deps
+tar xf sqlcipher-amalgamation-3033000.tar.gz
+cp -f /usr/local/lib/libcrypto.a sqlcipher-amalgamation-3033000/OpenSSL-Linux/
+tar czf sqlcipher-amalgamation-3033000.tar.gz sqlcipher-amalgamation-3033000
+rm -rf node_modules/@journeyapps/sqlcipher/build-tmp-napi-v6
+rm -rf node_modules/@journeyapps/sqlcipher/lib/binding/napi-v6-freebsd-x64/node_sqlite3.node
+
+
+# copy some FreeBSD libs
+mkdir node_modules/ringrtc/build/freebsd
+cp signal-desktop.git/ports/multimedia/ringrtc/work/target/release/libringrtc.so node_modules/ringrtc/build/freebsd/libringrtc.node
+cp signal-desktop.git/ports/net-im/libsignal-client-node/work/target/release/libsignal_node.so node_modules/libsignal-client/build/libsignal_client_freebsd.node
+cp -f /usr/local/lib/libzkgroup.so node_modules/zkgroup
+
+# follow the official doc: https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
+yarn install --frozen-lockfile # Install and build dependencies (this will take a while)
+yarn grunt                     # Generate final JS and CSS assets
+yarn build:webpack             # Build parts of the app that use webpack (Sticker Creator)
+yarn test                      # A good idea to make sure tests run first
+yarn start                     # Start Signal!
+
+
+
+
+
+
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+
+just some random notes when I was hacking on Signal-Desktop
+
+*************************************************************************************************
+
+rm -rf ~/.cache
+git lfs install
+setenv ELECTRON_SKIP_BINARY_DOWNLOAD true
+yarn install --ignore-engines
+
+*************************************************************************************************
+# Need to package chromedriver
+
+https://github.com/electron/electron/releases/download/v3.0.0/chromedriver-v3.0.0-freebsd-x64.zip
+https://github.com/electron/electron/releases/download/v3.0.0/chromedriver-v3.0.0-linux-x64.zip
+
+# content of linux version:
+tar tf chromedriver-v3.0.0-linux-x64.zip 
+LICENSE
+LICENSES.chromium.html
+chromedriver
+
+# chromedriver is available from devel/electron11
+mkdir chromedriver-v3.0.0-freebsd-x64
+cd chromedriver-v3.0.0-freebsd-x64
+cp /usr/local/share/electron11/LICENSE* .
+cp /usr/local/share/electron11/chromedriver .
+zip ../chromedriver-v3.0.0-freebsd-x64.zip *
+
+
+# Host it on a webserver, in 3.0.0/chromedriver-v3.0.0-freebsd-x64.zip
+mkdir /usr/local/poudriere/data/packages/3.0.0
+mv chromedriver-v3.0.0-freebsd-x64.zip /usr/local/poudriere/data/packages/3.0.0
+
+# from editors/vscode
+sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > SHASUMS256.txt
+
+# from Signal-Desktop/node_modules/electron-chromedriver/README.md
+# Example of requested URL: http://localhost:8080/1.2.0/chromedriver-v2.21-darwin-x64.zip
+ELECTRON_MIRROR="http://localhost:8080/"
+
+setenv ELECTRON_MIRROR "http://localhost/packages/"
+
+*************************************************************************************************
+
+cd /usr/local/share/electron11
+zip electron-v11.2.3-freebsd-x64.zip -r *
+
+cp electron-v11.2.3-freebsd-x64.zip /usr/local/poudriere/data/packages/11.2.3
+
+ELECTRON_OVERRIDE_DIST_PATH=/usr/local/share/electron11/
+
+*************************************************************************************************
+fix for error:
+electron-builder install-app-deps
+
+Install app deps
+
+Options:
+  --version   Show version number                                      [boolean]
+  --help      Show help                                                [boolean]
+  --platform  The target platform
+                      [choices: "linux", "darwin", "win32"] [default: "freebsd"]
+  --arch      The target arch
+             [choices: "ia32", "x64", "armv7l", "arm64", "all"] [default: "x64"]
+
+Invalid values:
+  Argument: platform, Given: "freebsd", Choices: "linux", "darwin", "win32"
+
+
+-----> patch Signal-Desktop/node_modules/electron-builder/out/cli/install-app-deps.js
+
+
+*************************************************************************************************
+
+fix for error:
+# replace app-builder (bundled linux shit)
+ELF binary type "0" not known.
+Signal-Desktop/node_modules/app-builder-bin/linux/x64/app-builder
+
+----->
+pkg install devel/app-builder
+setenv USE_SYSTEM_APP_BUILDER true
+
+
+*************************************************************************************************
+
+Signal-Desktop/node_modules/electron/index.js
+function getElectronPath () {
+  return path.join("/usr/local/share/electron11/electron")
+
+*************************************************************************************************
+rebuild libsignal-client
+
+# XXX download version 0.2.1 https://github.com/signalapp/libsignal-client/releases/tag/java-0.2.1
+# needs PrivateKey_generate and PrivateKey_getPublicKey api
+# git clone git@github.com:signalapp/libsignal-client.git
+fetch https://codeload.github.com/signalapp/libsignal-client/tar.gz/java-0.2.1
+cd libsignal-client
+cargo build --release --package=libsignal-node
+
+# wait until it fails to build, then
+# patch (copy / paste linux stuff and replace linux with freebsd), see patches dir:
+
+grep -nr freebsd ~/.cargo/registry/src/github.com-1ecc6299db9ec823/linkme-0.2.4
+src/distributed_slice.rs:150:        target_os = "freebsd",
+
+grep -nr freebsd ~/.cargo/registry/src/github.com-1ecc6299db9ec823/linkme-impl-0.2.4
+src/linker.rs:1:pub mod freebsd {
+src/declaration.rs:59:    let freebsd_section = linker::freebsd::section(&ident);
+src/declaration.rs:60:    let freebsd_section_start = linker::freebsd::section_start(&ident);
+src/declaration.rs:61:    let freebsd_section_stop = linker::freebsd::section_stop(&ident);
+src/declaration.rs:87:            #[cfg(any(target_os = "none", target_os = "freebsd", target_os = "linux", target_os = "macos", target_os = "illumos"))]
+src/declaration.rs:89:                #[cfg_attr(target_os = "freebsd", link_name = #freebsd_section_start)]
+src/declaration.rs:95:                #[cfg_attr(target_os = "freebsd", link_name = #freebsd_section_stop)]
+src/declaration.rs:116:            #[cfg(not(any(target_os = "none", target_os = "freebsd", target_os = "linux", target_os = "macos", target_os = "windows", target_os = "illumos")))]
+src/derive.rs:54:    let freebsd_section = linker::freebsd::section(&ident);
+src/derive.rs:70:                    #![linkme_freebsd_section = concat!(#freebsd_section, $key)]
+src/derive.rs:79:                #![linkme_freebsd_section = $freebsd_section:expr]
+src/derive.rs:87:                #[cfg_attr(target_os = "freebsd", link_section = $freebsd_section)]
+src/derive.rs:96:                #[cfg_attr(target_os = "freebsd", link_section = #freebsd_section)]
+
+
+cp target/release/libsignal_client.so Signal-Desktop/node_modules/libsignal-client/build/libsignal_client_freebsd.node
+
+
+*************************************************************************************************
+
+patch elecron-builder / app-builder, see patches dir
+
+
+*************************************************************************************************
+
+yet another bundled linux shit
+cd Signal-Desktop/node_modules/7zip-bin/linux/x64
+ln -s /usr/local/bin/7z 7za
+
+only usefull for yarn build
+
+*************************************************************************************************
+
+# rebuild @journeyapps/sqlcipher (bundled linux shit: @journeyapps/sqlcipher/sqlcipher-amalgamation-3033000/OpenSSL-Linux/libcrypto.a)
+
+cd Signal-Desktop/node_modules/@journeyapps/sqlcipher
+yarn install
+
+# XXX install as user
+pkg install -Fy openssl
+cd /var/cache/pkg/
+tar xf openssl*.txz
+
+cd Signal-Desktop/node_modules/@journeyapps/sqlcipher/deps
+tar xf sqlcipher-amalgamation-3033000.tar.gz
+cp /var/cache/pkg/usr/local/lib/libcrypto.a sqlcipher-amalgamation-3033000/OpenSSL-Linux
+tar czf sqlcipher-amalgamation-3033000.tar.gz sqlcipher-amalgamation-3033000
+
+*************************************************************************************************
+# fix node_modules/zkgroup (bundled linux shit: libzkgroup.so)
+
+# cd Signal-Desktop/node_modules/zkgroup
+# yarn install
+pkg install zkgroup
+
+cp /usr/local/lib/libzkgroup.so Signal-Desktop/node_modules/zkgroup
+
+
+*************************************************************************************************
+# rebuild node_modules/ringrtc, see ports/multimedia/ringrtc
+node_modules/ringrtc/build/linux/libringrtc.node
+
+echo 1591703586 > build/util/LASTCHANGE.committime
+echo "# Generated from 'DEPS'" >  build/config/gclient_args.gni
+echo "qqchose" > build/util/LASTCHANGE"
+
+build webrtc
+
+cd src/webrtc/src
+gn gen -C out/Release '--args=use_custom_libcxx=false rtc_build_examples=false rtc_build_tools=false rtc_include_tests=false rtc_enable_protobuf=false rtc_use_x11=false is_debug=true rtc_enable_sctp=false clang_use_chrome_plugins=false rtc_disable_logging=false extra_cxxflags="-O2 -pipe -fstack-protector-strong -isystem /usr/local/include -fno-strict-aliasing  -isystem /usr/local/include "  extra_ldflags=" -fstack-protector-strong -L/usr/local/lib "'
+ninja -C out/Release
+
+cd src/rust
+env npm_config_arch=x64 npm_config_target_arch=x64 npm_config_disturl=https://atom.io/download/electron npm_config_runtime=electron npm_config_target=11.2.0 npm_config_build_from_source=true npm_config_devdir=~/.electron-gyp RUSTFLAGS="-C link-arg=-s" cargo build --features electron --release --verbose
+
+cp ringrtc/src/rust/target/release/libringrtc.so Signal-Desktop/node_modules/ringrtc/build/freebsd/libringrtc.node
+
+
+*************************************************************************************************
+
+setenv ELECTRON_ENABLE_LOGGING  yes
+https://www.electronjs.org/docs/api/environment-variables#electron_enable_logging
+
+
+mismatch ringrtc-rust and ringrtc-node, check what version is working:
+https://github.com/signalapp/ringrtc/commit/8c9259ff7d7cae08a1c1714167e7c9d5e085f3be
+
+{"name":"log","hostname":"acheron","pid":18123,"level":50,"msg":"Preload error in [REDACTED]/app.asar/preload.js:  Native.CallManager is not a constructor","time":"2021-03-02T10:42:10.924Z","v":0}
+[18123:0302/114210.924639:INFO:CONSOLE(681)] "preload error! TypeError: Native.CallManager is not a constructor
+    at new RingRTCType (Signal-Desktop/release/freebsd-unpacked/resources/app.asar/node_modules/ringrtc/dist/ringrtc/Service.js:58:28)
+    at Object.<anonymous> (Signal-Desktop/release/freebsd-unpacked/resources/app.asar/node_modules/ringrtc/dist/index.js:33:19)
+    at Object.<anonymous> (Signal-Desktop/release/freebsd-unpacked/resources/app.asar/node_modules/ringrtc/dist/index.js:35:3)
+    at Module._compile (internal/modules/cjs/loader.js:1152:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1173:10)
+    at Module.load (internal/modules/cjs/loader.js:992:32)
+    at Module._load (internal/modules/cjs/loader.js:885:14)
+    at Function.f._load (electron/js2c/asar_bundle.js:5:12738)
+    at Module.require (internal/modules/cjs/loader.js:1032:19)
+    at require (internal/modules/cjs/helpers.js:72:18)", source: Signal-Desktop/release/freebsd-unpacked/resources/app.asar/preload.js (681)
+
+
+env LD_UTRACE=true ktrace -d -f test ./signal-desktop
+kdump | grep RTLD
+RTLD: error: Undefined symbol
+
+Also:
+-> ~/.cargo/registry/src/github.com-1ecc6299db9ec823/neon-0.6.0/src/lib.rs -> add freebsd
+
+*************************************************************************************************
+
+yarn build
+env DEBUG=electron-builder
+
+*************************************************************************************************
+yarn test
+
+// test broken, it's normal
+ts/test-node/types/Settings_test.js, win7, comments returns('7.0.0');
+setenv UNAME_r 13.0
+  1) Settings
+       getAudioNotificationSupport
+         returns no support on Windows 7:
+     TypeError: Invalid Version: 13.0
+      at new SemVer (node_modules/semver/semver.js:293:11)
+      at compare (node_modules/semver/semver.js:566:10)
+      at Function.gte (node_modules/semver/semver.js:615:10)
+      at Object.isWindows (ts/OS.js:23:73)
+      at Object.getAudioNotificationSupport (ts/types/Settings.js:34:12)
+      at Context.<anonymous> (ts/test-node/types/Settings_test.js:47:48)
+      at processImmediate (internal/timers.js:456:21)
+
+
+*************************************************************************************************
+
+yarn start
+
+hack for uv_pipe_open enotty:
+
+{"name":"log","hostname":"lethe","pid":45794,"level":50,"time":"2021-04-03T14:20:17.802Z","msg":"Top-level unhandled
+error: Error: ENOTTY: inappropriate ioctl for device, uv_pipe_open
+   at new Socket (net.js:329:26)
+   at createWritableStdioStream (internal/bootstrap/switches/is_main_thread.js:67:18)
+   at process.getStdout [as stdout] (internal/bootstrap/switches/is_main_thread.js:122:12)
+   at IncomingMessage.Readable.pipe (_stream_readable.js:659:32)
+   at ClientRequest.<anonymous> ([REDACTED]/Signal-Desktop-1.40.1/node_modules/node-fetch/lib/index.js:1553:19)
+   at ClientRequest.emit (events.js:315:20)
+   at HTTPParser.parserOnIncomingClient [as onIncoming] (_http_client.js:596:27)
+   at HTTPParser.parserOnHeadersComplete (_http_common.js:119:17)
+   at TLSSocket.socketOnData (_http_client.js:469:22)
+   at TLSSocket.emit (events.js:315:20)","v":0}
+
+rebuild devel/electron11:
+/usr/ports/devel/electron11/work/electron-11.3.0
+--- src/third_party/electron_node/deps/uv//src/unix/pipe.c.orig 2021-04-02 09:59:08.488242000 +0200
++++ src/third_party/electron_node/deps/uv//src/unix/pipe.c      2021-04-02 09:59:28.363786000 +0200
+@@ -150,9 +150,11 @@ int uv_pipe_open(uv_pipe_t* handle, uv_file fd) {
+   if (mode == -1)
+     return UV__ERR(errno); /* according to docs, must be EBADF */
+ 
+-  err = uv__nonblock(fd, 1);
+-  if (err)
+-    return err;
++  if (fd != 1) {
++    err = uv__nonblock(fd, 1);
++    if (err)
++      return err;
++  }
+ 
+ #if defined(__APPLE__)
+   err = uv__stream_try_select((uv_stream_t*) handle, &fd);
+
