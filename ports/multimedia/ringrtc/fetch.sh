@@ -50,3 +50,6 @@ tar cjf libyuv-${LIBYUV_HASH}
 tar cjf nasm-${NASM_HASH}
 tar cjf third_party-${THIRDPARTY_HASH}
 tar cjf testing-${TESTING_HASH}
+
+fetch http://mikael.urankar.free.fr/ringrtc/signalapp-npm-offline-cache.tar.gz
+fetch http://mikael.urankar.free.fr/ringrtc/signalapp-electron-gyp.tar.gz
