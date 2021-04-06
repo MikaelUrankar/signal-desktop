@@ -1,9 +1,12 @@
-# $FreeBSD$
 # keep it at v2.9.2, newer version is not compatible with Signal-Desktop 1.40.1
 # sources of inspiration:
 #    https://github.com/tagattie/FreeBSD-Atom/blob/master/editors/atom/Makefile (npm offline)
 #    www/chromium (webrtc patch)
 #    lang/v8 (google build tools)
+#
+# XXX
+#   enable sndio in webrtc (see chromium's patches)
+#   remove hardcoded version v12.21.0, npm_config_target=11.3.0
 
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=      v
@@ -41,8 +44,6 @@ DISTFILES=	base-${BASE_HASH}.tar.gz:base \
 		signalapp-npm-offline-cache.tar.gz:npm_cache \
 		signalapp-electron-gyp.tar.gz:electron_gyp \
 		node-v12.21.0-headers.tar.gz:node_headers
-
-#DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	ringrtc
