@@ -9,7 +9,7 @@
 #   remove hardcoded version v12.21.0, npm_config_target=11.3.0
 
 PORTNAME=	ringrtc
-DISTVERSIONPREFIX=      v
+DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.2
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
@@ -46,26 +46,25 @@ DISTFILES=	base-${BASE_HASH}.tar.gz:base \
 		node-v12.21.0-headers.tar.gz:node_headers
 
 MAINTAINER=	mikael@FreeBSD.org
-COMMENT=	ringrtc
+COMMENT=	Middleware library for Signal-Desktop
 
 LICENSE=	AGPLv3
-#LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libpulse.so:audio/pulseaudio \
+		libasound.so:audio/alsa-lib
 BUILD_DEPENDS=	binutils>0:devel/binutils \
 		gn:devel/gn \
 		rust-nightly>=0:lang/rust-nightly \
 		npm-node12>0:www/npm-node12 \
 		yarn-node12>0:www/yarn-node12
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpulse.so:audio/pulseaudio \
-		libasound.so:audio/alsa-lib
-
 USES=		cargo localbase:ldflags pkgconfig ninja python:3.6+,build tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
-GH_TUPLE=       signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
+GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:4183k:webrtc
 
 # egrep "src/build|src/buildtools|src/testing|etc" src/webrtc/src/DEPS
@@ -260,8 +259,7 @@ CARGO_ENV+=	npm_config_arch=x64 \
 		npm_config_runtime=electron \
 		npm_config_target=11.3.0 \
 		npm_config_build_from_source=true \
-		npm_config_devdir=${WRKDIR}/electron-gyp \
-		CARGO_VENDOR_DIR=${CARGO_VENDOR_DIR}
+		npm_config_devdir=${WRKDIR}/electron-gyp
 
 PLIST_FILES=	lib/libringrtc.so
 

@@ -1,4 +1,4 @@
---- ../../src/webrtc/src/third_party/nasm/config/config-linux.h
+--- ../../src/webrtc/src/third_party/nasm/config/config-linux.h	2021-03-15 17:51:55 UTC
 +++ ../../src/webrtc/src/third_party/nasm/config/config-linux.h
 @@ -117,7 +117,7 @@
  #define HAVE_ACCESS 1
