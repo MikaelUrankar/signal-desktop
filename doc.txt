@@ -31,7 +31,6 @@ sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electro
 git clone https://github.com/MikaelUrankar/signal-desktop.git
 
 # build some required dependencies
-# (ringrtc doesn't build with poudriere, the port is currently messy and needs network access)
 make -C signal-desktop.git/ports/multimedia/ringrtc 
 make -C signal-desktop.git/ports/net-im/libsignal-client-node
 
