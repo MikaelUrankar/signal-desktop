@@ -25,9 +25,19 @@ zip ../chromedriver-v3.0.0-freebsd-x64.zip *
 cd ..
 mkdir -p ~/.cache/electron
 cp chromedriver-v3.0.0-freebsd-x64.zip ~/.cache/electron
+cd ~/.cache/electron
 sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electron/SHASUMS256.txt-3.0.0
 
+# Do the same for electron11 (it's needed if "yarn build" is used)
+# XXX electron 11.3.0 is in the ports tree but the build infra wants 11.2.3, just cheat for now
+# XXX also, see below for the ENOTTY hack
+cd /usr/local/share/electron11
+zip ~/.cache/electron/electron-v11.2.3-freebsd-x64.zip -r *
+cd ~/.cache/electron
+sha256 -r electron-v11.2.3-freebsd-x64.zip | sed 's/ / */' >> ~/.cache/electron/SHASUMS256.txt-3.0.0
+
 # clone my repo with the needed ports / patches:
+cd ~ # or somewhere else
 git clone https://github.com/MikaelUrankar/signal-desktop.git
 
 # build some required dependencies
