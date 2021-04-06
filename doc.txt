@@ -26,7 +26,7 @@ cd ..
 mkdir -p ~/.cache/electron
 cp chromedriver-v3.0.0-freebsd-x64.zip ~/.cache/electron
 cd ~/.cache/electron
-sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electron/SHASUMS256.txt-3.0.0
+sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electron/SHASUMS256.txt
 
 # Do the same for electron11 (it's needed if "yarn build" is used)
 # XXX electron 11.3.0 is in the ports tree but the build infra wants 11.2.3, just cheat for now
@@ -52,29 +52,20 @@ cd Signal-Desktop-1.40.1
 # replace 12.21.0 with www/node12 version
 sed -i '' 's#12.18.3#12.21.0#g' package.json
 
-# apply FreeBSD patches:
-patch -s < signal-desktop.git/patches/patch-signal-deskop
-
 # Per the documentation, exec 'yarn install' and wait for it to fail (that's expected)
 yarn install --frozen-lockfile
 
-# apply other patches:
+# apply FreeBSD patches:
+patch -s < signal-desktop.git/patches/patch-signal-deskop
 patch -s < signal-desktop.git/patches/patch-node__modules_app-builder-lib
 patch -s < signal-desktop.git/patches/patch-node__modules_electron_index.js
 patch -s < signal-desktop.git/patches/patch-node__modules_electron-builder_out_cli_install-app-deps.js
+patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_extract.py
+patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_sqlite3.gyp
 
-# XXX, untested
-# patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_extract.py
-# patch -s < signal-desktop.git/patches/patch-node__modules_journeyapps_sqlcipher_deps_sqlite3.gyp
-
-# recreate the sqlcipher-amalgamation-3033000.tar.gz archive with FreeBSD lib
-cd node_modules/@journeyapps/sqlcipher/deps
-tar xf sqlcipher-amalgamation-3033000.tar.gz
-cp -f /usr/local/lib/libcrypto.a sqlcipher-amalgamation-3033000/OpenSSL-Linux/
-tar czf sqlcipher-amalgamation-3033000.tar.gz sqlcipher-amalgamation-3033000
+# delete sqlicipher, it contains linux blob
 rm -rf node_modules/@journeyapps/sqlcipher/build-tmp-napi-v6
 rm -rf node_modules/@journeyapps/sqlcipher/lib/binding/napi-v6-freebsd-x64/node_sqlite3.node
-
 
 # copy some FreeBSD libs
 mkdir node_modules/ringrtc/build/freebsd
@@ -82,7 +73,7 @@ cp signal-desktop.git/ports/multimedia/ringrtc/work/target/release/libringrtc.so
 cp signal-desktop.git/ports/net-im/libsignal-client-node/work/target/release/libsignal_node.so node_modules/libsignal-client/build/libsignal_client_freebsd.node
 cp -f /usr/local/lib/libzkgroup.so node_modules/zkgroup
 
-# follow the official doc: https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
+# follow the rest of the official doc: https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
 yarn install --frozen-lockfile # Install and build dependencies (this will take a while)
 yarn grunt                     # Generate final JS and CSS assets
 yarn build:webpack             # Build parts of the app that use webpack (Sticker Creator)
@@ -90,8 +81,14 @@ yarn test                      # A good idea to make sure tests run first
 yarn start                     # Start Signal!
 
 
+*************************************************************************************************
+Things to fix:
 
+# We have electron 11.3.0 in the ports tree
+# XXX need to regen the lockfile
+## sed -i '' 's#11.2.3#11.3.0#g' package.json
 
+node-gyp requires python2
 
 
 *************************************************************************************************
