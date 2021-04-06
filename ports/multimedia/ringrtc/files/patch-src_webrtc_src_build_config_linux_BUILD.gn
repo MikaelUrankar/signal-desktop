@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/linux/BUILD.gn.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/linux/BUILD.gn
+--- ../../src/webrtc/src/build/config/linux/BUILD.gn.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/linux/BUILD.gn
 @@ -30,7 +30,7 @@ config("runtime_library") {
  
    if ((!(is_chromeos || chromeos_is_browser_only) ||

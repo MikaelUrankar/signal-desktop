@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/BUILD.gn.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/BUILD.gn
+--- ../../src/webrtc/src/build/config/BUILD.gn.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/BUILD.gn
 @@ -133,7 +133,7 @@ config("debug") {
        # builds, and we have to tell it to turn it off.
        defines += [ "_HAS_ITERATOR_DEBUGGING=0" ]

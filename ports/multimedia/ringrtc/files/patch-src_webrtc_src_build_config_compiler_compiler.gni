@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/compiler/compiler.gni.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/compiler/compiler.gni
+--- ../../src/webrtc/src/build/config/compiler/compiler.gni.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/compiler/compiler.gni
 @@ -176,7 +176,7 @@ declare_args() {
  declare_args() {
    # Whether to use the gold linker from binutils instead of lld or bfd.

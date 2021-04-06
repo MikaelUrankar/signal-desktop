@@ -1,5 +1,5 @@
---- src/webrtc/src/build/linux/chrome.map.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/linux/chrome.map
+--- ../../src/webrtc/src/build/linux/chrome.map.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/linux/chrome.map
 @@ -1,4 +1,7 @@
  {
 +local:

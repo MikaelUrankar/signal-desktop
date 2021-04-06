@@ -1,27 +1,9 @@
 # $FreeBSD$
-# Doesn't work with poudriere
-
 # keep it at v2.9.2, newer version is not compatible with Signal-Desktop 1.40.1
-#
-# download node modules needed by ringrtc:
-#   yarn config set yarn-offline-mirror-pruning true 
-#   cd multimedia/ringrtc/work/ringrtc-2.9.2/cargo-crates/neon-sys-0.6.0/native
-#   yarn config set yarn-offline-mirror ./yarn-offline-cache
-#   yarn config set yarn-offline-mirror-pruning true 
-#   mv ~/.yarnrc .
-#   rm -rf node_modules/ yarn.lock
-#   yarn install
-#   then:
-#   cd ~
-#   tar cjf signalapp-yarn-offline-cache.tar.gz yarn-offline-cache
-#   copy yarn.lock in ${FILESDIR}
-#
-# download electron-gyp needed by ringrtc:
-#   do a normal build with the network, then:
-#   cd ${WRKDIR}
-#   tar cjf signalapp-electron-gyp.tar.gz electron-gyp
-#
-# download node_headers (XXX what version to use?)
+# sources of inspiration:
+#    https://github.com/tagattie/FreeBSD-Atom/blob/master/editors/atom/Makefile (npm offline)
+#    www/chromium (webrtc patch)
+#    lang/v8 (google build tools)
 
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=      v
@@ -40,7 +22,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:libyuv \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:testing \
-		LOCAL/mikael/ringrtc/:yarn_cache \
+		LOCAL/mikael/ringrtc/:npm_cache \
 		LOCAL/mikael/ringrtc/:electron_gyp \
 		https://nodejs.org/dist/v12.21.0/:node_headers
 DISTFILES=	base-${BASE_HASH}.tar.gz:base \
@@ -56,17 +38,17 @@ DISTFILES=	base-${BASE_HASH}.tar.gz:base \
 		libyuv-${LIBYUV_HASH}.tar.gz:libyuv \
 		third_party-${THIRDPARTY_HASH}.tar.gz:third_party \
 		testing-${TESTING_HASH}.tar.gz:testing \
-		signalapp-yarn-offline-cache.tar.gz:yarn_cache \
+		signalapp-npm-offline-cache.tar.gz:npm_cache \
 		signalapp-electron-gyp.tar.gz:electron_gyp \
 		node-v12.21.0-headers.tar.gz:node_headers
 
-DIST_SUBDIR=	${PORTNAME}
+#DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	ringrtc
 
 LICENSE=	AGPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
+#LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	binutils>0:devel/binutils \
 		gn:devel/gn \
@@ -85,7 +67,7 @@ GH_ACCOUNT=	signalapp
 GH_TUPLE=       signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:4183k:webrtc
 
-# egrep "src/build|src/buildtools|src/testing|etc" ${WRKSRC}/src/webrtc/src/DEPS
+# egrep "src/build|src/buildtools|src/testing|etc" src/webrtc/src/DEPS
 BASE_HASH=	2df7267880bf7d4086d55c0e56cd72c394bfda36
 BORINGSSL_HASH=	88024df12147e56b6abd66b743ff441a0aaa09a8
 BUILD_HASH=	a03951acb996e9cea78b4ab575896bf1bfcd9668
@@ -122,82 +104,76 @@ GN_ARGS+=	use_custom_libcxx=false \
 		extra_cxxflags="${CXXFLAGS}" \
 		extra_ldflags="${LDFLAGS}"
 
-# Can we drop this dep?
-#rtc_build_libevent # Current value (from the default) = true From //webrtc.gni:231
-#rtc_build_libsrtp # Current value (from the default) = true From //webrtc.gni:217
-#rtc_build_libvpx # Current value (from the default) = true From //webrtc.gni:218
-#rtc_build_opus # Current value (from the default) = true From //webrtc.gni:220
-
 MAKE_ARGS=	-C out/${BUILDTYPE}
 
-CARGO_CRATES=	addr2line-0.14.1 \
-		adler-1.0.2 \
+WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
+WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
+
+CARGO_CRATES=	addr2line-0.14.0 \
+		adler-0.2.3 \
 		aes-ctr-0.6.0 \
-		aes-soft-0.6.4 \
+		aes-soft-0.6.3 \
 		aesni-0.10.0 \
 		aho-corasick-0.7.15 \
-		anyhow-1.0.38 \
+		anyhow-1.0.34 \
 		atty-0.2.14 \
 		autocfg-1.0.1 \
-		backtrace-0.3.56 \
+		backtrace-0.3.54 \
 		base64-0.13.0 \
-		bitflags-1.2.1 \
 		block-buffer-0.9.0 \
-		byteorder-1.4.3 \
+		byteorder-1.3.4 \
 		bytes-0.5.6 \
-		bytes-1.0.1 \
-		cc-1.0.67 \
+		cc-1.0.61 \
 		cesu8-1.1.0 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
 		chrono-0.4.19 \
 		cipher-0.2.5 \
-		combine-4.5.2 \
+		combine-4.3.2 \
 		cpuid-bool-0.1.2 \
 		crypto-mac-0.8.0 \
 		crypto-mac-0.9.1 \
 		cslice-0.2.0 \
 		ctr-0.6.0 \
-		curve25519-dalek-2.1.2 \
+		curve25519-dalek-2.1.0 \
 		digest-0.8.1 \
 		digest-0.9.0 \
 		either-1.6.1 \
-		env_logger-0.8.3 \
+		env_logger-0.8.1 \
 		error-chain-0.12.4 \
 		failure-0.1.8 \
 		failure_derive-0.1.8 \
 		fixedbitset-0.2.0 \
-		futures-0.3.13 \
-		futures-channel-0.3.13 \
-		futures-core-0.3.13 \
-		futures-executor-0.3.13 \
-		futures-io-0.3.13 \
-		futures-macro-0.3.13 \
-		futures-sink-0.3.13 \
-		futures-task-0.3.13 \
-		futures-util-0.3.13 \
-		generic-array-0.12.4 \
+		futures-0.3.7 \
+		futures-channel-0.3.7 \
+		futures-core-0.3.7 \
+		futures-executor-0.3.7 \
+		futures-io-0.3.7 \
+		futures-macro-0.3.7 \
+		futures-sink-0.3.7 \
+		futures-task-0.3.7 \
+		futures-util-0.3.7 \
+		generic-array-0.12.3 \
 		generic-array-0.14.4 \
-		getrandom-0.1.16 \
-		getrandom-0.2.2 \
+		getrandom-0.1.15 \
 		gimli-0.23.0 \
 		hashbrown-0.9.1 \
-		heck-0.3.2 \
-		hermit-abi-0.1.18 \
+		heck-0.3.1 \
+		hermit-abi-0.1.17 \
 		hkdf-0.9.0 \
 		hmac-0.8.1 \
 		hmac-0.9.0 \
-		humantime-2.1.0 \
-		indexmap-1.6.2 \
+		humantime-2.0.1 \
+		indexmap-1.6.0 \
 		itertools-0.8.2 \
-		itoa-0.4.7 \
+		itoa-0.4.6 \
 		jni-0.17.0 \
 		jni-sys-0.3.0 \
 		lazy_static-1.4.0 \
-		libc-0.2.88 \
-		log-0.4.14 \
+		libc-0.2.80 \
+		log-0.4.11 \
 		memchr-2.3.4 \
-		miniz_oxide-0.4.4 \
+		miniz_oxide-0.4.3 \
 		multimap-0.8.2 \
 		neon-0.6.0 \
 		neon-build-0.6.0 \
@@ -206,77 +182,73 @@ CARGO_CRATES=	addr2line-0.14.1 \
 		num-integer-0.1.44 \
 		num-traits-0.2.14 \
 		num_cpus-1.13.0 \
-		object-0.23.0 \
+		object-0.22.0 \
+		once_cell-1.4.1 \
 		opaque-debug-0.3.0 \
 		petgraph-0.5.1 \
-		pin-project-lite-0.2.6 \
+		pin-project-1.0.1 \
+		pin-project-internal-1.0.1 \
+		pin-project-lite-0.1.11 \
 		pin-utils-0.1.0 \
 		ppv-lite86-0.2.10 \
 		proc-macro-hack-0.5.19 \
-		proc-macro-nested-0.1.7 \
+		proc-macro-nested-0.1.6 \
 		proc-macro2-1.0.24 \
 		prost-0.6.1 \
 		prost-build-0.6.1 \
 		prost-derive-0.6.1 \
 		prost-types-0.6.1 \
-		quote-1.0.9 \
+		quote-1.0.7 \
 		rand-0.7.3 \
-		rand-0.8.3 \
 		rand_chacha-0.2.2 \
-		rand_chacha-0.3.0 \
 		rand_core-0.5.1 \
-		rand_core-0.6.2 \
 		rand_hc-0.2.0 \
-		rand_hc-0.3.0 \
-		redox_syscall-0.2.5 \
-		regex-1.4.5 \
-		regex-syntax-0.6.23 \
+		redox_syscall-0.1.57 \
+		regex-1.4.2 \
+		regex-syntax-0.6.21 \
 		remove_dir_all-0.5.3 \
 		rustc-demangle-0.1.18 \
 		ryu-1.0.5 \
 		same-file-1.0.6 \
 		semver-0.9.0 \
 		semver-parser-0.7.0 \
-		serde-1.0.124 \
-		serde_derive-1.0.124 \
-		serde_json-1.0.64 \
-		sha2-0.9.3 \
+		serde-1.0.117 \
+		serde_derive-1.0.117 \
+		serde_json-1.0.59 \
+		sha2-0.9.2 \
 		simplelog-0.7.6 \
 		slab-0.4.2 \
-		smallvec-1.6.1 \
+		smallvec-1.5.1 \
 		static_assertions-1.1.0 \
-		subtle-2.4.0 \
-		syn-1.0.64 \
+		subtle-2.3.0 \
+		syn-1.0.48 \
 		synstructure-0.12.4 \
-		tempfile-3.2.0 \
-		termcolor-1.1.2 \
-		thiserror-1.0.24 \
-		thiserror-impl-1.0.24 \
-		time-0.1.43 \
-		tokio-0.3.7 \
-		typenum-1.13.0 \
-		unicode-segmentation-1.7.1 \
+		tempfile-3.1.0 \
+		termcolor-1.1.0 \
+		thiserror-1.0.22 \
+		thiserror-impl-1.0.22 \
+		thread_local-1.0.1 \
+		time-0.1.44 \
+		tokio-0.3.3 \
+		typenum-1.12.0 \
+		unicode-segmentation-1.6.0 \
 		unicode-xid-0.2.1 \
 		version_check-0.9.2 \
 		walkdir-2.3.1 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
-		wasi-0.10.2+wasi-snapshot-preview1 \
+		wasi-0.10.0+wasi-snapshot-preview1 \
 		which-3.1.1 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		x25519-dalek-0.6.0 \
-		zeroize-1.2.0 \
+		zeroize-1.1.1 \
 		zeroize_derive-1.0.1
 
-CARGO_CARGOTOML=	${WRKSRC}/src/rust/Cargo.toml
-CARGO_CARGOLOCK=	${WRKSRC}/src/rust/Cargo.lock
 # CARGO_BUILDDEP=no is needed to force the use of rust-nightly.
 CARGO_BUILDDEP=		no
 CARGO_BUILD_ARGS=	--features electron
-CARGO_CONFIGURE=	no
-CARGO_ENV=		CARGO_PROFILE_RELEASE_LTO=thin
 CARGO_INSTALL=		no
 USE_LDCONFIG=		yes
 
@@ -290,84 +262,52 @@ CARGO_ENV+=	npm_config_arch=x64 \
 		npm_config_devdir=${WRKDIR}/electron-gyp \
 		CARGO_VENDOR_DIR=${CARGO_VENDOR_DIR}
 
-PLIST_FILES=	libringrtc.so
+PLIST_FILES=	lib/libringrtc.so
 
 post-extract:
-	${MKDIR} ${WRKSRC}/src/webrtc
-	${MV} ${WRKDIR}/webrtc-4183k ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/base ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/build ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/buildtools ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/testing ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/third_party ${WRKSRC}/src/webrtc/src
-	${MV} ${WRKDIR}/catapult ${WRKSRC}/src/webrtc/src/third_party
-	${MV} ${WRKDIR}/boringssl ${WRKSRC}/src/webrtc/src/third_party/boringssl/src
-	${MV} ${WRKDIR}/icu ${WRKSRC}/src/webrtc/src/third_party
-	${MV} ${WRKDIR}/libjpeg_turbo ${WRKSRC}/src/webrtc/src/third_party
-	${MV} ${WRKDIR}/libsrtp ${WRKSRC}/src/webrtc/src/third_party
-	${MV} ${WRKDIR}/libvpx ${WRKSRC}/src/webrtc/src/third_party/libvpx/source
-	${MV} ${WRKDIR}/libyuv ${WRKSRC}/src/webrtc/src/third_party
-	${MV} ${WRKDIR}/nasm ${WRKSRC}/src/webrtc/src/third_party
+	${MKDIR} ${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc
+	${MV} ${WRKDIR}/webrtc-4183k ${WEBRTCDIR}
+	${MV} ${WRKDIR}/base ${WEBRTCDIR}
+	${MV} ${WRKDIR}/build ${WEBRTCDIR}
+	${MV} ${WRKDIR}/buildtools ${WEBRTCDIR}
+	${MV} ${WRKDIR}/testing ${WEBRTCDIR}
+	${MV} ${WRKDIR}/third_party ${WEBRTCDIR}
+	${MV} ${WRKDIR}/catapult ${WEBRTCDIR}/third_party
+	${MV} ${WRKDIR}/boringssl ${WEBRTCDIR}/third_party/boringssl/src
+	${MV} ${WRKDIR}/icu ${WEBRTCDIR}/third_party
+	${MV} ${WRKDIR}/libjpeg_turbo ${WEBRTCDIR}/third_party
+	${MV} ${WRKDIR}/libsrtp ${WEBRTCDIR}/third_party
+	${MV} ${WRKDIR}/libvpx ${WEBRTCDIR}/third_party/libvpx/source
+	${MV} ${WRKDIR}/libyuv ${WEBRTCDIR}/third_party
+	${MV} ${WRKDIR}/nasm ${WEBRTCDIR}/third_party
 
 post-patch:
-	${REINPLACE_CMD} "s|%%LOCALBASE%%|${LOCALBASE}|" \
-		${WRKSRC}/src/webrtc/src/build/toolchain/gcc_toolchain.gni \
-		${WRKSRC}/src/webrtc/src/buildtools/third_party/libc++/BUILD.gn
+	${REINPLACE_CMD} "s|LOCALBASE|${LOCALBASE}|" \
+		${WEBRTCDIR}/build/toolchain/gcc_toolchain.gni \
+		${WEBRTCDIR}/buildtools/third_party/libc++/BUILD.gn
 
-	# setup yarnrc for offline node_modules installation
-	${ECHO_CMD} 'yarn-offline-mirror "../../../../yarn-offline-cache/"' >> \
-		${WRKSRC}/cargo-crates/neon-sys-0.6.0/native/.yarnrc
-	${ECHO_CMD} 'yarn-offline-mirror-pruning true' >> \
-		${WRKSRC}/cargo-crates/neon-sys-0.6.0/native/.yarnrc
-	${ECHO_CMD} 'nodedir "${WRKDIR}/node-v12.21.0"' >> \
-		${WRKSRC}/cargo-crates/neon-sys-0.6.0/native/.yarnrc
+	${TOUCH} ${WEBRTCDIR}/build/config/gclient_args.gni
+	${ECHO} "# Generated from 'DEPS'" >> ${WEBRTCDIR}/build/config/gclient_args.gni
 
-do-configure:
-	${TOUCH} ${WRKSRC}/src/webrtc/src/build/config/gclient_args.gni
-	${ECHO} "# Generated from 'DEPS'" >> ${WRKSRC}/src/webrtc/src/build/config/gclient_args.gni
+	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
+	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
-	${ECHO} 1591703586 > ${WRKSRC}/src/webrtc/src/build/util/LASTCHANGE.committime
-	${ECHO} "qqchose " > ${WRKSRC}/src/webrtc/src/build/util/LASTCHANGE
-
-	cd ${WRKSRC}/src/webrtc/src && \
+pre-build:
+	cd ${WEBRTCDIR} && \
 		${SETENV} ${CONFIGURE_ENV} gn gen out/${BUILDTYPE} --args='${GN_ARGS}'
 
-# this is copy/paste of Mk/Uses/cargo.mk:cargo-configure
-# or override WRKSRC?
-#WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
-# configure hook.  Place a config file for overriding crates-io index
-# by local source directory.
-	@${MKDIR} ${WRKDIR}/.cargo
-	@${ECHO_CMD} "[source.cargo]" > ${WRKDIR}/.cargo/config
-	@${ECHO_CMD} "directory = '${CARGO_VENDOR_DIR}'" >> ${WRKDIR}/.cargo/config
-	@${ECHO_CMD} "[source.crates-io]" >> ${WRKDIR}/.cargo/config
-	@${ECHO_CMD} "replace-with = 'cargo'" >> ${WRKDIR}/.cargo/config
-	@if ! ${GREP} -qF '[profile.release]' ${CARGO_CARGOTOML}; then \
-		${ECHO_CMD} "" >> ${CARGO_CARGOTOML}; \
-		${ECHO_CMD} "[profile.release]" >> ${CARGO_CARGOTOML}; \
-		${ECHO_CMD} "opt-level = 2" >> ${CARGO_CARGOTOML}; \
-		${ECHO_CMD} "debug = false" >> ${CARGO_CARGOTOML}; \
-	fi
-	cd ${WRKSRC}/src/rust && \
-	${CARGO_ENV} ${CARGO_CARGO_BIN} update \
-		--manifest-path ${CARGO_CARGOTOML} \
-		--verbose
-do-build:
-# build webrtc first
-	cd ${WRKSRC}/src/webrtc/src \
+# build webrtc first, ringrtc needs libwebrtc.a
+	cd ${WEBRTCDIR} \
 		&& ${MAKE_ENV} CC=ccache CXX=ccache ninja -C out/Release
 
 # build ringrtc
-# it's a bit tricky due to the use of node modules...
-	${RM} ${WRKSRC}/cargo-crates/neon-sys-0.6.0/native/package-lock.json
-	${CP} ${FILESDIR}/yarn.lock ${WRKSRC}/cargo-crates/neon-sys-0.6.0/native
 	cd ${WRKSRC}/cargo-crates/neon-sys-0.6.0/native && \
-		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline
-	cd ${WRKSRC}/src/rust && \
-	${CARGO_ENV} ${CARGO_CARGO_BIN} build \
-                --manifest-path ${CARGO_CARGOTOML} \
-                --verbose \
-                ${CARGO_BUILD_ARGS}
+		${SETENV} ${MAKE_ENV} \
+		npm_config_target=11.3 \
+		npm_config_build_from_source=true \
+		npm_config_nodedir=${LOCALBASE}/share/electron11/node_headers \
+		npm_config_offline=true \
+		npm install --ignore-scripts --offline
 
 # it's not intended to be used outside of signal-desktop, put that in
 # /usr/local/share/ringrtc instead?

@@ -1,5 +1,5 @@
---- src/webrtc/src/modules/video_capture/BUILD.gn.orig	2021-01-28 23:16:17 UTC
-+++ src/webrtc/src/modules/video_capture/BUILD.gn
+--- ../../src/webrtc/src/modules/video_capture/BUILD.gn.orig	2021-01-28 23:16:17 UTC
++++ ../../src/webrtc/src/modules/video_capture/BUILD.gn
 @@ -54,7 +54,7 @@ if (!build_with_chromium) {
        "../../system_wrappers",
      ]

@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/linux/pkg-config.py.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/linux/pkg-config.py
+--- ../../src/webrtc/src/build/config/linux/pkg-config.py.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/linux/pkg-config.py
 @@ -59,8 +59,12 @@ def SetConfigPath(options):
      print("You must specify an architecture via -a if using a sysroot.")
      sys.exit(1)

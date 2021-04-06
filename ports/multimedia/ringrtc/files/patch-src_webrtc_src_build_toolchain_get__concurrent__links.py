@@ -1,5 +1,5 @@
---- src/webrtc/src/build/toolchain/get_concurrent_links.py.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/toolchain/get_concurrent_links.py
+--- ../../src/webrtc/src/build/toolchain/get_concurrent_links.py.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/toolchain/get_concurrent_links.py
 @@ -48,6 +48,14 @@ def _GetTotalMemoryInBytes():
        return int(subprocess.check_output(['sysctl', '-n', 'hw.memsize']))
      except Exception:

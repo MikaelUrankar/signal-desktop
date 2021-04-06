@@ -1,5 +1,5 @@
---- src/webrtc/src/build/toolchain/linux/BUILD.gn.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/toolchain/linux/BUILD.gn
+--- ../../src/webrtc/src/build/toolchain/linux/BUILD.gn.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/toolchain/linux/BUILD.gn
 @@ -22,7 +22,6 @@ clang_toolchain("clang_arm") {
  }
  

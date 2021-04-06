@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/compiler/BUILD.gn.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/compiler/BUILD.gn
+--- ../../src/webrtc/src/build/config/compiler/BUILD.gn.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/compiler/BUILD.gn
 @@ -130,7 +130,7 @@ declare_args() {
    # 'is_android' breaks content_shell_test_apk on android-kitkat-arm-rel.
    # 'use_xcode_clang' may call old clang.

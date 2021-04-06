@@ -1,5 +1,5 @@
---- src/webrtc/src/build/config/sysroot.gni.orig	2021-03-15 14:52:02 UTC
-+++ src/webrtc/src/build/config/sysroot.gni
+--- ../../src/webrtc/src/build/config/sysroot.gni.orig	2021-03-15 14:52:02 UTC
++++ ../../src/webrtc/src/build/config/sysroot.gni
 @@ -21,9 +21,9 @@ declare_args() {
  
    # Controls default is_linux sysroot. If set to true, and sysroot
