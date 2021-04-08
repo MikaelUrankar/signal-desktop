@@ -7,6 +7,15 @@
 # XXX
 #   enable sndio in webrtc (see chromium's patches)
 #   remove hardcoded version v12.21.0, npm_config_target=11.3.0
+#
+# to create the npm cache:
+#   cd src/rust/cargo-crates/neon-sys-0.6.0/native
+#   npm install --ignore-scripts --offline
+#   cd ${WRKDIR}
+#   tar czf signalapp-npm-offline-cache.tar.gz .npm
+#
+# to create the electron gyp cache:
+#   XXX    
 
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
