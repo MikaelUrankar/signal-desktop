@@ -1,6 +1,6 @@
 #!/bin/sh
 FETCH_CMD=fetch
-DISTDIR=/tmp
+DISTDIR=/usr/ports/packages
 
 BASE_HASH=2df7267880bf7d4086d55c0e56cd72c394bfda36
 BORINGSSL_HASH=88024df12147e56b6abd66b743ff441a0aaa09a8
@@ -38,18 +38,37 @@ do
 	tar xf ${i}.tar.gz -C ${i}
 done
 tar cjf base-${BASE_HASH}.tar.gz base
-tar cjf boringssl-${BORINGSSL_HASH}
-tar cjf build-${BUILD_HASH}
-tar cjf buildtools-${BUILDTOOLS_HASH}
-tar cjf catapult-${CATAPULT_HASH}
-tar cjf icu-${ICU_HASH}
-tar cjf libjpeg_turbo-${LIBJPEG_HASH}
-tar cjf libsrtp-${LIBSRTP_HASH}
-tar cjf libvpx-${LIBVPX_HASH}
-tar cjf libyuv-${LIBYUV_HASH}
-tar cjf nasm-${NASM_HASH}
-tar cjf third_party-${THIRDPARTY_HASH}
-tar cjf testing-${TESTING_HASH}
+tar cjf boringssl-${BORINGSSL_HASH}.tar.gz boringssl
+tar cjf build-${BUILD_HASH}.tar.gz build
+tar cjf buildtools-${BUILDTOOLS_HASH}.tar.gz buildtools
+tar cjf catapult-${CATAPULT_HASH}.tar.gz catapult
+tar cjf icu-${ICU_HASH}.tar.gz icu
+tar cjf libjpeg_turbo-${LIBJPEG_HASH}.tar.gz libjpeg_turbo
+tar cjf libsrtp-${LIBSRTP_HASH}.tar.gz libsrtp
+tar cjf libvpx-${LIBVPX_HASH}.tar.gz libvpx
+tar cjf libyuv-${LIBYUV_HASH}.tar.gz libyuv
+tar cjf nasm-${NASM_HASH}.tar.gz nasm
+tar cjf third_party-${THIRDPARTY_HASH}.tar.gz third_party
+tar cjf testing-${TESTING_HASH}.tar.gz testing
 
 fetch http://mikael.urankar.free.fr/ringrtc/signalapp-npm-offline-cache.tar.gz
 fetch http://mikael.urankar.free.fr/ringrtc/signalapp-electron-gyp.tar.gz
+
+# copy the distfiles in /usr/ports/distfiles
+
+cp	base-${BASE_HASH}.tar.gz \
+	boringssl-${BORINGSSL_HASH}.tar.gz \
+	build-${BUILD_HASH}.tar.gz \
+	buildtools-${BUILDTOOLS_HASH}.tar.gz \
+	catapult-${CATAPULT_HASH}.tar.gz \
+	icu-${ICU_HASH}.tar.gz \
+	libjpeg_turbo-${LIBJPEG_HASH}.tar.gz \
+	libsrtp-${LIBSRTP_HASH}.tar.gz \
+	libvpx-${LIBVPX_HASH}.tar.gz \
+	libyuv-${LIBYUV_HASH}.tar.gz \
+	nasm-${NASM_HASH}.tar.gz \
+	third_party-${THIRDPARTY_HASH}.tar.gz \
+	testing-${TESTING_HASH}.tar.gz \
+	signalapp-npm-offline-cache.tar.gz \
+	signalapp-electron-gyp.tar.gz \
+	${DISTDIR}
