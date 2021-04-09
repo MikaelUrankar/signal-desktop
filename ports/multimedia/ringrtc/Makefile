@@ -21,21 +21,21 @@ PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.2
 CATEGORIES=	multimedia
-MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
-		LOCAL/mikael/ringrtc/:boringssl \
-		LOCAL/mikael/ringrtc/:build \
-		LOCAL/mikael/ringrtc/:buildtools \
-		LOCAL/mikael/ringrtc/:catapult \
-		LOCAL/mikael/ringrtc/:icu \
-		LOCAL/mikael/ringrtc/:nasm \
-		LOCAL/mikael/ringrtc/:libjpeg_turbo \
-		LOCAL/mikael/ringrtc/:libsrtp \
-		LOCAL/mikael/ringrtc/:libvpx \
-		LOCAL/mikael/ringrtc/:libyuv \
-		LOCAL/mikael/ringrtc/:third_party \
-		LOCAL/mikael/ringrtc/:testing \
-		LOCAL/mikael/ringrtc/:npm_cache \
-		LOCAL/mikael/ringrtc/:electron_gyp \
+MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
+		http://mikael.urankar.free.fr/ringrtc/:boringssl \
+		http://mikael.urankar.free.fr/ringrtc/:build \
+		http://mikael.urankar.free.fr/ringrtc/:buildtools \
+		http://mikael.urankar.free.fr/ringrtc/:catapult \
+		http://mikael.urankar.free.fr/ringrtc/:icu \
+		http://mikael.urankar.free.fr/ringrtc/:nasm \
+		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
+		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
+		http://mikael.urankar.free.fr/ringrtc/:libvpx \
+		http://mikael.urankar.free.fr/ringrtc/:libyuv \
+		http://mikael.urankar.free.fr/ringrtc/:third_party \
+		http://mikael.urankar.free.fr/ringrtc/:testing \
+		http://mikael.urankar.free.fr/ringrtc/:npm_cache \
+		http://mikael.urankar.free.fr/ringrtc/:electron_gyp \
 		https://nodejs.org/dist/v12.21.0/:node_headers
 DISTFILES=	base-${BASE_HASH}.tar.gz:base \
 		boringssl-${BORINGSSL_HASH}.tar.gz:boringssl \
