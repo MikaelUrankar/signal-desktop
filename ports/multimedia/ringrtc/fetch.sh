@@ -51,8 +51,8 @@ tar cjf nasm-${NASM_HASH}.tar.gz nasm
 tar cjf third_party-${THIRDPARTY_HASH}.tar.gz third_party
 tar cjf testing-${TESTING_HASH}.tar.gz testing
 
-fetch http://mikael.urankar.free.fr/ringrtc/signalapp-npm-offline-cache.tar.gz
-fetch http://mikael.urankar.free.fr/ringrtc/signalapp-electron-gyp.tar.gz
+fetch http://mikael.urankar.free.fr/ringrtc/ringrtc-npm-offline-cache.tar.gz
+fetch http://mikael.urankar.free.fr/ringrtc/ringrtc-electron-gyp.tar.gz
 
 # copy the distfiles in /usr/ports/distfiles
 

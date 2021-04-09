@@ -50,8 +50,8 @@ DISTFILES=	base-${BASE_HASH}.tar.gz:base \
 		libyuv-${LIBYUV_HASH}.tar.gz:libyuv \
 		third_party-${THIRDPARTY_HASH}.tar.gz:third_party \
 		testing-${TESTING_HASH}.tar.gz:testing \
-		signalapp-npm-offline-cache.tar.gz:npm_cache \
-		signalapp-electron-gyp.tar.gz:electron_gyp \
+		ringrtc-npm-offline-cache.tar.gz:npm_cache \
+		ringrtc-electron-gyp.tar.gz:electron_gyp \
 		node-v12.21.0-headers.tar.gz:node_headers
 
 MAINTAINER=	mikael@FreeBSD.org
