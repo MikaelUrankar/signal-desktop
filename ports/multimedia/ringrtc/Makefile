@@ -65,7 +65,6 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libasound.so:audio/alsa-lib
 BUILD_DEPENDS=	binutils>0:devel/binutils \
 		gn:devel/gn \
-		rust-nightly>=0:lang/rust-nightly \
 		npm-node12>0:www/npm-node12 \
 		yarn-node12>0:www/yarn-node12
 
@@ -254,12 +253,12 @@ CARGO_CRATES=	addr2line-0.14.0 \
 		x25519-dalek-0.6.0 \
 		zeroize-1.1.1 \
 		zeroize_derive-1.0.1
-
-# CARGO_BUILDDEP=no is needed to force the use of rust-nightly.
 CARGO_BUILDDEP=		no
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
 USE_LDCONFIG=		yes
+
+MAKE_ENV=	RUSTC_BOOTSTRAP=1
 
 # keep in sync with https://github.com/signalapp/ringrtc/blob/v2.9.2/bin/build-electron#L109
 CARGO_ENV+=	npm_config_arch=x64 \
