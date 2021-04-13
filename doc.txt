@@ -318,6 +318,11 @@ Also:
 yarn build
 env DEBUG=electron-builder
 
+setenv SIGNAL_ENV production
+./node_modules/.bin/electron-builder --config.extraMetadata.environment=production  "--config.directories.output=release"
+
+./node_modules/.bin/electron-builder --config.extraMetadata.environment=production "--config.directories.output=release" --linux tar.xz
+
 *************************************************************************************************
 yarn test
 
@@ -376,3 +381,15 @@ rebuild devel/electron11:
  #if defined(__APPLE__)
    err = uv__stream_try_select((uv_stream_t*) handle, &fd);
 
+
+********************
+
+./node_modules/.bin/electron-builder --config.extraMetadata.environment=production "--config.directories.output=release" --linux freebsd
+
+  • packaging       platform=linux arch=x64 electron=11.2.3 appOutDir=release/linux-unpacked
+  • building        target=freebsd arch=x64 file=release/signal-desktop-1.40.1.freebsd
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/fpm-1.9.3-2.3.1-linux-x86_64/fpm-1.9.3-2.3.1-linux-x86_64.7z size=5.0 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/fpm-1.9.3-2.3.1-linux-x86_64/fpm-1.9.3-2.3.1-linux-x86_64.7z duration=1.044s
+  ⨯ cannot execute  cause=fork/exec /usr/home/miki/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86_64/fpm: no such file or directory
+                    command=/usr/home/miki/.cache/electron-builder/fpm/fpm-1.9.3-2.3.1-linux-x86_64/fpm -s dir --force -t freebsd --architecture amd64 --name signal-desktop --after-install /tmp/t-etQE9n/0-after-install --after-remove /tmp/t-etQE9n/1-after-remove --description '
+     Private messaging from your desktop' --version 1.40.1 --package /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/release/signal-desktop-1.40.1.freebsd --maintainer 'Open Whisper Systems <support@signal.org>' --url 'https://github.com/signalapp/Signal-Desktop#readme' --vendor 'Open Whisper Systems <support@signal.org>' --license AGPL-3.0-only /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/release/linux-unpacked/=/opt/Signal /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/16x16.png=/usr/share/icons/hicolor/16x16/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/24x24.png=/usr/share/icons/hicolor/24x24/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/32x32.png=/usr/share/icons/hicolor/32x32/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/48x48.png=/usr/share/icons/hicolor/48x48/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/64x64.png=/usr/share/icons/hicolor/64x64/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/128x128.png=/usr/share/icons/hicolor/128x128/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/256x256.png=/usr/share/icons/hicolor/256x256/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/512x512.png=/usr/share/icons/hicolor/512x512/apps/signal-desktop.png /usr/home/miki/signal-desktop.git/Signal-Desktop-1.40.1/build/icons/png/1024x1024.png=/usr/share/icons/hicolor/1024x1024/apps/signal-desktop.png /tmp/t-etQE9n/2-Signal.desktop=/usr/share/applications/signal-desktop.desktop
