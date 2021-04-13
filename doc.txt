@@ -4,7 +4,7 @@ everything seems so wrong and bad designed in signal-desktop...
 # XXX there are probably missing packages
 # python2.7 is needed because node-gyp is really old and doesn't work with python3
 #   XXX try to bump node-gyp to 5.1.1 (and rm yarn.lock ; yarn install ; yarn install --frozen-lockfile)
-pkg install node12 npm-node12 yarn-node12 electron11 git git-lfs zkgroup python27 vips devel/app-builder openssl zkgroup
+pkg install node12 npm-node12 yarn-node12 electron11 git git-lfs zkgroup python27 vips devel/app-builder openssl zkgroup archivers/p7zip
 
 # clear ~/.cache and set up git lfs
 # 'git lfs install' is needed to download sqlcipher-amalgamation-3033000.tar.gz
@@ -15,6 +15,7 @@ git lfs install
 setenv PYTHON /usr/local/bin/python2.7 (doesn't seem to work, just ln python2.7 python for now)
 setenv ELECTRON_SKIP_BINARY_DOWNLOAD true
 setenv USE_SYSTEM_APP_BUILDER true
+setenv USE_SYSTEM_7ZA true
 
 # create the chromedriver archive (cf node_modules/electron-download/readme.md for env variables)
 mkdir chromedriver-v3.0.0-freebsd-x64
