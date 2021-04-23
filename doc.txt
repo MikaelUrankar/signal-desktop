@@ -31,7 +31,7 @@ sha256 -r chromedriver-v3.0.0-freebsd-x64.zip | sed 's/ / */' > ~/.cache/electro
 
 # Do the same for electron11 (it's needed if "yarn build" is used)
 # XXX electron 11.3.0 is in the ports tree but the build infra wants 11.2.3, just cheat for now
-# XXX also, see below for the ENOTTY hack
+# XXX also, see below for the ENOTTY patch
 cd /usr/local/share/electron11
 zip ~/.cache/electron/electron-v11.2.3-freebsd-x64.zip -r *
 cd ~/.cache/electron
@@ -346,7 +346,8 @@ setenv UNAME_r 13.0
 
 yarn start
 
-hack for uv_pipe_open enotty:
+patch for uv_pipe_open ENOTTY in patches/patch-src_third__party_electron__node_deps_uv_src_unix_pipe.c
+put the file in devel/electron11/files and build / reinstall electron11
 
 {"name":"log","hostname":"lethe","pid":45794,"level":50,"time":"2021-04-03T14:20:17.802Z","msg":"Top-level unhandled
 error: Error: ENOTTY: inappropriate ioctl for device, uv_pipe_open
