@@ -1,5 +1,5 @@
---- patches/electron+11.2.3.patch.orig	2021-04-25 19:12:08.232056000 +0200
-+++ patches/electron+11.2.3.patch	2021-04-25 18:46:30.552445000 +0200
+--- patches/electron+11.2.3.patch.orig	2021-04-25 19:12:08 UTC
++++ patches/electron+11.2.3.patch
 @@ -0,0 +1,10 @@
 +--- a/node_modules/electron/index.js
 ++++ b/node_modules/electron/index.js

@@ -1,7 +1,7 @@
 yarn run patch-package @journeyapps/sqlcipher
 
---- patches/@journeyapps+sqlcipher+5.0.0.patch.orig	2021-04-25 19:11:59.543258000 +0200
-+++ patches/@journeyapps+sqlcipher+5.0.0.patch	2021-04-25 18:46:30.551577000 +0200
+--- patches/@journeyapps+sqlcipher+5.0.0.patch.orig	2021-04-25 19:11:59 UTC
++++ patches/@journeyapps+sqlcipher+5.0.0.patch
 @@ -0,0 +1,62 @@
 +--- a/node_modules/@journeyapps/sqlcipher/deps/extract.py
 ++++ b/node_modules/@journeyapps/sqlcipher/deps/extract.py

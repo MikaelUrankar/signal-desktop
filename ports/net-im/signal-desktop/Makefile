@@ -23,6 +23,7 @@ BUILD_DEPENDS=	node12>0:www/node12 \
 		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		openssl>0:security/openssl
 
+# XXX try to update node-gyp and drop python2.7 dep
 USES=		python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
@@ -38,7 +39,7 @@ BINARY_ALIAS=	python=python2.7
 
 # Taken from https://github.com/tagattie/FreeBSD-Electron
 # XXX convert to Taggatie's framework
-PREFETCH_TIMESTAMP=     1616313125
+PREFETCH_TIMESTAMP=	1616313125
 PKGJSONSDIR=	${FILESDIR}/packagejsons
 YARN_CMD=	${LOCALBASE}/bin/${_YARN_BASE_CMD}
 _YARN_BASE_CMD=	yarn
@@ -66,7 +67,7 @@ pre-fetch:
 		${TAR} -cz --options 'gzip:!timestamp' \
 			-f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} @yarn-offline-cache.mtree; \
 		${RM} -r ${WRKDIR}; \
-        fi
+	fi
 
 pre-build:
 	@${ECHO_MSG} "===>  Copying package.json and yarn.lock to WRKSRC"
@@ -103,9 +104,9 @@ do-build:
 		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline || ${TRUE}
 
 	${MKDIR} ${WRKSRC}/node_modules/ringrtc/build/freebsd
-	${CP} /usr/local/lib/libringrtc.so ${WRKSRC}/node_modules/ringrtc/build/freebsd/libringrtc.node
-	${CP} /usr/local/lib/libsignal_node.so ${WRKSRC}/node_modules/libsignal-client/build/libsignal_client_freebsd.node
-	${CP} /usr/local/lib/libzkgroup.so ${WRKSRC}/node_modules/zkgroup
+	${CP} ${PREFIX}/lib/libringrtc.so ${WRKSRC}/node_modules/ringrtc/build/freebsd/libringrtc.node
+	${CP} ${PREFIX}/lib/libsignal_node.so ${WRKSRC}/node_modules/libsignal-client/build/libsignal_client_freebsd.node
+	${CP} ${PREFIX}/lib/libzkgroup.so ${WRKSRC}/node_modules/zkgroup
 
 	cd ${WRKSRC} && \
 		yarn grunt
