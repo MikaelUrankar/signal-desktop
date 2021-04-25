@@ -24,7 +24,7 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		zkgroup>0:net-im/zkgroup
 
 # XXX try to update node-gyp and drop python2.7 dep
-USES=		python:2.7,build
+USES=		desktop-file-utils python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
@@ -32,6 +32,8 @@ WRKSRC=		${WRKDIR}/Signal-Desktop-${PORTVERSION}
 
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=true \
 		HOME=${WRKDIR} \
+		SIGNAL_ENV=production \
+		USE_SYSTEM_7ZA=true \
 		USE_SYSTEM_APP_BUILDER=true \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
@@ -112,5 +114,35 @@ do-build:
 		yarn grunt
 	cd ${WRKSRC} && \
 		yarn build:webpack
+
+do-install:
+	# taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
+	# and editors/vscode
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn run electron-builder \
+			--linux --dir  --config.npmRebuild=false \
+			--config.electronVersion=11.2.3 \
+			--config.electronDist=${LOCALBASE}/share/electron11
+
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	cd ${BUILD_WRKSRC}/dist/linux-unpacked && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_DATA} ${WRKSRC}/images/signal-logo-desktop-linux.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/signal-desktop.png
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop \
+		${STAGEDIR}${PREFIX}/share/applications
+
+	cd ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked && \
+		${FIND} . -type f -name '*.node' -exec ${STRIP_CMD} {} ';'
+.for f in chromedriver mksnapshot v8_context_snapshot_generator
+	${RM} ${STAGEDIR}${DATADIR}/${f}
+.endfor
+	${RM} -r ${STAGEDIR}${DATADIR}/gen
+	${RM} -r ${STAGEDIR}${DATADIR}/node_headers
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
+	${RLN} ${STAGEDIR}${DATADIR}/signal-desktop ${STAGEDIR}${PREFIX}/bin
+	${CHMOD} a+x ${STAGEDIR}${DATADIR}/signal-desktop
 
 .include <bsd.port.mk>
