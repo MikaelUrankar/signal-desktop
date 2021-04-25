@@ -1,0 +1,14 @@
+--- patches/electron-builder+22.9.1.patch.orig	2021-04-25 19:12:04.271545000 +0200
++++ patches/electron-builder+22.9.1.patch	2021-04-25 18:46:30.551990000 +0200
+@@ -0,0 +1,11 @@
++--- a/node_modules/electron-builder/out/cli/install-app-deps.js
+++++ b/node_modules/electron-builder/out/cli/install-app-deps.js
++@@ -122,7 +122,7 @@ function configureInstallAppDepsCommand(yargs) {
++   return yargs.parserConfiguration({
++     "camel-case-expansion": false
++   }).option("platform", {
++-    choices: ["linux", "darwin", "win32"],
+++    choices: ["freebsd","linux", "darwin", "win32"],
++     default: process.platform,
++     description: "The target platform"
++   }).option("arch", {

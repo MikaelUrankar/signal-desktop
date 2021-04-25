@@ -90,12 +90,6 @@ pre-build:
 		${SHA256} -r *.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt-3.0.0
 
-	# XXX convert to patch files
-	# yarn run patch-package @journeyapps/sqlcipher
-	cp ${FILESDIR}/@journeyapps+sqlcipher+5.0.0.patch ${WRKSRC}/patches
-	cp ${FILESDIR}/electron-builder+22.9.1.patch ${WRKSRC}/patches
-	cp ${FILESDIR}/electron+11.2.3.patch ${WRKSRC}/patches
-
 	@${ECHO_MSG} "===>  Installing node modules from pre-fetched cache"
 	@${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> ${WRKSRC}/.yarnrc
 	@cd ${PKGJSONSDIR} && \

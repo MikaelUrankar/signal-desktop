@@ -1,0 +1,13 @@
+--- patches/electron+11.2.3.patch.orig	2021-04-25 19:12:08.232056000 +0200
++++ patches/electron+11.2.3.patch	2021-04-25 18:46:30.552445000 +0200
+@@ -0,0 +1,10 @@
++--- a/node_modules/electron/index.js
+++++ b/node_modules/electron/index.js
++@@ -4,6 +4,7 @@ var path = require('path')
++ var pathFile = path.join(__dirname, 'path.txt')
++ 
++ function getElectronPath () {
+++  return path.join("/usr/local/share/electron11/electron")
++   if (fs.existsSync(pathFile)) {
++     var executablePath = fs.readFileSync(pathFile, 'utf-8')
++     if (process.env.ELECTRON_OVERRIDE_DIST_PATH) {

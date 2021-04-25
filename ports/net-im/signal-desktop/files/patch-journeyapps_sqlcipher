@@ -1,0 +1,67 @@
+yarn run patch-package @journeyapps/sqlcipher
+
+--- patches/@journeyapps+sqlcipher+5.0.0.patch.orig	2021-04-25 19:11:59.543258000 +0200
++++ patches/@journeyapps+sqlcipher+5.0.0.patch	2021-04-25 18:46:30.551577000 +0200
+@@ -0,0 +1,62 @@
++--- a/node_modules/@journeyapps/sqlcipher/deps/extract.py
+++++ b/node_modules/@journeyapps/sqlcipher/deps/extract.py
++@@ -1,9 +1,20 @@
++ import sys
++ import tarfile
++ import os
+++import shutil
++ 
++ tarball = os.path.abspath(sys.argv[1])
++ dirname = os.path.abspath(sys.argv[2])
+++openssl_dir = os.path.join(dirname, "sqlcipher-amalgamation-3033000", "OpenSSL-FreeBSD")
++ tfile = tarfile.open(tarball,'r:gz');
++ tfile.extractall(dirname)
+++
+++os.mkdir(openssl_dir)
+++
+++try:
+++    shutil.copyfile(os.path.join("/usr", "local", "lib", "libcrypto.a"), os.path.join(openssl_dir, "libcrypto.a"))
+++except:
+++    print("Unexpected error:", sys.exc_info())
+++    sys.exit(1)
+++
++ sys.exit(0)
++--- a/node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp
+++++ b/node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp
++@@ -69,6 +69,14 @@
++           ]
++         }
++       },
+++      'OS == "freebsd"', {
+++        'link_settings': {
+++          'libraries': [
+++            # This statically links libcrypto, whereas -lcrypto would dynamically link it
+++            '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/OpenSSL-FreeBSD/libcrypto.a'
+++          ]
+++        }
+++      },
++       { # Linux
++         'link_settings': {
++           'libraries': [
++@@ -94,7 +102,7 @@
++           'outputs': [
++             '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/sqlite3.c'
++           ],
++-          'action': ['python','./extract.py','./sqlcipher-amalgamation-<@(sqlite_version).tar.gz','<(SHARED_INTERMEDIATE_DIR)']
+++          'action': ['python2.7','./extract.py','./sqlcipher-amalgamation-<@(sqlite_version).tar.gz','<(SHARED_INTERMEDIATE_DIR)']
++         }
++       ],
++       'direct_dependent_settings': {
++@@ -133,6 +141,12 @@
++           ]
++         },
++         "OS == \"mac\"", {
+++          'include_dirs': [
+++            '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/',
+++            '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/openssl-include/'
+++          ]
+++        },
+++        "OS == \"freebsd\"", {
++           'include_dirs': [
++             '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/',
++             '<(SHARED_INTERMEDIATE_DIR)/sqlcipher-amalgamation-<@(sqlite_version)/openssl-include/'
