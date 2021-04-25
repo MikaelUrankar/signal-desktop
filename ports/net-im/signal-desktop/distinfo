@@ -1,5 +1,5 @@
 TIMESTAMP = 1617957464
-SHA256 (signal-desktop-yarn-cache.tar.gz) = 23d7a3a94df572c86551af10dd223a54f290e65ec262c8f456d598cc7008addd
-SIZE (signal-desktop-yarn-cache.tar.gz) = 288682088
+SHA256 (signal-desktop-yarn-modules-1.40.1.tar.gz) = 23d7a3a94df572c86551af10dd223a54f290e65ec262c8f456d598cc7008addd
+SIZE (signal-desktop-yarn-modules-1.40.1.tar.gz) = 288682088
 SHA256 (signalapp-signal-desktop-v1.40.1_GH0.tar.gz) = 55026ab46d1ef58f20aacf5d9980955f054a07c7d83d977197937de938bdf445
 SIZE (signalapp-signal-desktop-v1.40.1_GH0.tar.gz) = 25828960

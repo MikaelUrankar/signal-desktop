@@ -3,7 +3,7 @@ PORTVERSION=	1.40.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn
-DISTFILES=	signal-desktop-yarn-cache.tar.gz:yarn
+DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	signal-desktop
