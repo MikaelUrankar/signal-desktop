@@ -6,22 +6,22 @@ MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn
 DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
-COMMENT=	signal-desktop
+COMMENT=	cross-platform centralized encrypted messaging service
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	node12>0:www/node12 \
-		npm-node12>0:www/npm-node12 \
-		yarn-node12>0:www/yarn-node12 \
-		electron11:devel/electron11 \
-		zkgroup>0:net-im/zkgroup \
-		app-builder>0:devel/app-builder \
-		vips>0:graphics/vips \
-		zip>0:archivers/zip \
+BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
-		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
-		openssl>0:security/openssl
+		app-builder>0:devel/app-builder \
+		electron11:devel/electron11 \
+		node12>0:www/node12 \
+		npm-node12>0:www/npm-node12 \
+		openssl>0:security/openssl \
+		vips>0:graphics/vips \
+		yarn-node12>0:www/yarn-node12 \
+		zip>0:archivers/zip \
+		zkgroup>0:net-im/zkgroup
 
 # XXX try to update node-gyp and drop python2.7 dep
 USES=		python:2.7,build
@@ -31,8 +31,8 @@ GH_ACCOUNT=	signalapp
 WRKSRC=		${WRKDIR}/Signal-Desktop-${PORTVERSION}
 
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=true \
-		USE_SYSTEM_APP_BUILDER=true \
 		HOME=${WRKDIR} \
+		USE_SYSTEM_APP_BUILDER=true \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 BINARY_ALIAS=	python=python2.7
@@ -40,9 +40,9 @@ BINARY_ALIAS=	python=python2.7
 # Taken from https://github.com/tagattie/FreeBSD-Electron
 # XXX convert to Taggatie's framework
 PREFETCH_TIMESTAMP=	1616313125
-PKGJSONSDIR=	${FILESDIR}/packagejsons
-YARN_CMD=	${LOCALBASE}/bin/${_YARN_BASE_CMD}
-_YARN_BASE_CMD=	yarn
+PKGJSONSDIR=		${FILESDIR}/packagejsons
+YARN_CMD=		${LOCALBASE}/bin/${_YARN_BASE_CMD}
+_YARN_BASE_CMD=		yarn
 
 pre-fetch:
 	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
