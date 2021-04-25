@@ -6,7 +6,7 @@ MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn
 DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
-COMMENT=	cross-platform centralized encrypted messaging service
+COMMENT=	Cross-platform centralized encrypted messaging service
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
