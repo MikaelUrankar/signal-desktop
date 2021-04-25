@@ -36,13 +36,51 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=true \
 
 BINARY_ALIAS=	python=python2.7
 
+# Taken from https://github.com/tagattie/FreeBSD-Electron
+# XXX convert to Taggatie's framework
+PREFETCH_TIMESTAMP=     1616313125
+PKGJSONSDIR=	${FILESDIR}/packagejsons
+YARN_CMD=	${LOCALBASE}/bin/${_YARN_BASE_CMD}
+_YARN_BASE_CMD=	yarn
+
+pre-fetch:
+	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
+		${ECHO_MSG} "===>  Pre-fetching and archiving node modules"; \
+		${MKDIR} ${WRKDIR}; \
+		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
+			${WRKDIR}/.yarnrc; \
+		${CP} -r ${PKGJSONSDIR}/* ${WRKDIR}; \
+		cd ${PKGJSONSDIR} && \
+		for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
+			cd ${WRKDIR}/$${dir} && \
+			${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
+				${YARN_CMD} --frozen-lockfile --ignore-scripts && \
+			${RM} package.json yarn.lock; \
+		done; \
+		cd ${WRKDIR}; \
+		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
+			-e 's:time=[0-9.]*:time=${PREFETCH_TIMESTAMP}.000000000:' \
+			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
+			-e 's:flags=.*:flags=none:' \
+			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
+		${TAR} -cz --options 'gzip:!timestamp' \
+			-f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} @yarn-offline-cache.mtree; \
+		${RM} -r ${WRKDIR}; \
+        fi
+
 pre-build:
-# set up yarn to use offline mode
-	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
+	@${ECHO_MSG} "===>  Copying package.json and yarn.lock to WRKSRC"
+	@cd ${PKGJSONSDIR} && \
+	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
+		for f in package.json yarn.lock; do \
+	 		if [ -f ${WRKSRC}/$${dir}/$${f} ]; then \
+				${MV} -f ${WRKSRC}/$${dir}/$${f} ${WRKSRC}/$${dir}/$${f}.bak; \
+			fi; \
+			${CP} -f $${dir}/$${f} ${WRKSRC}/$${dir}; \
+		done; \
+	done
 
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/package.json.patch || true
-
-	# setup download cache for electron and chromedriver
+	@${ECHO_MSG} "===>  Setting up download cache for electron and chromedriver"
 	${MKDIR} ${WRKDIR}/.cache/electron/
 	cd ${LOCALBASE}/share/electron11 && \
 		zip -q -r ${WRKDIR}/.cache/electron/electron-v11.2.3-freebsd-x64.zip .
@@ -52,34 +90,23 @@ pre-build:
 		${SHA256} -r *.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt-3.0.0
 
-# install node_modules without executing post-installation scripts
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline --ignore-scripts
+	# XXX convert to patch files
+	# yarn run patch-package @journeyapps/sqlcipher
+	cp ${FILESDIR}/@journeyapps+sqlcipher+5.0.0.patch ${WRKSRC}/patches
+	cp ${FILESDIR}/electron-builder+22.9.1.patch ${WRKSRC}/patches
+	cp ${FILESDIR}/electron+11.2.3.patch ${WRKSRC}/patches
 
-#	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_app-builder-lib.patch || true
-#	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_electron_index.js.patch || true
-#	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_electron-builder_out_cli_install-app-deps.js.patch || true
-#	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_journeyapps_sqlcipher_deps_extract.py.patch || true
-#	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_journeyapps_sqlcipher_deps_sqlite3.gyp.patch || true
+	@${ECHO_MSG} "===>  Installing node modules from pre-fetched cache"
+	@${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> ${WRKSRC}/.yarnrc
+	@cd ${PKGJSONSDIR} && \
+	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
+		cd ${WRKSRC}/$${dir} && ${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
+			${YARN_CMD} --frozen-lockfile --ignore-scripts --offline; \
+	done
 
 do-build:
-	# don't know why but the first yarn incantation fails
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline || ${TRUE}
-
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_app-builder-lib.patch || true
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_electron_index.js.patch || true
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_electron-builder_out_cli_install-app-deps.js.patch || true
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_journeyapps_sqlcipher_deps_extract.py.patch || true
-	${PATCH} -f -s -d ${WRKSRC} -i ${FILESDIR}/node__modules_journeyapps_sqlcipher_deps_sqlite3.gyp.patch || true
-
-	${RM} -r ${WRKSRC}/node_modules/@journeyapps/sqlcipher/build-tmp-napi-v6
-	${RM} ${WRKSRC}/node_modules/@journeyapps/sqlcipher/lib/binding/napi-v6-freebsd-x64/node_sqlite3.node
-
-	# don't know why but the first yarn incantation fails, do it again
-	# maybe https://github.com/freebsd/freebsd-ports/blob/main/devel/electron11/Makefile#L171
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline
 
 	${MKDIR} ${WRKSRC}/node_modules/ringrtc/build/freebsd
 	${CP} /usr/local/lib/libringrtc.so ${WRKSRC}/node_modules/ringrtc/build/freebsd/libringrtc.node
@@ -90,17 +117,5 @@ do-build:
 		yarn grunt
 	cd ${WRKSRC} && \
 		yarn build:webpack
-
-# from https://github.com/freebsd/freebsd-ports/blob/main/editors/vscode/Makefile#L242
-# ### targets for port maintainer(s)
-# make-yarn-cache:
-# 	# do "make configure" before executing this target
-# 	${RM} -r ${WRKDIR}/yarn-offline-cache
-# 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
-# 		yarn --frozen-lockfile --ignore-scripts
-# 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
-# 		yarn postinstall --frozen-lockfile
-# 	cd ${WRKDIR} && ${TAR} -czf \
-# 		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} yarn-offline-cache
 
 .include <bsd.port.mk>

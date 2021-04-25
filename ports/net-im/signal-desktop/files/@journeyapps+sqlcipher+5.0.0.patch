@@ -1,5 +1,28 @@
---- node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp.orig	2021-04-02 16:43:23.149414000 +0200
-+++ node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp	2021-04-02 16:45:13.158254000 +0200
+--- a/node_modules/@journeyapps/sqlcipher/deps/extract.py
++++ b/node_modules/@journeyapps/sqlcipher/deps/extract.py
+@@ -1,9 +1,20 @@
+ import sys
+ import tarfile
+ import os
++import shutil
+ 
+ tarball = os.path.abspath(sys.argv[1])
+ dirname = os.path.abspath(sys.argv[2])
++openssl_dir = os.path.join(dirname, "sqlcipher-amalgamation-3033000", "OpenSSL-FreeBSD")
+ tfile = tarfile.open(tarball,'r:gz');
+ tfile.extractall(dirname)
++
++os.mkdir(openssl_dir)
++
++try:
++    shutil.copyfile(os.path.join("/usr", "local", "lib", "libcrypto.a"), os.path.join(openssl_dir, "libcrypto.a"))
++except:
++    print("Unexpected error:", sys.exc_info())
++    sys.exit(1)
++
+ sys.exit(0)
+--- a/node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp
++++ b/node_modules/@journeyapps/sqlcipher/deps/sqlite3.gyp
 @@ -69,6 +69,14 @@
            ]
          }

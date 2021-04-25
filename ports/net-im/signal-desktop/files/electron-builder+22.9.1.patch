@@ -1,6 +1,6 @@
---- node_modules/electron-builder/out/cli/install-app-deps.js
-+++ node_modules/electron-builder/out/cli/install-app-deps.js
-@@ -122,7 +122,7 @@
+--- a/node_modules/electron-builder/out/cli/install-app-deps.js
++++ b/node_modules/electron-builder/out/cli/install-app-deps.js
+@@ -122,7 +122,7 @@ function configureInstallAppDepsCommand(yargs) {
    return yargs.parserConfiguration({
      "camel-case-expansion": false
    }).option("platform", {
@@ -9,4 +9,3 @@
      default: process.platform,
      description: "The target platform"
    }).option("arch", {
-

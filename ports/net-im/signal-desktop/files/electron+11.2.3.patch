@@ -1,7 +1,5 @@
-XXX try to set ELECTRON_OVERRIDE_DIST_PATH instead?
-
---- node_modules/electron/index.js.orig	2021-03-16 18:36:23.069412000 +0100
-+++ node_modules/electron/index.js	2021-03-16 18:36:42.992382000 +0100
+--- a/node_modules/electron/index.js
++++ b/node_modules/electron/index.js
 @@ -4,6 +4,7 @@ var path = require('path')
  var pathFile = path.join(__dirname, 'path.txt')
  
