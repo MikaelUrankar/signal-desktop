@@ -1,5 +1,5 @@
---- base/test/BUILD.gn.orig	2021-04-26 15:39:32.334158000 +0200
-+++ base/test/BUILD.gn	2021-04-26 15:39:13.660229000 +0200
+--- ../../src/webrtc/src/base/test/BUILD.gn.orig	2021-04-26 15:39:32.334158000 +0200
++++ ../../src/webrtc/src/base/test/BUILD.gn	2021-04-26 15:39:13.660229000 +0200
 @@ -11,7 +11,7 @@ import("//build/config/ui.gni")
  # regression during the migration of Chromium away from the feature.
  # See docs/no_sources_assignment_filter.md for more information.
