@@ -1,0 +1,11 @@
+--- base/BUILD.gn.orig	2021-04-26 15:39:45.789025000 +0200
++++ base/BUILD.gn	2021-04-26 15:38:40.585214000 +0200
+@@ -47,7 +47,7 @@ if (is_mac) {
+ # regression during the migration of Chromium away from the feature.
+ # See docs/no_sources_assignment_filter.md for more information.
+ # TODO(crbug.com/1018739): remove this when migration is done.
+-set_sources_assignment_filter([])
++#set_sources_assignment_filter([])
+ 
+ declare_args() {
+   # Indicates if the Location object contains the source code information

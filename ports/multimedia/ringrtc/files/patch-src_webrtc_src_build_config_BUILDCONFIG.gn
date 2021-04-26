@@ -46,3 +46,12 @@
  
  is_posix = !is_win && !is_fuchsia
  
+@@ -398,7 +399,7 @@ if (!is_chromeos) {
+ # (FreeBSD, etc.) toolkits, (X11, GTK, etc.), or features. For these cases,
+ # write a conditional in the target to remove the file(s) from the list when
+ # your platform/toolkit/feature doesn't apply.
+-set_sources_assignment_filter(sources_assignment_filter)
++#set_sources_assignment_filter(sources_assignment_filter)
+ 
+ # =============================================================================
+ # TARGET DEFAULTS
