@@ -2,8 +2,10 @@ PORTNAME=	signal-desktop
 PORTVERSION=	1.40.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
-MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn
-DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn
+MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn \
+		https://nodejs.org/dist/v12.22.1/:node_headers
+DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn \
+		node-v12.22.1-headers.tar.gz:node_headers
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -35,7 +37,8 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=true \
 		SIGNAL_ENV=production \
 		USE_SYSTEM_7ZA=true \
 		USE_SYSTEM_APP_BUILDER=true \
-		XDG_CACHE_HOME=${WRKDIR}/.cache
+		XDG_CACHE_HOME=${WRKDIR}/.cache \
+		npm_config_python=python2.7
 
 BINARY_ALIAS=	python=python2.7
 
@@ -95,6 +98,7 @@ pre-build:
 
 	@${ECHO_MSG} "===>  Installing node modules from pre-fetched cache"
 	@${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> ${WRKSRC}/.yarnrc
+	@${ECHO_CMD} 'nodedir "${WRKDIR}/node-v12.22.1"' >> ${WRKSRC}/.yarnrc
 	@cd ${PKGJSONSDIR} && \
 	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
 		cd ${WRKSRC}/$${dir} && ${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
@@ -103,7 +107,7 @@ pre-build:
 
 do-build:
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline || ${TRUE}
+		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline
 
 	${MKDIR} ${WRKSRC}/node_modules/ringrtc/build/freebsd
 	${CP} ${PREFIX}/lib/libringrtc.so ${WRKSRC}/node_modules/ringrtc/build/freebsd/libringrtc.node
@@ -111,9 +115,9 @@ do-build:
 	${CP} ${PREFIX}/lib/libzkgroup.so ${WRKSRC}/node_modules/zkgroup
 
 	cd ${WRKSRC} && \
-		yarn grunt
+		${SETENV} ${MAKE_ENV} yarn grunt || ${TRUE}
 	cd ${WRKSRC} && \
-		yarn build:webpack
+		${SETENV} ${MAKE_ENV} yarn build:webpack
 
 do-install:
 	# taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387

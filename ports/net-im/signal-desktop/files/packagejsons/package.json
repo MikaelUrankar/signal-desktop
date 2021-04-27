@@ -12,7 +12,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "postinstall": "yarn build:acknowledgments && snyk protect && patch-package && electron-builder install-app-deps && rimraf node_modules/dtrace-provider",
+    "postinstall": "yarn build:acknowledgments && patch-package && electron-builder install-app-deps && rimraf node_modules/dtrace-provider",
     "postuninstall": "yarn build:acknowledgments",
     "start": "electron .",
     "grunt": "grunt",
