@@ -1,5 +1,8 @@
 Mix of instructions and things to check / fix to build Signal Desktop 1.40.1 on FreeBSD
-everything seems so wrong and bad designed in signal-desktop...
+
+XXX the snyk security patches are missing, it needs the network to fetch them:
+    https://github.com/signalapp/Signal-Desktop/blob/development/.snyk
+ports/net-im/signal-desktop should be able to build signal-desktop with poudriere
 
 # XXX there are probably missing packages
 # python2.7 is needed because node-gyp is really old and doesn't work with python3
