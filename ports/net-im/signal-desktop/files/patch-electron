@@ -1,13 +1,13 @@
---- patches/electron+11.2.3.patch.orig	2021-04-25 19:12:08 UTC
-+++ patches/electron+11.2.3.patch
+--- patches/electron+12.0.7.patch.orig	2021-04-25 19:12:08 UTC
++++ patches/electron+12.0.7.patch
 @@ -0,0 +1,10 @@
 +--- a/node_modules/electron/index.js
 ++++ b/node_modules/electron/index.js
-+@@ -4,6 +4,7 @@ var path = require('path')
-+ var pathFile = path.join(__dirname, 'path.txt')
++@@ -4,6 +4,7 @@ const path = require('path');
++ const pathFile = path.join(__dirname, 'path.txt');
 + 
 + function getElectronPath () {
-++  return path.join("/usr/local/share/electron11/electron")
+++  return path.join("/usr/home/miki/signal-desktop.git/ports/net-im/signal-desktop/work/.cache/electron12/")
 +   if (fs.existsSync(pathFile)) {
-+     var executablePath = fs.readFileSync(pathFile, 'utf-8')
++     const executablePath = fs.readFileSync(pathFile, 'utf-8');
 +     if (process.env.ELECTRON_OVERRIDE_DIST_PATH) {

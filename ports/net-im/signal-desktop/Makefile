@@ -1,27 +1,27 @@
 PORTNAME=	signal-desktop
-PORTVERSION=	1.40.1
+DISTVERSION=	5.2.0
 DISTVERSIONPREFIX=	v
+DISTVERSIONSUFFIX=	-beta.2
 CATEGORIES=	net-im
 MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn \
-		https://nodejs.org/dist/v12.22.1/:node_headers
-DISTFILES=	signal-desktop-yarn-modules-1.40.1.tar.gz:yarn \
-		node-v12.22.1-headers.tar.gz:node_headers
+		https://nodejs.org/dist/v${NODE_VER}/:node_headers
+DISTFILES=	signal-desktop-yarn-modules-${DISTVERSION}.tar.gz:yarn \
+		node-v${NODE_VER}-headers.tar.gz:node_headers
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
 
 LICENSE=	AGPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
+#LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
 		app-builder>0:devel/app-builder \
-		electron11:devel/electron11 \
-		node12>0:www/node12 \
-		npm-node12>0:www/npm-node12 \
+		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
+		npm-node${NODE_VER_MAJOR}>0:www/npm-node${NODE_VER_MAJOR} \
 		openssl>0:security/openssl \
 		vips>0:graphics/vips \
-		yarn-node12>0:www/yarn-node12 \
+		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR} \
 		zip>0:archivers/zip \
 		zkgroup>0:net-im/zkgroup
 
@@ -30,30 +30,45 @@ USES=		desktop-file-utils python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
-WRKSRC=		${WRKDIR}/Signal-Desktop-${PORTVERSION}
+WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=true \
-		HOME=${WRKDIR} \
+MAKE_ENV+=	HOME=${WRKDIR} \
 		SIGNAL_ENV=production \
 		USE_SYSTEM_7ZA=true \
 		USE_SYSTEM_APP_BUILDER=true \
 		XDG_CACHE_HOME=${WRKDIR}/.cache \
 		npm_config_python=python2.7
 
+# Don't download electron binary distribution on electron node_modules installation
+MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
+# Don't create __pycache__ directory when executing node-gyp
+# This is a workaround to avoid filesystem violations during poudriere build
+MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
+
+NODE_VER=	14.16.1
+NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
+#ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
+ELECTRON_DIR=	/usr/ports/devel/electron12
+.include	"${ELECTRON_DIR}/Makefile.version"
+
 BINARY_ALIAS=	python=python2.7
 
 # Taken from https://github.com/tagattie/FreeBSD-Electron
 # XXX convert to Taggatie's framework
-PREFETCH_TIMESTAMP=	1616313125
+PREFETCH_TIMESTAMP=	1616313125 # epoch ??? Sunday, 21 March 2021
 PKGJSONSDIR=		${FILESDIR}/packagejsons
 YARN_CMD=		${LOCALBASE}/bin/${_YARN_BASE_CMD}
 _YARN_BASE_CMD=		yarn
 
+# XXX remove unsafe-disable-integrity-migration when they fixed their shit
 pre-fetch:
 	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
+		${ECHO_MSG} "===>  Distfile ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} not found"; \
 		${ECHO_MSG} "===>  Pre-fetching and archiving node modules"; \
 		${MKDIR} ${WRKDIR}; \
 		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
+			${WRKDIR}/.yarnrc; \
+		${ECHO_CMD} 'unsafe-disable-integrity-migration false' >> \
 			${WRKDIR}/.yarnrc; \
 		${CP} -r ${PKGJSONSDIR}/* ${WRKDIR}; \
 		cd ${PKGJSONSDIR} && \
@@ -87,18 +102,26 @@ pre-build:
 	done
 
 	@${ECHO_MSG} "===>  Setting up download cache for electron and chromedriver"
-	${MKDIR} ${WRKDIR}/.cache/electron/
-	cd ${LOCALBASE}/share/electron11 && \
-		zip -q -r ${WRKDIR}/.cache/electron/electron-v11.2.3-freebsd-x64.zip .
-	cd ${LOCALBASE}/share/electron11 && \
-		zip -q -r ${WRKDIR}/.cache/electron/chromedriver-v3.0.0-freebsd-x64.zip chromedriver
+	${MKDIR} ${WRKDIR}/.cache/electron
+#	@if [ ! -f ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} ]; then \
+#		cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
+#			zip -q -r ${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER_MAJOR}-freebsd-x64.zip .
+#	fi
+#	cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
+#		zip -q -r ${WRKDIR}/.cache/electron/chromedriver-v3.0.0-freebsd-x64.zip chromedriver
 	cd ${WRKDIR}/.cache/electron && \
 		${SHA256} -r *.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt-3.0.0
+# XXX sigh, node scripts/fuse-electron.js tries to open electron in RW
+# copy electron in /tmp, see also files/patch-electron
+	${MKDIR} /tmp/electron12
+	(cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
+		${COPYTREE_SHARE} . /tmp/electron12)
+	${CHMOD} -R a+rw /tmp/electron12
 
 	@${ECHO_MSG} "===>  Installing node modules from pre-fetched cache"
 	@${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> ${WRKSRC}/.yarnrc
-	@${ECHO_CMD} 'nodedir "${WRKDIR}/node-v12.22.1"' >> ${WRKSRC}/.yarnrc
+	@${ECHO_CMD} 'nodedir "${WRKDIR}/node-v${NODE_VER}"' >> ${WRKSRC}/.yarnrc
 	@cd ${PKGJSONSDIR} && \
 	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
 		cd ${WRKSRC}/$${dir} && ${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
@@ -106,6 +129,7 @@ pre-build:
 	done
 
 do-build:
+	@${ECHO_MSG} "===>  do-build"
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline
 
@@ -125,8 +149,8 @@ do-install:
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn run electron-builder \
 			--linux --dir  --config.npmRebuild=false \
-			--config.electronVersion=11.2.3 \
-			--config.electronDist=${LOCALBASE}/share/electron11
+			--config.electronVersion=${ELECTRON_VER} \
+			--config.electronDist=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${BUILD_WRKSRC}/dist/linux-unpacked && \

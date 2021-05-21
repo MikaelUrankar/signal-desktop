@@ -1,5 +1,5 @@
---- patches/electron-builder+22.9.1.patch.orig	2021-04-25 19:12:04 UTC
-+++ patches/electron-builder+22.9.1.patch
+--- patches/electron-builder+22.10.5.patch.orig	2021-04-25 19:12:04 UTC
++++ patches/electron-builder+22.10.5.patch
 @@ -0,0 +1,13 @@
 +diff --git a/node_modules/electron-builder/out/cli/install-app-deps.js b/node_modules/electron-builder/out/cli/install-app-deps.js
 +index d236e08..f6a09e6 100755

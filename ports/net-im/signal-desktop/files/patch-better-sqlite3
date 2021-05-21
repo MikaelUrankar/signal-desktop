@@ -1,0 +1,20 @@
+--- better-sqlite3+7.1.4.patch.orig	2021-05-16 17:14:17.002076000 +0200
++++ better-sqlite3+7.1.4.patch	2021-05-16 17:13:49.780551000 +0200
+@@ -0,0 +1,17 @@
++--- a/node_modules/better-sqlite3/deps/sqlite3.gyp.orig
+++++ b/node_modules/better-sqlite3/deps/sqlite3.gyp
++@@ -95,6 +95,14 @@
++             ]
++           }
++         },
+++        'OS == "freebsd"', {
+++          'link_settings': {
+++            'libraries': [
+++              # This statically links libcrypto, whereas -lcrypto would dynamically link it
+++              '/usr/local/lib/libcrypto.a'
+++            ]
+++          }
+++        },
++         { # Linux
++           'link_settings': {
++             'libraries': [
