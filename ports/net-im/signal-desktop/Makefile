@@ -1,12 +1,11 @@
 PORTNAME=	signal-desktop
-DISTVERSION=	5.2.0
+DISTVERSION=	5.32.0
 DISTVERSIONPREFIX=	v
-DISTVERSIONSUFFIX=	-beta.2
 CATEGORIES=	net-im
-MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn \
-		https://nodejs.org/dist/v${NODE_VER}/:node_headers
-DISTFILES=	signal-desktop-yarn-modules-${DISTVERSION}.tar.gz:yarn \
-		node-v${NODE_VER}-headers.tar.gz:node_headers
+#MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn \
+#		https://nodejs.org/dist/v${NODE_VER}/:node_headers
+#DISTFILES=	signal-desktop-yarn-modules-${DISTVERSION}.tar.gz:yarn \
+#		node-v${NODE_VER}-headers.tar.gz:node_headers
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -14,23 +13,23 @@ COMMENT=	Cross-platform centralized encrypted messaging service
 LICENSE=	AGPLv3
 #LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
-		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
-		app-builder>0:devel/app-builder \
-		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
-		npm-node${NODE_VER_MAJOR}>0:www/npm-node${NODE_VER_MAJOR} \
-		openssl>0:security/openssl \
-		vips>0:graphics/vips \
-		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR} \
-		zip>0:archivers/zip \
-		zkgroup>0:net-im/zkgroup
+#BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
+#		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
+#		app-builder>0:devel/app-builder \
+#		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
+#		npm-node${NODE_VER_MAJOR}>0:www/npm-node${NODE_VER_MAJOR} \
+#		openssl>0:security/openssl \
+#		vips>0:graphics/vips \
+#		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR} \
+#		zip>0:archivers/zip \
+#		zkgroup>0:net-im/zkgroup
 
 # XXX try to update node-gyp and drop python2.7 dep
 USES=		desktop-file-utils python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
-WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
+#WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
 
 MAKE_ENV+=	HOME=${WRKDIR} \
 		SIGNAL_ENV=production \
@@ -45,11 +44,11 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
-NODE_VER=	14.16.1
-NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
-#ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
-ELECTRON_DIR=	/usr/ports/devel/electron12
-.include	"${ELECTRON_DIR}/Makefile.version"
+#NODE_VER=	14.16.1
+#NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
+##ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
+#ELECTRON_DIR=	/usr/ports/devel/electron12
+#.include	"${ELECTRON_DIR}/Makefile.version"
 
 BINARY_ALIAS=	python=python2.7
 
@@ -61,33 +60,33 @@ YARN_CMD=		${LOCALBASE}/bin/${_YARN_BASE_CMD}
 _YARN_BASE_CMD=		yarn
 
 # XXX remove unsafe-disable-integrity-migration when they fixed their shit
-pre-fetch:
-	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
-		${ECHO_MSG} "===>  Distfile ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} not found"; \
-		${ECHO_MSG} "===>  Pre-fetching and archiving node modules"; \
-		${MKDIR} ${WRKDIR}; \
-		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
-			${WRKDIR}/.yarnrc; \
-		${ECHO_CMD} 'unsafe-disable-integrity-migration false' >> \
-			${WRKDIR}/.yarnrc; \
-		${CP} -r ${PKGJSONSDIR}/* ${WRKDIR}; \
-		cd ${PKGJSONSDIR} && \
-		for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
-			cd ${WRKDIR}/$${dir} && \
-			${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
-				${YARN_CMD} --frozen-lockfile --ignore-scripts && \
-			${RM} package.json yarn.lock; \
-		done; \
-		cd ${WRKDIR}; \
-		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
-			-e 's:time=[0-9.]*:time=${PREFETCH_TIMESTAMP}.000000000:' \
-			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
-			-e 's:flags=.*:flags=none:' \
-			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
-		${TAR} -cz --options 'gzip:!timestamp' \
-			-f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} @yarn-offline-cache.mtree; \
-		${RM} -r ${WRKDIR}; \
-	fi
+#pre-fetch:
+#	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
+#		${ECHO_MSG} "===>  Distfile ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} not found"; \
+#		${ECHO_MSG} "===>  Pre-fetching and archiving node modules"; \
+#		${MKDIR} ${WRKDIR}; \
+#		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
+#			${WRKDIR}/.yarnrc; \
+#		${ECHO_CMD} 'unsafe-disable-integrity-migration false' >> \
+#			${WRKDIR}/.yarnrc; \
+#		${CP} -r ${PKGJSONSDIR}/* ${WRKDIR}; \
+#		cd ${PKGJSONSDIR} && \
+#		for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
+#			cd ${WRKDIR}/$${dir} && \
+#			${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
+#				${YARN_CMD} --frozen-lockfile --ignore-scripts && \
+#			${RM} package.json yarn.lock; \
+#		done; \
+#		cd ${WRKDIR}; \
+#		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
+#			-e 's:time=[0-9.]*:time=${PREFETCH_TIMESTAMP}.000000000:' \
+#			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
+#			-e 's:flags=.*:flags=none:' \
+#			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
+#		${TAR} -cz --options 'gzip:!timestamp' \
+#			-f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} @yarn-offline-cache.mtree; \
+#		${RM} -r ${WRKDIR}; \
+#	fi
 
 pre-build:
 	@${ECHO_MSG} "===>  Copying package.json and yarn.lock to WRKSRC"

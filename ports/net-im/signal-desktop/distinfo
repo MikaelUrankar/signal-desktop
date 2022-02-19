@@ -1,7 +1,3 @@
-TIMESTAMP = 1621440880
-SHA256 (signal-desktop-yarn-modules-5.2.0.tar.gz) = 3196b02740e61c173fb0fb2fab263c91e38a441e5c0ff222272d9e5873867dea
-SIZE (signal-desktop-yarn-modules-5.2.0.tar.gz) = 306105204
-SHA256 (node-v14.16.1-headers.tar.gz) = 8aff317d131fd4959614953ccb819639c68c284d7c8203be23cb4659e3b5f52f
-SIZE (node-v14.16.1-headers.tar.gz) = 596457
-SHA256 (signalapp-signal-desktop-v5.2.0-beta.2_GH0.tar.gz) = dbb89df1be47fa75608f402283558f9a82e89ed3c306275ec8c9402731a2c9f2
-SIZE (signalapp-signal-desktop-v5.2.0-beta.2_GH0.tar.gz) = 35014945
+TIMESTAMP = 1645291458
+SHA256 (signalapp-signal-desktop-v5.32.0_GH0.tar.gz) = 415625380ccdca9b0605e9b9f9e46d6fd9ed54a9efaaa4a35e4bcf5ce0dc16ee
+SIZE (signalapp-signal-desktop-v5.32.0_GH0.tar.gz) = 36636591
