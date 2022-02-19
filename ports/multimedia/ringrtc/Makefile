@@ -1,47 +1,33 @@
-# sources of inspiration:
-#    https://github.com/tagattie/FreeBSD-Atom/blob/master/editors/atom/Makefile (npm offline)
-#    www/chromium (webrtc patch)
-#    lang/v8 (google build tools)
-#
-# to create the electron gyp cache:
-#   XXX
-#
-# See bin/build-electron for the building instruction
-
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.4
+DISTVERSION=	2.18.0
 CATEGORIES=	multimedia
-MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
-		http://mikael.urankar.free.fr/ringrtc/:boringssl \
-		http://mikael.urankar.free.fr/ringrtc/:build \
-		http://mikael.urankar.free.fr/ringrtc/:buildtools \
-		http://mikael.urankar.free.fr/ringrtc/:catapult \
-		http://mikael.urankar.free.fr/ringrtc/:icu \
-		http://mikael.urankar.free.fr/ringrtc/:nasm \
-		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
-		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
-		http://mikael.urankar.free.fr/ringrtc/:libvpx \
-		http://mikael.urankar.free.fr/ringrtc/:libyuv \
-		http://mikael.urankar.free.fr/ringrtc/:third_party \
-		http://mikael.urankar.free.fr/ringrtc/:testing \
-		http://mikael.urankar.free.fr/ringrtc/:electron_gyp \
-		https://nodejs.org/dist/v${NODE_VER}/:node_headers
-DISTFILES=	base-${BASE_HASH}.tar.gz:base \
-		boringssl-${BORINGSSL_HASH}.tar.gz:boringssl \
-		build-${BUILD_HASH}.tar.gz:build \
-		buildtools-${BUILDTOOLS_HASH}.tar.gz:buildtools \
-		catapult-${CATAPULT_HASH}.tar.gz:catapult \
-		icu-${ICU_HASH}.tar.gz:icu \
-		nasm-${NASM_HASH}.tar.gz:nasm \
-		libjpeg_turbo-${LIBJPEG_HASH}.tar.gz:libjpeg_turbo \
-		libsrtp-${LIBSRTP_HASH}.tar.gz:libsrtp \
-		libvpx-${LIBVPX_HASH}.tar.gz:libvpx \
-		libyuv-${LIBYUV_HASH}.tar.gz:libyuv \
-		third_party-${THIRDPARTY_HASH}.tar.gz:third_party \
-		testing-${TESTING_HASH}.tar.gz:testing \
-		ringrtc-electron-gyp.tar.gz:electron_gyp \
-		node-v${NODE_VER}-headers.tar.gz:node_headers
+#MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
+#		http://mikael.urankar.free.fr/ringrtc/:boringssl \
+#		http://mikael.urankar.free.fr/ringrtc/:build \
+#		http://mikael.urankar.free.fr/ringrtc/:buildtools \
+#		http://mikael.urankar.free.fr/ringrtc/:catapult \
+#		http://mikael.urankar.free.fr/ringrtc/:icu \
+#		http://mikael.urankar.free.fr/ringrtc/:nasm \
+#		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
+#		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
+#		http://mikael.urankar.free.fr/ringrtc/:libvpx \
+#		http://mikael.urankar.free.fr/ringrtc/:libyuv \
+#		http://mikael.urankar.free.fr/ringrtc/:third_party \
+#		http://mikael.urankar.free.fr/ringrtc/:testing
+DISTFILES=	base-${BASE_REV}.tar.gz:base \
+		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
+		build-${BUILD_REV}.tar.gz:build \
+		buildtools-${BUILDTOOLS_REV}.tar.gz:buildtools \
+		catapult-${CATAPULT_REV}.tar.gz:catapult \
+		icu-${ICU_REV}.tar.gz:icu \
+		nasm-${NASM_REV}.tar.gz:nasm \
+		libjpeg_turbo-${LIBJPEG_REV}.tar.gz:libjpeg_turbo \
+		libsrtp-${LIBSRTP_REV}.tar.gz:libsrtp \
+		libvpx-${LIBVPX_REV}.tar.gz:libvpx \
+		libyuv-${LIBYUV_REV}.tar.gz:libyuv \
+		third_party-${THIRDPARTY_REV}.tar.gz:third_party \
+		testing-${TESTING_REV}.tar.gz:testing
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Middleware library for Signal-Desktop
@@ -49,44 +35,35 @@ COMMENT=	Middleware library for Signal-Desktop
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpulse.so:audio/pulseaudio \
-		libasound.so:audio/alsa-lib
-BUILD_DEPENDS=	binutils>0:devel/binutils \
-		gn:devel/gn \
-		npm-node${NODE_VER_MAJOR}>0:www/npm-node${NODE_VER_MAJOR} \
-		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR} \
+#LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+#		libpulse.so:audio/pulseaudio \
+#		libasound.so:audio/alsa-lib
+#BUILD_DEPENDS=	
+#		gn:devel/gn
 
-USES=		cargo localbase:ldflags pkgconfig ninja python:3.6+,build tar:xz
+USES=		cargo localbase:ldflags pkgconfig ninja python:3.7+,build tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
-		signalapp:webrtc:4183k:webrtc
+		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
-NPM_CONFIG_TARGET=	11.3.0
-NODE_VER=	14.16.1
-NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
-#ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
-ELECTRON_DIR=	/usr/ports/devel/electron12
-.include	"${ELECTRON_DIR}/Makefile.version"
+WEBRTC_REV=4638f
 
-# egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|third_party@|testing@" DEPS | grep https
-BASE_HASH=	2df7267880bf7d4086d55c0e56cd72c394bfda36
-BORINGSSL_HASH=	88024df12147e56b6abd66b743ff441a0aaa09a8
-BUILD_HASH=	a03951acb996e9cea78b4ab575896bf1bfcd9668
-BUILDTOOLS_HASH=1b066f021638735d72aa799ae6bc37e0b8963c67
-CATAPULT_HASH=	2ad47493f833c5191f56c74d3f1aac10e7c105e8
-ICU_HASH=	630b884f84d1d5e92aeda3463dca99fe2befd30e
-LIBJPEG_HASH=	7e3ad79800a7945fb37173149842b494ab8982b2
-LIBSRTP_HASH=	650611720ecc23e0e6b32b0e3100f8b4df91696c
-LIBVPX_HASH=	c1765573149e2c0fe2acabc224c0f9085b9e7f2b
-LIBYUV_HASH=	6afd9becdf58822b1da6770598d8597c583ccfad
-NASM_HASH=	4fa54ca5f7fc3a15a8c78ac94688e64d3e4e4fa1
-THIRDPARTY_HASH=e0df6e10adc084f88dda51c0cbab84645db6c135
-TESTING_HASH=	502600d41a00af23dd09e02ea358061e3c951634
-
-BUILDTYPE=	Release
+# egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" DEPS | grep https
+BASE_REV=bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
+BORINGSSL_REV=dddb60eb9700110835ff6e2b429de40a17006429
+BUILD_REV=f90eed6a5e137d43526c24eecfd96382a3233ee3
+BUILDTOOLS_REV=7ea3a871db68ae2cbbeaf5433a3192a799ef3c11
+CATAPULT_REV=d9a9ebbe89eaa7f479612b4e23ee38a313197d5e
+ICU_REV=ece15d049f2d360721716089372e3749fb89e0f4
+LIBJPEG_REV=ff19e5b2e176c61d552f68768e0e051867745321
+LIBSRTP_REV=5b7c744eb8310250ccc534f3f86a2015b3887a0a
+LIBVPX_REV=15a75b45304248f746634b43763c496322bf8968
+LIBYUV_REV=49ebc996aa8c4bdf89c1b5ea461eb677234c61cc
+NASM_REV=4e6fe9d1549e4ffb6c804494573e404849dfe7de
+TESTING_REV=59835db543d03c36bafe56fb10d6a8b68e377621
+THIRDPARTY_REV=a299c990bc6b40774066cb84281975a0371e7a8b
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -95,185 +72,191 @@ BINARY_ALIAS=	python=${PYTHON_CMD}
 # Some parts don't have use_system_* flag, and can be turned on/off by using
 # replace_gn_files.py script, some parts just turned on/off for target host
 # OS "target_os == is_bsd", like libusb, libpci.
-GN_ARGS+=	use_custom_libcxx=false \
-		rtc_build_examples=false \
+GN_ARGS+=	rtc_build_examples=false \
 		rtc_build_tools=false \
 		rtc_include_tests=false \
 		rtc_enable_protobuf=false \
 		rtc_use_x11=false \
-		is_debug=false \
 		rtc_enable_sctp=false \
+		rtc_libvpx_build_vp9=false \
+		rtc_include_ilbc=false \
+		use_custom_libcxx=false \
+		is_debug=false \
+		is_clang=true \
 		clang_use_chrome_plugins=false \
-		rtc_disable_logging=false \
 		extra_cxxflags="${CXXFLAGS}" \
 		extra_ldflags="${LDFLAGS}"
 
 MAKE_ARGS=	-C out/${BUILDTYPE}
 
-WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
 # cd ${WRKSRC}/src/rust awk -f /usr/ports/Mk/Scripts/cargo-crates.awk Cargo.lock
-CARGO_CRATES=	addr2line-0.15.1 \
-		adler-1.0.2 \
-		aes-ctr-0.6.0 \
-		aes-soft-0.6.4 \
-		aesni-0.10.0 \
+CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
-		anyhow-1.0.40 \
+		anyhow-1.0.44 \
 		atty-0.2.14 \
 		autocfg-1.0.1 \
-		backtrace-0.3.59 \
 		base64-0.13.0 \
-		bitflags-1.2.1 \
+		bitflags-1.3.2 \
 		block-buffer-0.9.0 \
+		bumpalo-3.7.1 \
 		byteorder-1.4.3 \
-		bytes-0.5.6 \
-		bytes-1.0.1 \
-		cc-1.0.67 \
+		bytes-1.1.0 \
+		cc-1.0.70 \
 		cesu8-1.1.0 \
 		cfg-if-1.0.0 \
-		chrono-0.4.19 \
-		cipher-0.2.5 \
-		combine-4.5.2 \
-		cpufeatures-0.1.4 \
-		crypto-mac-0.8.0 \
-		crypto-mac-0.9.1 \
+		chunked_transfer-1.4.0 \
+		cipher-0.3.0 \
+		combine-4.6.1 \
+		cpufeatures-0.2.1 \
+		crypto-mac-0.11.1 \
 		cslice-0.2.0 \
-		ctr-0.6.0 \
-		curve25519-dalek-2.1.2 \
-		digest-0.8.1 \
+		ctr-0.8.0 \
+		curve25519-dalek-3.2.0 \
+		derivative-2.2.0 \
 		digest-0.9.0 \
 		either-1.6.1 \
-		env_logger-0.8.3 \
-		error-chain-0.12.4 \
-		failure-0.1.8 \
-		failure_derive-0.1.8 \
+		env_logger-0.8.4 \
 		fixedbitset-0.2.0 \
-		futures-0.3.15 \
-		futures-channel-0.3.15 \
-		futures-core-0.3.15 \
-		futures-executor-0.3.15 \
-		futures-io-0.3.15 \
-		futures-macro-0.3.15 \
-		futures-sink-0.3.15 \
-		futures-task-0.3.15 \
-		futures-util-0.3.15 \
-		generic-array-0.12.4 \
+		form_urlencoded-1.0.1 \
+		futures-0.3.17 \
+		futures-channel-0.3.17 \
+		futures-core-0.3.17 \
+		futures-executor-0.3.17 \
+		futures-io-0.3.17 \
+		futures-macro-0.3.17 \
+		futures-sink-0.3.17 \
+		futures-task-0.3.17 \
+		futures-util-0.3.17 \
 		generic-array-0.14.4 \
 		getrandom-0.1.16 \
 		getrandom-0.2.3 \
-		gimli-0.24.0 \
-		hashbrown-0.9.1 \
-		heck-0.3.2 \
-		hermit-abi-0.1.18 \
-		hkdf-0.9.0 \
-		hmac-0.8.1 \
-		hmac-0.9.0 \
+		hashbrown-0.11.2 \
+		heck-0.3.3 \
+		hermit-abi-0.1.19 \
+		hex-0.4.3 \
+		hkdf-0.11.0 \
+		hmac-0.11.0 \
 		humantime-2.1.0 \
-		indexmap-1.6.2 \
-		itertools-0.8.2 \
-		itoa-0.4.7 \
-		jni-0.17.0 \
+		idna-0.2.3 \
+		indexmap-1.7.0 \
+		itertools-0.10.1 \
+		itoa-0.4.8 \
+		jni-0.19.0 \
 		jni-sys-0.3.0 \
+		js-sys-0.3.55 \
 		lazy_static-1.4.0 \
-		libc-0.2.94 \
+		libc-0.2.103 \
 		libloading-0.6.7 \
 		log-0.4.14 \
-		memchr-2.4.0 \
-		miniz_oxide-0.4.4 \
+		matches-0.1.9 \
+		memchr-2.4.1 \
 		multimap-0.8.3 \
-		neon-0.7.1 \
-		neon-build-0.7.1 \
-		neon-macros-0.7.1 \
-		neon-runtime-0.7.1 \
-		num-integer-0.1.44 \
-		num-traits-0.2.14 \
+		neon-0.9.1 \
+		neon-build-0.9.1 \
+		neon-macros-0.9.1 \
+		neon-runtime-0.9.1 \
 		num_cpus-1.13.0 \
-		object-0.24.0 \
+		num_enum-0.5.4 \
+		num_enum_derive-0.5.4 \
+		once_cell-1.8.0 \
 		opaque-debug-0.3.0 \
+		percent-encoding-2.1.0 \
 		petgraph-0.5.1 \
-		pin-project-lite-0.2.6 \
+		pin-project-lite-0.2.7 \
 		pin-utils-0.1.0 \
 		ppv-lite86-0.2.10 \
+		proc-macro-crate-1.1.0 \
 		proc-macro-hack-0.5.19 \
 		proc-macro-nested-0.1.7 \
-		proc-macro2-1.0.27 \
-		prost-0.6.1 \
-		prost-build-0.6.1 \
-		prost-derive-0.6.1 \
-		prost-types-0.6.1 \
-		quote-1.0.9 \
+		proc-macro2-1.0.29 \
+		prost-0.8.0 \
+		prost-build-0.8.0 \
+		prost-derive-0.8.0 \
+		prost-types-0.8.0 \
+		quote-1.0.10 \
 		rand-0.7.3 \
-		rand-0.8.3 \
+		rand-0.8.4 \
 		rand_chacha-0.2.2 \
-		rand_chacha-0.3.0 \
+		rand_chacha-0.3.1 \
 		rand_core-0.5.1 \
-		rand_core-0.6.2 \
+		rand_core-0.6.3 \
 		rand_hc-0.2.0 \
-		rand_hc-0.3.0 \
-		redox_syscall-0.2.8 \
+		rand_hc-0.3.1 \
+		redox_syscall-0.2.10 \
 		regex-1.5.4 \
 		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
-		rustc-demangle-0.1.19 \
+		ring-0.16.20 \
+		rustls-0.19.1 \
 		ryu-1.0.5 \
 		same-file-1.0.6 \
+		sct-0.6.1 \
 		semver-0.9.0 \
 		semver-parser-0.7.0 \
-		serde-1.0.126 \
-		serde_derive-1.0.126 \
-		serde_json-1.0.64 \
-		sha2-0.9.5 \
-		simplelog-0.7.6 \
-		slab-0.4.3 \
-		smallvec-1.6.1 \
+		serde-1.0.130 \
+		serde_derive-1.0.130 \
+		serde_json-1.0.68 \
+		sha2-0.9.9 \
+		slab-0.4.4 \
+		smallvec-1.7.0 \
+		spin-0.5.2 \
 		static_assertions-1.1.0 \
-		subtle-2.4.0 \
-		syn-1.0.72 \
-		synstructure-0.12.4 \
+		subtle-2.4.1 \
+		syn-1.0.78 \
+		synstructure-0.12.5 \
 		tempfile-3.2.0 \
 		termcolor-1.1.2 \
-		thiserror-1.0.24 \
-		thiserror-impl-1.0.24 \
-		time-0.1.43 \
-		tokio-0.3.7 \
-		typenum-1.13.0 \
-		unicode-segmentation-1.7.1 \
+		thiserror-1.0.29 \
+		thiserror-impl-1.0.29 \
+		tinyvec-1.5.0 \
+		tinyvec_macros-0.1.0 \
+		tokio-1.13.1 \
+		toml-0.5.8 \
+		typenum-1.14.0 \
+		unicode-bidi-0.3.6 \
+		unicode-normalization-0.1.19 \
+		unicode-segmentation-1.8.0 \
 		unicode-xid-0.2.2 \
+		untrusted-0.7.1 \
+		ureq-2.2.0 \
+		url-2.2.2 \
 		version_check-0.9.3 \
 		walkdir-2.3.2 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
 		wasi-0.10.2+wasi-snapshot-preview1 \
-		which-3.1.1 \
+		wasm-bindgen-0.2.78 \
+		wasm-bindgen-backend-0.2.78 \
+		wasm-bindgen-macro-0.2.78 \
+		wasm-bindgen-macro-support-0.2.78 \
+		wasm-bindgen-shared-0.2.78 \
+		web-sys-0.3.55 \
+		webpki-0.21.4 \
+		webpki-roots-0.21.1 \
+		which-4.2.2 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		x25519-dalek-0.6.0 \
+		x25519-dalek-1.2.0 \
 		zeroize-1.3.0 \
-		zeroize_derive-1.1.0
+		zeroize_derive-1.2.0
+
 CARGO_BUILDDEP=		no
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
+
 USE_LDCONFIG=		yes
 
-MAKE_ENV=	RUSTC_BOOTSTRAP=1
-
-# keep in sync with https://github.com/signalapp/ringrtc/blob/v2.9.4/bin/build-electron#L109
-CARGO_ENV+=	npm_config_arch=x64 \
-		npm_config_target_arch=x64 \
-		npm_config_disturl=https://atom.io/download/electron \
-		npm_config_runtime=electron \
-		npm_config_target=${NPM_CONFIG_TARGET} \
-		npm_config_build_from_source=true \
-		npm_config_devdir=${WRKDIR}/electron-gyp
+MAKE_ENV=	OUTPUT_DIR=${WEBRTCDIR}/out
 
 PLIST_FILES=	lib/libringrtc.so
 
 post-extract:
 	${MKDIR} ${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc
-	${MV} ${WRKDIR}/webrtc-4183k ${WEBRTCDIR}
+	${MV} ${WRKDIR}/webrtc-${WEBRTC_REV} ${WEBRTCDIR}
 	${MV} ${WRKDIR}/base ${WEBRTCDIR}
 	${MV} ${WRKDIR}/build ${WEBRTCDIR}
 	${MV} ${WRKDIR}/buildtools ${WEBRTCDIR}
@@ -293,24 +276,22 @@ post-patch:
 		${WEBRTCDIR}/build/toolchain/gcc_toolchain.gni \
 		${WEBRTCDIR}/buildtools/third_party/libc++/BUILD.gn
 
-	${TOUCH} ${WEBRTCDIR}/build/config/gclient_args.gni
-	${ECHO} "# Generated from 'DEPS'" >> ${WEBRTCDIR}/build/config/gclient_args.gni
-
+	${ECHO} "# Generated from 'DEPS'" > ${WEBRTCDIR}/build/config/gclient_args.gni
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
 pre-build:
 	cd ${WEBRTCDIR} && \
-		${SETENV} ${CONFIGURE_ENV} gn gen out/${BUILDTYPE} --args='${GN_ARGS}'
+		${SETENV} ${CONFIGURE_ENV} gn gen out/release --args='${GN_ARGS}'
 
 # build webrtc first, ringrtc needs libwebrtc.a
 	cd ${WEBRTCDIR} \
-		&& ${MAKE_ENV} CC=ccache CXX=ccache ninja -C out/Release
+		&& ${MAKE_ENV} CC=ccache CXX=ccache ninja -C out/release
 
 # it's not intended to be used outside of signal-desktop, put that in
 # /usr/local/share/ringrtc instead?
 do-install:
-	${INSTALL_LIB} ${CARGO_TARGET_DIR}/release/libringrtc.so \
+	${INSTALL_LIB} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/release/libringrtc.so \
 		${STAGEDIR}${PREFIX}/lib/
 
 .include <bsd.port.mk>
