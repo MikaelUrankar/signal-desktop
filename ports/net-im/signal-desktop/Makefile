@@ -1,3 +1,18 @@
+# for testing the app, set these env (do not use them for building, especially NODE_ENV)
+# setenv NODE_ENV production
+# setenv SIGNAL_ENV production
+# setenv USE_SYSTEM_7ZA true
+# setenv USE_SYSTEM_APP_BUILDER true
+# setenv ELECTRON_SKIP_BINARY_DOWNLOAD 1
+# setenv ELECTRON_OVERRIDE_DIST_PATH /home/miki/.cache/electron
+#
+# set for building
+# setenv PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD true
+# setenv PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
+# PLAYWRIGHT_BROWSERS_PATH
+
+# essayer de virer @chanzuckerberg/axe-storybook-testing et remettre playwright?
+
 PORTNAME=	signal-desktop
 DISTVERSION=	5.32.0
 DISTVERSIONPREFIX=	v
@@ -11,7 +26,7 @@ MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
 
 LICENSE=	AGPLv3
-#LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 #BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 #		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
@@ -29,7 +44,7 @@ USES=		desktop-file-utils python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
-#WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
+WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
 
 MAKE_ENV+=	HOME=${WRKDIR} \
 		SIGNAL_ENV=production \
@@ -138,7 +153,9 @@ do-build:
 	${CP} ${PREFIX}/lib/libzkgroup.so ${WRKSRC}/node_modules/zkgroup
 
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn grunt || ${TRUE}
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn generate
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn build:webpack
 
