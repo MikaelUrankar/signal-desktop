@@ -1,3 +1,6 @@
+# mempcpy is not present on FreeBSD 12
+# https://bugs.freebsd.org/bugzilla//show_bug.cgi?id=262067
+
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.18.0
@@ -35,18 +38,24 @@ COMMENT=	Middleware library for Signal-Desktop
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-#LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-#		libpulse.so:audio/pulseaudio \
-#		libasound.so:audio/alsa-lib
-#BUILD_DEPENDS=	
-#		gn:devel/gn
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libpulse.so:audio/pulseaudio \
+		libasound.so:audio/alsa-lib
+BUILD_DEPENDS=	gn:devel/gn
 
-USES=		cargo localbase:ldflags pkgconfig ninja python:3.7+,build tar:xz
+USES=		cargo gnome localbase:ldflags pkgconfig ninja python:3.7+,build tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
+
+
+# Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
+# Nested variable expansion avoids executing the test when not needed for
+# expanding EXTRA_PATCHES.
+EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
+	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 WEBRTC_REV=4638f
 
@@ -65,7 +74,7 @@ NASM_REV=4e6fe9d1549e4ffb6c804494573e404849dfe7de
 TESTING_REV=59835db543d03c36bafe56fb10d6a8b68e377621
 THIRDPARTY_REV=a299c990bc6b40774066cb84281975a0371e7a8b
 
-BINARY_ALIAS=	python=${PYTHON_CMD}
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 # Keep in sync with https://github.com/signalapp/ringrtc/blob/${DISTVERSION}/bin/build-electron#L96
 # Run "gn args out/Release --list" for all variables.
@@ -244,7 +253,7 @@ CARGO_CRATES=	aes-0.7.5 \
 		zeroize-1.3.0 \
 		zeroize_derive-1.2.0
 
-CARGO_BUILDDEP=		no
+#CARGO_BUILDDEP=		no
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
 
@@ -279,6 +288,15 @@ post-patch:
 	${ECHO} "# Generated from 'DEPS'" > ${WEBRTCDIR}/build/config/gclient_args.gni
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
+
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259334
+# XXX use patch files instead
+	${REINPLACE_CMD} -e 's|-D_XOPEN_SOURCE=700||' \
+		${WRKSRC}/../webrtc/src/third_party/boringssl/src/util/BUILD.toplevel \
+		${WRKSRC}/../webrtc/src/third_party/boringssl/src/util/generate_build_files.py \
+		${WRKSRC}/../webrtc/src/third_party/boringssl/src/CMakeLists.txt
+	${REINPLACE_CMD} -e 's|_XOPEN_SOURCE=700||' \
+		${WRKSRC}/../webrtc/src/third_party/boringssl/BUILD.gn
 
 pre-build:
 	cd ${WEBRTCDIR} && \
