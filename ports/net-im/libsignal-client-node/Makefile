@@ -12,8 +12,7 @@ COMMENT=	Implementation of the Signal client protocol
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#BUILD_DEPENDS=	llvm10>0:devel/llvm10 \
-#		protoc:devel/protobuf
+BUILD_DEPENDS=	protoc:devel/protobuf
 
 USES=		cargo
 USE_GITHUB=	yes
@@ -235,11 +234,6 @@ CARGO_CRATES=	addr2line-0.16.0 \
 		num-bigint-dig@git+https://github.com/dignifiedquire/num-bigint?rev=56576b592fea6341b7e1711a1629e4cc1bfc419c\#56576b592fea6341b7e1711a1629e4cc1bfc419c
 
 CARGO_BUILD_ARGS=	--package libsignal-node
-#CARGO_INSTALL=		no
-## requires nightly features to build:
-## https://github.com/signalapp/libsignal-client/issues/141
-#MAKE_ENV=		CARGO_PROFILE_RELEASE_LTO=thin \
-#			RUSTC_BOOTSTRAP=1
 USE_LDCONFIG=		yes
 
 PLIST_FILES=	lib/libsignal_node.so
