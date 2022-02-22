@@ -1,26 +1,15 @@
-# for testing the app, set these env (do not use them for building, especially NODE_ENV)
-# setenv NODE_ENV production
-# setenv SIGNAL_ENV production
-# setenv USE_SYSTEM_7ZA true
-# setenv USE_SYSTEM_APP_BUILDER true
-# setenv ELECTRON_SKIP_BINARY_DOWNLOAD 1
-# setenv ELECTRON_OVERRIDE_DIST_PATH /home/miki/.cache/electron
-#
-# set for building
-# setenv PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD true
-# setenv PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
-# PLAYWRIGHT_BROWSERS_PATH
-
-# essayer de virer @chanzuckerberg/axe-storybook-testing et remettre playwright?
-
 PORTNAME=	signal-desktop
 DISTVERSION=	5.32.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
-#MASTER_SITES=	http://mikael.urankar.free.fr/signal-desktop/:yarn \
-#		https://nodejs.org/dist/v${NODE_VER}/:node_headers
-#DISTFILES=	signal-desktop-yarn-modules-${DISTVERSION}.tar.gz:yarn \
-#		node-v${NODE_VER}-headers.tar.gz:node_headers
+MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:npm \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:sqlite
+DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
+		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
+		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
+		sqlite3.tar.gz:sqlite
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -28,145 +17,114 @@ COMMENT=	Cross-platform centralized encrypted messaging service
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
-#		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
-#		app-builder>0:devel/app-builder \
-#		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
-#		npm-node${NODE_VER_MAJOR}>0:www/npm-node${NODE_VER_MAJOR} \
-#		openssl>0:security/openssl \
-#		vips>0:graphics/vips \
-#		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR} \
-#		zip>0:archivers/zip \
-#		zkgroup>0:net-im/zkgroup
+BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
+		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
+		app-builder>0:devel/app-builder \
+		electron16:devel/electron16 \
+		git:devel/git \
+		npm:www/npm-node16 \
+		openssl>0:security/openssl \
+		vips>0:graphics/vips \
+		yarn:www/yarn-node16
 
-# XXX try to update node-gyp and drop python2.7 dep
-USES=		desktop-file-utils python:2.7,build
+# Warning: you need LIB_DEPENDS+=libasound.so:audio/alsa-lib
+# Warning: you need LIB_DEPENDS+=libatk-bridge-2.0.so:accessibility/at-spi2-atk
+# Warning: you need LIB_DEPENDS+=libatspi.so:accessibility/at-spi2-core
+# Warning: you need LIB_DEPENDS+=libcups.so:print/cups
+# Warning: you need LIB_DEPENDS+=libdbus-1.so:devel/dbus
+# Warning: you need LIB_DEPENDS+=libdrm.so:graphics/libdrm
+# Warning: you need LIB_DEPENDS+=libexpat.so:textproc/expat2
+# Warning: you need LIB_DEPENDS+=libFLAC.so:audio/flac
+# Warning: you need LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
+# Warning: you need LIB_DEPENDS+=libharfbuzz-subset.so:print/harfbuzz
+# Warning: you need LIB_DEPENDS+=libharfbuzz.so:print/harfbuzz
+# Warning: you need LIB_DEPENDS+=libnspr4.so:devel/nspr
+# Warning: you need LIB_DEPENDS+=libnss3.so:security/nss
+# Warning: you need LIB_DEPENDS+=libnssutil3.so:security/nss
+# Warning: you need LIB_DEPENDS+=libopenh264.so:multimedia/openh264
+# Warning: you need LIB_DEPENDS+=libopus.so:audio/opus
+# Warning: you need LIB_DEPENDS+=libpci.so:devel/libpci
+# Warning: you need LIB_DEPENDS+=libplc4.so:devel/nspr
+# Warning: you need LIB_DEPENDS+=libplds4.so:devel/nspr
+# Warning: you need LIB_DEPENDS+=libpng16.so:graphics/png
+# Warning: you need LIB_DEPENDS+=libsmime3.so:security/nss
+# Warning: you need LIB_DEPENDS+=libsnappy.so:archivers/snappy
+# Warning: you need LIB_DEPENDS+=libwebp.so:graphics/webp
+# Warning: you need LIB_DEPENDS+=libwebpdemux.so:graphics/webp
+# Warning: you need LIB_DEPENDS+=libwebpmux.so:graphics/webp
+# Warning: you need LIB_DEPENDS+=libxkbcommon.so:x11/libxkbcommon
+# Warning: you need LIB_DEPENDS+=libxshmfence.so:x11/libxshmfence
+# Warning: you need USE_GL+=gbm
+# Warning: you need USE_GL+=gl
+# Warning: you need USE_GNOME+=atk
+# Warning: you need USE_GNOME+=cairo
+# Warning: you need USE_GNOME+=gdkpixbuf2
+# Warning: you need USE_GNOME+=glib20
+# Warning: you need USE_GNOME+=gtk30
+# Warning: you need USE_GNOME+=libxml2
+# Warning: you need USE_GNOME+=libxslt
+# Warning: you need USE_GNOME+=pango
+# Warning: you need USE_XORG+=x11
+# Warning: you need USE_XORG+=xcb
+# Warning: you need USE_XORG+=xcomposite
+# Warning: you need USE_XORG+=xdamage
+# Warning: you need USE_XORG+=xext
+# Warning: you need USE_XORG+=xfixes
+# Warning: you need USE_XORG+=xi
+# Warning: you need USE_XORG+=xrandr
+# Warning: you need USE_XORG+=xrender
+# Warning: you need USE_XORG+=xtst
+# Warning: you need USES+=gettext-runtime
+# Warning: you need USES+=jpeg
+
+USES=		desktop-file-utils
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
 WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAKE_ENV+=	HOME=${WRKDIR} \
-		SIGNAL_ENV=production \
-		USE_SYSTEM_7ZA=true \
+PACKAGE_ENV=	SIGNAL_ENV=production
+MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
+		HOME=${WRKDIR} \
+		PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/.cache \
+		PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true \
+		PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true \
 		USE_SYSTEM_APP_BUILDER=true \
-		XDG_CACHE_HOME=${WRKDIR}/.cache \
-		npm_config_python=python2.7
+		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
-# Don't create __pycache__ directory when executing node-gyp
-# This is a workaround to avoid filesystem violations during poudriere build
-MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
-
-#NODE_VER=	14.16.1
-#NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
-##ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
-#ELECTRON_DIR=	/usr/ports/devel/electron12
-#.include	"${ELECTRON_DIR}/Makefile.version"
-
-BINARY_ALIAS=	python=python2.7
-
-# Taken from https://github.com/tagattie/FreeBSD-Electron
-# XXX convert to Taggatie's framework
-PREFETCH_TIMESTAMP=	1616313125 # epoch ??? Sunday, 21 March 2021
-PKGJSONSDIR=		${FILESDIR}/packagejsons
-YARN_CMD=		${LOCALBASE}/bin/${_YARN_BASE_CMD}
-_YARN_BASE_CMD=		yarn
-
-# XXX remove unsafe-disable-integrity-migration when they fixed their shit
-#pre-fetch:
-#	@if [ ! -f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} ]; then \
-#		${ECHO_MSG} "===>  Distfile ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} not found"; \
-#		${ECHO_MSG} "===>  Pre-fetching and archiving node modules"; \
-#		${MKDIR} ${WRKDIR}; \
-#		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
-#			${WRKDIR}/.yarnrc; \
-#		${ECHO_CMD} 'unsafe-disable-integrity-migration false' >> \
-#			${WRKDIR}/.yarnrc; \
-#		${CP} -r ${PKGJSONSDIR}/* ${WRKDIR}; \
-#		cd ${PKGJSONSDIR} && \
-#		for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
-#			cd ${WRKDIR}/$${dir} && \
-#			${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
-#				${YARN_CMD} --frozen-lockfile --ignore-scripts && \
-#			${RM} package.json yarn.lock; \
-#		done; \
-#		cd ${WRKDIR}; \
-#		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
-#			-e 's:time=[0-9.]*:time=${PREFETCH_TIMESTAMP}.000000000:' \
-#			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
-#			-e 's:flags=.*:flags=none:' \
-#			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
-#		${TAR} -cz --options 'gzip:!timestamp' \
-#			-f ${DISTDIR}/${PORTNAME}-yarn-modules-${DISTVERSION}${EXTRACT_SUFX} @yarn-offline-cache.mtree; \
-#		${RM} -r ${WRKDIR}; \
-#	fi
-
-pre-build:
-	@${ECHO_MSG} "===>  Copying package.json and yarn.lock to WRKSRC"
-	@cd ${PKGJSONSDIR} && \
-	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
-		for f in package.json yarn.lock; do \
-	 		if [ -f ${WRKSRC}/$${dir}/$${f} ]; then \
-				${MV} -f ${WRKSRC}/$${dir}/$${f} ${WRKSRC}/$${dir}/$${f}.bak; \
-			fi; \
-			${CP} -f $${dir}/$${f} ${WRKSRC}/$${dir}; \
-		done; \
-	done
-
-	@${ECHO_MSG} "===>  Setting up download cache for electron and chromedriver"
-	${MKDIR} ${WRKDIR}/.cache/electron
-#	@if [ ! -f ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} ]; then \
-#		cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
-#			zip -q -r ${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER_MAJOR}-freebsd-x64.zip .
-#	fi
-#	cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
-#		zip -q -r ${WRKDIR}/.cache/electron/chromedriver-v3.0.0-freebsd-x64.zip chromedriver
-	cd ${WRKDIR}/.cache/electron && \
-		${SHA256} -r *.zip | \
-		${SED} -e 's/ / */' > SHASUMS256.txt-3.0.0
-# XXX sigh, node scripts/fuse-electron.js tries to open electron in RW
-# copy electron in /tmp, see also files/patch-electron
-	${MKDIR} /tmp/electron12
-	(cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
-		${COPYTREE_SHARE} . /tmp/electron12)
-	${CHMOD} -R a+rw /tmp/electron12
-
-	@${ECHO_MSG} "===>  Installing node modules from pre-fetched cache"
-	@${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> ${WRKSRC}/.yarnrc
-	@${ECHO_CMD} 'nodedir "${WRKDIR}/node-v${NODE_VER}"' >> ${WRKSRC}/.yarnrc
-	@cd ${PKGJSONSDIR} && \
-	for dir in `${FIND} . -type f -name package.json -exec dirname {} ';'`; do \
-		cd ${WRKSRC}/$${dir} && ${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache \
-			${YARN_CMD} --frozen-lockfile --ignore-scripts --offline; \
-	done
 
 do-build:
-	@${ECHO_MSG} "===>  do-build"
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline
+# These libs are already in the yarn cache
+# ${CP} ${PREFIX}/lib/libsignal_node.so \
+# 	${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.11.1-f1f859453c2d187e5f47ab02707ae4580edaa6fc-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
+# ${CP} ${PREFIX}/lib/libringrtc.so \
+#	${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
+#
+# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
+# ${CP} ${DISTDIR}/sqlite3.tar.gz \
+#	 ${WRKDIR}/.cache/yarn/v6/./npm-better-sqlite3-7.1.4-92ed9e36351577fe007d139fbd7b4f3e797a8454/node_modules/better-sqlite3/deps/sqlite3.tar.gz
+#
+# patch-package can't patch this npm dep
+# ${CP} ${FILESDIR}/playwrigth-registry.js \
+# 	${WRKDIR}/.cache/yarn/v6/npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity/node_modules/playwright-core/lib/utils/registry.js
 
-	${MKDIR} ${WRKSRC}/node_modules/ringrtc/build/freebsd
-	${CP} ${PREFIX}/lib/libringrtc.so ${WRKSRC}/node_modules/ringrtc/build/freebsd/libringrtc.node
-	${CP} ${PREFIX}/lib/libsignal_node.so ${WRKSRC}/node_modules/libsignal-client/build/libsignal_client_freebsd.node
-	${CP} ${PREFIX}/lib/libzkgroup.so ${WRKSRC}/node_modules/zkgroup
-
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn generate
+		${SETENV} ${MAKE_ENV} yarn --offline generate
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn build:webpack
+		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
-	# taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
-	# and editors/vscode
+# taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
+# and editors/vscode
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn run electron-builder \
+		${SETENV} ${MAKE_ENV} ${PACKAGE_ENV} yarn run electron-builder \
 			--linux --dir  --config.npmRebuild=false \
-			--config.electronVersion=${ELECTRON_VER} \
-			--config.electronDist=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}
+			--config.electronVersion=16 \
+			--config.electronDist=${LOCALBASE}/share/electron16
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${BUILD_WRKSRC}/dist/linux-unpacked && \
@@ -178,8 +136,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 
-	cd ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked && \
-		${FIND} . -type f -name '*.node' -exec ${STRIP_CMD} {} ';'
 .for f in chromedriver mksnapshot v8_context_snapshot_generator
 	${RM} ${STAGEDIR}${DATADIR}/${f}
 .endfor
@@ -187,6 +143,5 @@ do-install:
 	${RM} -r ${STAGEDIR}${DATADIR}/node_headers
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
 	${RLN} ${STAGEDIR}${DATADIR}/signal-desktop ${STAGEDIR}${PREFIX}/bin
-	${CHMOD} a+x ${STAGEDIR}${DATADIR}/signal-desktop
 
 .include <bsd.port.mk>

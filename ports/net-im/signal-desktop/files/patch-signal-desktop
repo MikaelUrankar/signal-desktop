@@ -1,5 +1,5 @@
---- ts/models/messages.ts	2022-02-12 02:48:01.000000000 +0100
-+++ ts/models/messages.ts	2022-02-18 20:38:41.128585000 +0100
+--- ts/models/messages.ts	2022-02-12 02:48:01 UTC
++++ ts/models/messages.ts
 @@ -722,7 +722,7 @@ export class MessageModel extends window.Backbone.Mode
  
      // Linux emoji support is mixed, so we disable it. (Note that this doesn't touch
@@ -150,3 +150,14 @@
  
  export const isAutoDownloadUpdatesSupported = (): boolean =>
    OS.isWindows() || OS.isMacOS();
+--- app/main.ts.orig	2022-02-24 15:35:11.986213000 +0100
++++ app/main.ts	2022-02-24 15:34:26.610207000 +0100
+@@ -451,7 +451,7 @@ let windowIcon: string;
+ 
+ if (OS.isWindows()) {
+   windowIcon = join(__dirname, '../build/icons/win/icon.ico');
+-} else if (OS.isLinux()) {
++} else if (OS.isLinux() || OS.isFreeBSD()) {
+   windowIcon = join(__dirname, '../images/signal-logo-desktop-linux.png');
+ } else {
+   windowIcon = join(__dirname, '../build/icons/png/512x512.png');

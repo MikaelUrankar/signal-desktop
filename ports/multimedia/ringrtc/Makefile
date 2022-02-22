@@ -1,23 +1,20 @@
-# mempcpy is not present on FreeBSD 12
-# https://bugs.freebsd.org/bugzilla//show_bug.cgi?id=262067
-
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.18.0
 CATEGORIES=	multimedia
-#MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
-#		http://mikael.urankar.free.fr/ringrtc/:boringssl \
-#		http://mikael.urankar.free.fr/ringrtc/:build \
-#		http://mikael.urankar.free.fr/ringrtc/:buildtools \
-#		http://mikael.urankar.free.fr/ringrtc/:catapult \
-#		http://mikael.urankar.free.fr/ringrtc/:icu \
-#		http://mikael.urankar.free.fr/ringrtc/:nasm \
-#		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
-#		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
-#		http://mikael.urankar.free.fr/ringrtc/:libvpx \
-#		http://mikael.urankar.free.fr/ringrtc/:libyuv \
-#		http://mikael.urankar.free.fr/ringrtc/:third_party \
-#		http://mikael.urankar.free.fr/ringrtc/:testing
+MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
+		http://mikael.urankar.free.fr/ringrtc/:boringssl \
+		http://mikael.urankar.free.fr/ringrtc/:build \
+		http://mikael.urankar.free.fr/ringrtc/:buildtools \
+		http://mikael.urankar.free.fr/ringrtc/:catapult \
+		http://mikael.urankar.free.fr/ringrtc/:icu \
+		http://mikael.urankar.free.fr/ringrtc/:nasm \
+		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
+		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
+		http://mikael.urankar.free.fr/ringrtc/:libvpx \
+		http://mikael.urankar.free.fr/ringrtc/:libyuv \
+		http://mikael.urankar.free.fr/ringrtc/:third_party \
+		http://mikael.urankar.free.fr/ringrtc/:testing
 DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
 		build-${BUILD_REV}.tar.gz:build \
@@ -38,12 +35,13 @@ COMMENT=	Middleware library for Signal-Desktop
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpulse.so:audio/pulseaudio \
-		libasound.so:audio/alsa-lib
+LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+		libfreetype.so:print/freetype2 \
+		libpulse.so:audio/pulseaudio
 BUILD_DEPENDS=	gn:devel/gn
 
-USES=		cargo gnome localbase:ldflags pkgconfig ninja python:3.7+,build tar:xz
+USES=		cargo gnome localbase:ldflags ninja pkgconfig python:3.7+,build \
+		tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
@@ -57,22 +55,22 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=4638f
+WEBRTC_REV=	4638f
 
 # egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" DEPS | grep https
-BASE_REV=bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
-BORINGSSL_REV=dddb60eb9700110835ff6e2b429de40a17006429
-BUILD_REV=f90eed6a5e137d43526c24eecfd96382a3233ee3
-BUILDTOOLS_REV=7ea3a871db68ae2cbbeaf5433a3192a799ef3c11
-CATAPULT_REV=d9a9ebbe89eaa7f479612b4e23ee38a313197d5e
-ICU_REV=ece15d049f2d360721716089372e3749fb89e0f4
-LIBJPEG_REV=ff19e5b2e176c61d552f68768e0e051867745321
-LIBSRTP_REV=5b7c744eb8310250ccc534f3f86a2015b3887a0a
-LIBVPX_REV=15a75b45304248f746634b43763c496322bf8968
-LIBYUV_REV=49ebc996aa8c4bdf89c1b5ea461eb677234c61cc
-NASM_REV=4e6fe9d1549e4ffb6c804494573e404849dfe7de
-TESTING_REV=59835db543d03c36bafe56fb10d6a8b68e377621
-THIRDPARTY_REV=a299c990bc6b40774066cb84281975a0371e7a8b
+BASE_REV=	bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
+BORINGSSL_REV=	dddb60eb9700110835ff6e2b429de40a17006429
+BUILD_REV=	f90eed6a5e137d43526c24eecfd96382a3233ee3
+BUILDTOOLS_REV=	7ea3a871db68ae2cbbeaf5433a3192a799ef3c11
+CATAPULT_REV=	d9a9ebbe89eaa7f479612b4e23ee38a313197d5e
+ICU_REV=	ece15d049f2d360721716089372e3749fb89e0f4
+LIBJPEG_REV=	ff19e5b2e176c61d552f68768e0e051867745321
+LIBSRTP_REV=	5b7c744eb8310250ccc534f3f86a2015b3887a0a
+LIBVPX_REV=	15a75b45304248f746634b43763c496322bf8968
+LIBYUV_REV=	49ebc996aa8c4bdf89c1b5ea461eb677234c61cc
+NASM_REV=	4e6fe9d1549e4ffb6c804494573e404849dfe7de
+TESTING_REV=	59835db543d03c36bafe56fb10d6a8b68e377621
+THIRDPARTY_REV=	a299c990bc6b40774066cb84281975a0371e7a8b
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
@@ -257,7 +255,7 @@ CARGO_CRATES=	aes-0.7.5 \
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
 
-USE_LDCONFIG=		yes
+USE_LDCONFIG=	yes
 
 MAKE_ENV=	OUTPUT_DIR=${WEBRTCDIR}/out
 

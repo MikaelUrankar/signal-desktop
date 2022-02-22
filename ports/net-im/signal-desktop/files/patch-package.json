@@ -1,0 +1,11 @@
+--- package.json	2022-02-16 16:11:39 UTC
++++ package.json
+@@ -302,7 +302,7 @@
+     "sharp/color/color-string": "1.7.4"
+   },
+   "engines": {
+-    "node": "16.9.1"
++    "node": "16.13.0"
+   },
+   "build": {
+     "appId": "org.whispersystems.signal-desktop",

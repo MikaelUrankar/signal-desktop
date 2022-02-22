@@ -1,7 +1,7 @@
 # DISTVERSION=$(grep signal-client Signal-Desktop-5.32.0/package.json)
 
 PORTNAME=	libsignal-client
-DISTVERSIONPREFIX=	v	
+DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.1
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	node
