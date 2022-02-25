@@ -1,10 +1,13 @@
+# env ELECTRON_OVERRIDE_DIST_PATH=/usr/local/share/electron16 ELECTRON_SKIP_BINARY_DOWNLOAD=1 yarn install
 # DISTVERSION=$(grep signal-client Signal-Desktop-5.32.0/package.json)
 
 PORTNAME=	libsignal-client
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.1
 CATEGORIES=	net-im
-PKGNAMESUFFIX=	node
+PKGNAMESUFFIX=	-node
+MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn
+DISTFILES=      libsignal-client-node-${DISTVERSION}-yarn-cache.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Implementation of the Signal client protocol
@@ -12,9 +15,10 @@ COMMENT=	Implementation of the Signal client protocol
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	protoc:devel/protobuf
+BUILD_DEPENDS=	protoc:devel/protobuf \
+		yarn:www/yarn-node16
 
-USES=		cargo
+USES=		cargo python:3.7+,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
@@ -233,13 +237,27 @@ CARGO_CRATES=	addr2line-0.16.0 \
 		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=3.0.0-lizard2\#2694ad3b789635f90f941648ae952f58d59ffc73 \
 		num-bigint-dig@git+https://github.com/dignifiedquire/num-bigint?rev=56576b592fea6341b7e1711a1629e4cc1bfc419c\#56576b592fea6341b7e1711a1629e4cc1bfc419c
 
-CARGO_BUILD_ARGS=	--package libsignal-node
+MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
+		HOME=${WRKDIR} \
+		XDG_CACHE_HOME=${WRKDIR}/.cache \
+		ELECTRON_SKIP_BINARY_DOWNLOAD=1
+
 USE_LDCONFIG=		yes
 
 PLIST_FILES=	lib/libsignal_node.so
 
+post-patch:
+	${REINPLACE_CMD} "s#python3#${PYTHON_CMD}#" \
+		${WRKSRC}/node/binding.gyp
+
+do-build:
+	cd ${WRKSRC}/node && \
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
+	cd ${WRKSRC}/node && \
+		${SETENV} ${MAKE_ENV} yarn tsc
+
 do-install:
-	${INSTALL_LIB} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/release/libsignal_node.so \
+	${INSTALL_DATA} ${WRKSRC}/node/build/Release/obj.target/libsignal_client_freebsd_x64.node/geni/rust/x86_64-unknown-freebsd/release/libsignal_node.so \
 		${STAGEDIR}${PREFIX}/lib/
 
 .include <bsd.port.mk>
