@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
-DISTVERSION=	5.32.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	5.32.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
@@ -21,65 +21,45 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
 		app-builder>0:devel/app-builder \
 		electron16:devel/electron16 \
-		git:devel/git \
 		npm:www/npm-node16 \
 		openssl>0:security/openssl \
 		vips>0:graphics/vips \
 		yarn:www/yarn-node16
-
-# Warning: you need LIB_DEPENDS+=libasound.so:audio/alsa-lib
-# Warning: you need LIB_DEPENDS+=libatk-bridge-2.0.so:accessibility/at-spi2-atk
-# Warning: you need LIB_DEPENDS+=libatspi.so:accessibility/at-spi2-core
-# Warning: you need LIB_DEPENDS+=libcups.so:print/cups
-# Warning: you need LIB_DEPENDS+=libdbus-1.so:devel/dbus
-# Warning: you need LIB_DEPENDS+=libdrm.so:graphics/libdrm
-# Warning: you need LIB_DEPENDS+=libexpat.so:textproc/expat2
-# Warning: you need LIB_DEPENDS+=libFLAC.so:audio/flac
-# Warning: you need LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
-# Warning: you need LIB_DEPENDS+=libharfbuzz-subset.so:print/harfbuzz
-# Warning: you need LIB_DEPENDS+=libharfbuzz.so:print/harfbuzz
-# Warning: you need LIB_DEPENDS+=libnspr4.so:devel/nspr
-# Warning: you need LIB_DEPENDS+=libnss3.so:security/nss
-# Warning: you need LIB_DEPENDS+=libnssutil3.so:security/nss
-# Warning: you need LIB_DEPENDS+=libopenh264.so:multimedia/openh264
-# Warning: you need LIB_DEPENDS+=libopus.so:audio/opus
-# Warning: you need LIB_DEPENDS+=libpci.so:devel/libpci
-# Warning: you need LIB_DEPENDS+=libplc4.so:devel/nspr
-# Warning: you need LIB_DEPENDS+=libplds4.so:devel/nspr
-# Warning: you need LIB_DEPENDS+=libpng16.so:graphics/png
-# Warning: you need LIB_DEPENDS+=libsmime3.so:security/nss
-# Warning: you need LIB_DEPENDS+=libsnappy.so:archivers/snappy
-# Warning: you need LIB_DEPENDS+=libwebp.so:graphics/webp
-# Warning: you need LIB_DEPENDS+=libwebpdemux.so:graphics/webp
-# Warning: you need LIB_DEPENDS+=libwebpmux.so:graphics/webp
-# Warning: you need LIB_DEPENDS+=libxkbcommon.so:x11/libxkbcommon
-# Warning: you need LIB_DEPENDS+=libxshmfence.so:x11/libxshmfence
-# Warning: you need USE_GL+=gbm
-# Warning: you need USE_GL+=gl
-# Warning: you need USE_GNOME+=atk
-# Warning: you need USE_GNOME+=cairo
-# Warning: you need USE_GNOME+=gdkpixbuf2
-# Warning: you need USE_GNOME+=glib20
-# Warning: you need USE_GNOME+=gtk30
-# Warning: you need USE_GNOME+=libxml2
-# Warning: you need USE_GNOME+=libxslt
-# Warning: you need USE_GNOME+=pango
-# Warning: you need USE_XORG+=x11
-# Warning: you need USE_XORG+=xcb
-# Warning: you need USE_XORG+=xcomposite
-# Warning: you need USE_XORG+=xdamage
-# Warning: you need USE_XORG+=xext
-# Warning: you need USE_XORG+=xfixes
-# Warning: you need USE_XORG+=xi
-# Warning: you need USE_XORG+=xrandr
-# Warning: you need USE_XORG+=xrender
-# Warning: you need USE_XORG+=xtst
-# Warning: you need USES+=gettext-runtime
-# Warning: you need USES+=jpeg
+LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+		libatk-bridge-2.0.so:accessibility/at-spi2-atk \
+		libatspi.so:accessibility/at-spi2-core \
+		libcups.so:print/cups \
+		libdbus-1.so:devel/dbus \
+		libdrm.so:graphics/libdrm \
+		libexpat.so:textproc/expat2 \
+		libFLAC.so:audio/flac \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libharfbuzz-subset.so:print/harfbuzz \
+		libharfbuzz.so:print/harfbuzz \
+		libnspr4.so:devel/nspr \
+		libnss3.so:security/nss \
+		libnssutil3.so:security/nss \
+		libopenh264.so:multimedia/openh264 \
+		libopus.so:audio/opus \
+		libpci.so:devel/libpci \
+		libplc4.so:devel/nspr \
+		libplds4.so:devel/nspr \
+		libpng16.so:graphics/png \
+		libsmime3.so:security/nss \
+		libsnappy.so:archivers/snappy \
+		libwebp.so:graphics/webp \
+		libwebpdemux.so:graphics/webp \
+		libwebpmux.so:graphics/webp \
+		libxkbcommon.so:x11/libxkbcommon \
+		libxshmfence.so:x11/libxshmfence
 
 USES=		desktop-file-utils
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
+
+USE_GL=		gbm gl
+USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 libxml2 libxslt pango
+USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xi xrandr xrender xtst gettext-runtime jpeg
 
 WRKSRC=		${WRKDIR}/Signal-Desktop-${DISTVERSION}${DISTVERSIONSUFFIX}
 
@@ -95,20 +75,26 @@ MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 
+_BUILD_DATE=	$$(date +'%s')
+
+post-patch:
+	${REINPLACE_CMD} "s#%%EPOCH%%#${_BUILD_DATE}#" \
+		${WRKSRC}/ts/scripts/get-expire-time.ts
+
 do-build:
-# These libs are already in the yarn cache
-# ${CP} ${PREFIX}/lib/libsignal_node.so \
-# 	${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.11.1-f1f859453c2d187e5f47ab02707ae4580edaa6fc-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
-# ${CP} ${PREFIX}/lib/libringrtc.so \
-#	${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
-#
-# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
-# ${CP} ${DISTDIR}/sqlite3.tar.gz \
-#	 ${WRKDIR}/.cache/yarn/v6/./npm-better-sqlite3-7.1.4-92ed9e36351577fe007d139fbd7b4f3e797a8454/node_modules/better-sqlite3/deps/sqlite3.tar.gz
-#
-# patch-package can't patch this npm dep
-# ${CP} ${FILESDIR}/playwrigth-registry.js \
-# 	${WRKDIR}/.cache/yarn/v6/npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity/node_modules/playwright-core/lib/utils/registry.js
+	# Replace these 2 binaries with their native one
+	${CP} ${PREFIX}/lib/libsignal_node.so \
+ 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.11.1-f1f859453c2d187e5f47ab02707ae4580edaa6fc-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
+	${CP} ${PREFIX}/lib/libringrtc.so \
+		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
+
+	# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
+	${CP} ${DISTDIR}/sqlite3.tar.gz \
+	       ${WRKDIR}/.cache/yarn/v6/./npm-better-sqlite3-7.1.4-92ed9e36351577fe007d139fbd7b4f3e797a8454/node_modules/better-sqlite3/deps/sqlite3.tar.gz
+
+	# patch-package can't patch playwright-core
+	${CP} ${FILESDIR}/playwrigth-registry.js \
+	 	${WRKDIR}/.cache/yarn/v6/npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity/node_modules/playwright-core/lib/utils/registry.js
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
