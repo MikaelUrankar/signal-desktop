@@ -3,7 +3,7 @@
 
 PORTNAME=	libsignal-client
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.1
+DISTVERSION=	0.12.4
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	-node
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn
@@ -234,8 +234,8 @@ CARGO_CRATES=	addr2line-0.16.0 \
 		x25519-dalek-1.1.1 \
 		zeroize-1.3.0 \
 		zeroize_derive-1.2.0 \
-		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=3.0.0-lizard2\#2694ad3b789635f90f941648ae952f58d59ffc73 \
-		num-bigint-dig@git+https://github.com/dignifiedquire/num-bigint?rev=56576b592fea6341b7e1711a1629e4cc1bfc419c\#56576b592fea6341b7e1711a1629e4cc1bfc419c
+		num-bigint-dig@git+https://github.com/dignifiedquire/num-bigint?rev=56576b592fea6341b7e1711a1629e4cc1bfc419c\#56576b592fea6341b7e1711a1629e4cc1bfc419c \
+		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=3.0.0-lizard2\#b3329ed05ce7ffae5b7c18b9b6e1fd3588eaf468
 
 MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
 		HOME=${WRKDIR} \
