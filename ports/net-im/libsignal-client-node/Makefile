@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	protoc:devel/protobuf \
 		yarn:www/yarn-node16
 
-USES=		cargo python:3.7+,build
+USES=		cargo gmake python:3.7+,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 
@@ -240,7 +240,8 @@ CARGO_CRATES=	addr2line-0.16.0 \
 MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
 		HOME=${WRKDIR} \
 		XDG_CACHE_HOME=${WRKDIR}/.cache \
-		ELECTRON_SKIP_BINARY_DOWNLOAD=1
+		ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
+		PYTHON=${PYTHON_CMD}
 
 USE_LDCONFIG=		yes
 

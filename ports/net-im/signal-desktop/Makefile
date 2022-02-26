@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.32.0
+DISTVERSION=	5.33.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
@@ -70,7 +70,8 @@ MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron16 \
 		PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true \
 		PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true \
 		USE_SYSTEM_APP_BUILDER=true \
-		XDG_CACHE_HOME=${WRKDIR}/.cache
+
+TMPDIR=		/tmp
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
@@ -83,10 +84,16 @@ post-patch:
 
 do-build:
 	${ECHO} offline=true > ${WRKDIR}/.npmrc
+	${ECHO} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
-	# Replace these 2 binaries with their native one
+#	# Replace these 2 binaries with their native one
+	${MKDIR} ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
+		 ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
+		 ${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd
 	${CP} ${PREFIX}/lib/libsignal_node.so \
- 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.11.1-f1f859453c2d187e5f47ab02707ae4580edaa6fc-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
+		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
+	${CP} ${PREFIX}/lib/libsignal_node.so \
+		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
 	${CP} ${PREFIX}/lib/libringrtc.so \
 		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
 
@@ -94,9 +101,17 @@ do-build:
 	${CP} ${DISTDIR}/sqlite3.tar.gz \
 	       ${WRKDIR}/.cache/yarn/v6/./npm-better-sqlite3-7.1.4-92ed9e36351577fe007d139fbd7b4f3e797a8454/node_modules/better-sqlite3/deps/sqlite3.tar.gz
 
-	# patch-package can't patch playwright-core
+#	# patch-package can't patch playwright-core
 	${CP} ${FILESDIR}/playwrigth-registry.js \
 	 	${WRKDIR}/.cache/yarn/v6/npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity/node_modules/playwright-core/lib/utils/registry.js
+
+#	# npm sucks
+	# also, patch .cache/yarn/v6/npm-esbuild-0.14.3-38db1d26aaeccc43f478225974538e2c4de9d6b1-integrity/node_modules/esbuild/install.js
+	# (downloadDirectlyFromNPM) to not throw an error
+	# XXX arch
+	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-0.14.3.tgz -C ${TMPDIR}
+	${CP} ${TMPDIR}/package/bin/esbuild \
+		${WRKDIR}/.cache/yarn/v6/npm-esbuild-0.14.3-38db1d26aaeccc43f478225974538e2c4de9d6b1-integrity/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
@@ -112,7 +127,7 @@ do-install:
 		${SETENV} ${MAKE_ENV} ${PACKAGE_ENV} yarn run electron-builder \
 			--linux --dir  --config.npmRebuild=false \
 			--config.electronVersion=16 \
-			--config.electronDist=${LOCALBASE}/share/electron16
+			--config.electronDist=${LOCALBASE}/share/electron16 || ${TRUE}
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${BUILD_WRKSRC}/dist/linux-unpacked && \
