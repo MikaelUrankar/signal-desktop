@@ -82,6 +82,8 @@ post-patch:
 		${WRKSRC}/ts/scripts/get-expire-time.ts
 
 do-build:
+	${ECHO} offline=true > ${WRKDIR}/.npmrc
+
 	# Replace these 2 binaries with their native one
 	${CP} ${PREFIX}/lib/libsignal_node.so \
  		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.11.1-f1f859453c2d187e5f47ab02707ae4580edaa6fc-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node

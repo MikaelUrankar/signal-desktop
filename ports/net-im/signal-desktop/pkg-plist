@@ -1,4 +1,4 @@
-@(,,755) bin/signal-desktop
+bin/signal-desktop
 share/applications/signal-desktop.desktop
 share/pixmaps/signal-desktop.png
 %%DATADIR%%/LICENSE.electron.txt
@@ -177,7 +177,7 @@ share/pixmaps/signal-desktop.png
 %%DATADIR%%/resources/app.asar.unpacked/node_modules/sharp/package.json
 %%DATADIR%%/resources/app.asar.unpacked/ts/sql/mainWorker.bundle.js
 %%DATADIR%%/resources/app.asar.unpacked/ts/workers/heicConverter.bundle.js
-%%DATADIR%%/signal-desktop
+@(,,755) %%DATADIR%%/signal-desktop
 %%DATADIR%%/snapshot_blob.bin
 %%DATADIR%%/swiftshader/libEGL.so
 %%DATADIR%%/swiftshader/libGLESv2.so
