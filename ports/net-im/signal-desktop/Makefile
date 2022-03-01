@@ -76,6 +76,10 @@ TMPDIR=		/tmp
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 
+# Don't create __pycache__ directory when executing node-gyp
+# This is a workaround to avoid filesystem violations during poudriere build
+MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
+
 _BUILD_DATE=	$$(date +'%s')
 
 post-patch:
