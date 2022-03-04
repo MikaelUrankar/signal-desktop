@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.33.0
+DISTVERSION=	5.34.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
@@ -86,18 +86,18 @@ post-patch:
 		${WRKSRC}/ts/scripts/get-expire-time.ts
 
 do-build:
-	${ECHO} offline=true > ${WRKDIR}/.npmrc
 	${ECHO} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
 #	# Replace these 2 binaries with their native one
 	${MKDIR} ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
 		 ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
 		 ${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd
-	${CP} ${PREFIX}/lib/libsignal_node.so \
+
+	${CP} ${LOCALBASE}/lib/libsignal_node.so \
 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
-	${CP} ${PREFIX}/lib/libsignal_node.so \
+	${CP} ${LOCALBASE}/lib/libsignal_node.so \
 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
-	${CP} ${PREFIX}/lib/libringrtc.so \
+	${CP} ${LOCALBASE}/lib/libringrtc.so \
 		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.18.0-561484a82f75f64391da5ce9f48217db30e9ba4b/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
 
 	# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
@@ -116,6 +116,17 @@ do-build:
 	${CP} ${TMPDIR}/package/bin/esbuild \
 		${WRKDIR}/.cache/yarn/v6/npm-esbuild-0.14.3-38db1d26aaeccc43f478225974538e2c4de9d6b1-integrity/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
+# 	# Uncomment for online build
+#	${RM} ${WRKDIR}/.npmrc
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn generate
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn build:webpack
+
+ 	# Uncomment for offline build
+	${ECHO} offline=true > ${WRKDIR}/.npmrc
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
 	cd ${WRKSRC} && \
@@ -128,7 +139,7 @@ do-install:
 # and editors/vscode
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${PACKAGE_ENV} yarn run electron-builder \
-			--linux --dir  --config.npmRebuild=false \
+			--linux --dir --config.npmRebuild=false \
 			--config.electronVersion=16 \
 			--config.electronDist=${LOCALBASE}/share/electron16 || ${TRUE}
 
