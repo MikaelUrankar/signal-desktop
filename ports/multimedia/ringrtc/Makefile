@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.18.0
+DISTVERSION=	2.19.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
 		http://mikael.urankar.free.fr/ringrtc/:boringssl \
@@ -55,9 +55,9 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4638f
+WEBRTC_REV=	4638h
 
-# egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" DEPS | grep https
+# egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" src/webrtc/src/DEPS | grep https
 BASE_REV=	bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
 BORINGSSL_REV=	dddb60eb9700110835ff6e2b429de40a17006429
 BUILD_REV=	f90eed6a5e137d43526c24eecfd96382a3233ee3
@@ -251,7 +251,6 @@ CARGO_CRATES=	aes-0.7.5 \
 		zeroize-1.3.0 \
 		zeroize_derive-1.2.0
 
-#CARGO_BUILDDEP=		no
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
 
