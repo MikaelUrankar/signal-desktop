@@ -329,3 +329,5 @@ SHA256 (signalapp-ringrtc-v2.19.0_GH0.tar.gz) = 9f7358f1b0c935dd20f3012f0288385c
 SIZE (signalapp-ringrtc-v2.19.0_GH0.tar.gz) = 576064
 SHA256 (signalapp-webrtc-4638h_GH0.tar.gz) = 3ee5fee99be7c2ba5a733076674e70fa2b1c5822786ab81293b3170acb3006de
 SIZE (signalapp-webrtc-4638h_GH0.tar.gz) = 37355684
+SHA256 (cglogic-gn-v1714_GH0.tar.gz) = 6b98b752ef16ab50c45123deb5893ddef6598a5ebac6191efba162c9689ef20c
+SIZE (cglogic-gn-v1714_GH0.tar.gz) = 941711

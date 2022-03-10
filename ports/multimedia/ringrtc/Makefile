@@ -38,7 +38,6 @@ LICENSE_FILE=	${WRKSRC}/../../LICENSE
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfreetype.so:print/freetype2 \
 		libpulse.so:audio/pulseaudio
-BUILD_DEPENDS=	gn:devel/gn
 
 USES=		cargo gnome localbase:ldflags ninja pkgconfig python:3.7+,build \
 		tar:xz
@@ -46,7 +45,8 @@ USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
-		signalapp:webrtc:${WEBRTC_REV}:webrtc
+		signalapp:webrtc:${WEBRTC_REV}:webrtc \
+		cglogic:gn:v${GN_VERSION}:gn
 
 
 # Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
@@ -55,7 +55,8 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4638h
+WEBRTC_REV=	4638f
+GN_VERSION=	1714
 
 # egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" src/webrtc/src/DEPS | grep https
 BASE_REV=	bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
@@ -286,6 +287,9 @@ post-patch:
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
+	@${REINPLACE_CMD} 's/"python"/"${PYTHON_CMD:T}"/' \
+		${WRKDIR}/gn-${GN_VERSION}/src/gn/exec_process_unittest.cc
+
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259334
 # XXX use patch files instead
 	${REINPLACE_CMD} -e 's|-D_XOPEN_SOURCE=700||' \
@@ -296,8 +300,13 @@ post-patch:
 		${WRKSRC}/../webrtc/src/third_party/boringssl/BUILD.gn
 
 pre-build:
+	cd ${WRKDIR}/gn-${GN_VERSION} && \
+		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --platform freebsd
+	cd ${WRKDIR}/gn-${GN_VERSION} && \
+		ninja -C out
+
 	cd ${WEBRTCDIR} && \
-		${SETENV} ${CONFIGURE_ENV} gn gen out/release --args='${GN_ARGS}'
+		${SETENV} ${CONFIGURE_ENV} ${WRKDIR}/gn-${GN_VERSION}/out/gn gen out/release --args='${GN_ARGS}'
 
 # build webrtc first, ringrtc needs libwebrtc.a
 	cd ${WEBRTCDIR} \
