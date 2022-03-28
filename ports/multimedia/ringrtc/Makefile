@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.19.0
+DISTVERSION=	2.19.2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
 		http://mikael.urankar.free.fr/ringrtc/:boringssl \
@@ -48,14 +48,13 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc \
 		cglogic:gn:v${GN_VERSION}:gn
 
-
 # Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
 # Nested variable expansion avoids executing the test when not needed for
 # expanding EXTRA_PATCHES.
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4638f
+WEBRTC_REV=	4638h
 GN_VERSION=	1714
 
 # egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" src/webrtc/src/DEPS | grep https
@@ -103,44 +102,43 @@ WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 # cd ${WRKSRC}/src/rust awk -f /usr/ports/Mk/Scripts/cargo-crates.awk Cargo.lock
 CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
-		anyhow-1.0.44 \
+		anyhow-1.0.53 \
 		atty-0.2.14 \
-		autocfg-1.0.1 \
+		autocfg-1.1.0 \
 		base64-0.13.0 \
 		bitflags-1.3.2 \
 		block-buffer-0.9.0 \
-		bumpalo-3.7.1 \
+		bumpalo-3.9.1 \
 		byteorder-1.4.3 \
 		bytes-1.1.0 \
-		cc-1.0.70 \
+		cc-1.0.72 \
 		cesu8-1.1.0 \
 		cfg-if-1.0.0 \
 		chunked_transfer-1.4.0 \
 		cipher-0.3.0 \
-		combine-4.6.1 \
+		combine-4.6.3 \
 		cpufeatures-0.2.1 \
 		crypto-mac-0.11.1 \
 		cslice-0.2.0 \
 		ctr-0.8.0 \
 		curve25519-dalek-3.2.0 \
-		derivative-2.2.0 \
 		digest-0.9.0 \
 		either-1.6.1 \
 		env_logger-0.8.4 \
+		fastrand-1.7.0 \
 		fixedbitset-0.2.0 \
 		form_urlencoded-1.0.1 \
-		futures-0.3.17 \
-		futures-channel-0.3.17 \
-		futures-core-0.3.17 \
-		futures-executor-0.3.17 \
-		futures-io-0.3.17 \
-		futures-macro-0.3.17 \
-		futures-sink-0.3.17 \
-		futures-task-0.3.17 \
-		futures-util-0.3.17 \
-		generic-array-0.14.4 \
+		futures-0.3.21 \
+		futures-channel-0.3.21 \
+		futures-core-0.3.21 \
+		futures-executor-0.3.21 \
+		futures-io-0.3.21 \
+		futures-macro-0.3.21 \
+		futures-sink-0.3.21 \
+		futures-task-0.3.21 \
+		futures-util-0.3.21 \
+		generic-array-0.14.5 \
 		getrandom-0.1.16 \
-		getrandom-0.2.3 \
 		hashbrown-0.11.2 \
 		heck-0.3.3 \
 		hermit-abi-0.1.19 \
@@ -149,14 +147,15 @@ CARGO_CRATES=	aes-0.7.5 \
 		hmac-0.11.0 \
 		humantime-2.1.0 \
 		idna-0.2.3 \
-		indexmap-1.7.0 \
-		itertools-0.10.1 \
-		itoa-0.4.8 \
+		indexmap-1.8.0 \
+		instant-0.1.12 \
+		itertools-0.10.3 \
+		itoa-1.0.1 \
 		jni-0.19.0 \
 		jni-sys-0.3.0 \
-		js-sys-0.3.55 \
+		js-sys-0.3.56 \
 		lazy_static-1.4.0 \
-		libc-0.2.103 \
+		libc-0.2.117 \
 		libloading-0.6.7 \
 		log-0.4.14 \
 		matches-0.1.9 \
@@ -166,91 +165,84 @@ CARGO_CRATES=	aes-0.7.5 \
 		neon-build-0.9.1 \
 		neon-macros-0.9.1 \
 		neon-runtime-0.9.1 \
-		num_cpus-1.13.0 \
-		num_enum-0.5.4 \
-		num_enum_derive-0.5.4 \
-		once_cell-1.8.0 \
+		num_cpus-1.13.1 \
+		num_enum-0.5.6 \
+		num_enum_derive-0.5.6 \
+		once_cell-1.9.0 \
 		opaque-debug-0.3.0 \
 		percent-encoding-2.1.0 \
 		petgraph-0.5.1 \
-		pin-project-lite-0.2.7 \
+		pin-project-lite-0.2.8 \
 		pin-utils-0.1.0 \
-		ppv-lite86-0.2.10 \
+		ppv-lite86-0.2.16 \
 		proc-macro-crate-1.1.0 \
-		proc-macro-hack-0.5.19 \
-		proc-macro-nested-0.1.7 \
-		proc-macro2-1.0.29 \
+		proc-macro2-1.0.36 \
 		prost-0.8.0 \
 		prost-build-0.8.0 \
 		prost-derive-0.8.0 \
 		prost-types-0.8.0 \
-		quote-1.0.10 \
+		quote-1.0.15 \
 		rand-0.7.3 \
-		rand-0.8.4 \
 		rand_chacha-0.2.2 \
-		rand_chacha-0.3.1 \
 		rand_core-0.5.1 \
-		rand_core-0.6.3 \
 		rand_hc-0.2.0 \
-		rand_hc-0.3.1 \
 		redox_syscall-0.2.10 \
 		regex-1.5.4 \
 		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
 		ring-0.16.20 \
 		rustls-0.19.1 \
-		ryu-1.0.5 \
+		ryu-1.0.9 \
 		same-file-1.0.6 \
 		sct-0.6.1 \
 		semver-0.9.0 \
 		semver-parser-0.7.0 \
-		serde-1.0.130 \
-		serde_derive-1.0.130 \
-		serde_json-1.0.68 \
+		serde-1.0.136 \
+		serde_derive-1.0.136 \
+		serde_json-1.0.78 \
 		sha2-0.9.9 \
-		slab-0.4.4 \
-		smallvec-1.7.0 \
+		slab-0.4.5 \
+		smallvec-1.8.0 \
 		spin-0.5.2 \
 		static_assertions-1.1.0 \
 		subtle-2.4.1 \
-		syn-1.0.78 \
-		synstructure-0.12.5 \
-		tempfile-3.2.0 \
+		syn-1.0.86 \
+		synstructure-0.12.6 \
+		tempfile-3.3.0 \
 		termcolor-1.1.2 \
-		thiserror-1.0.29 \
-		thiserror-impl-1.0.29 \
-		tinyvec-1.5.0 \
+		thiserror-1.0.30 \
+		thiserror-impl-1.0.30 \
+		tinyvec-1.5.1 \
 		tinyvec_macros-0.1.0 \
-		tokio-1.13.1 \
+		tokio-1.16.1 \
 		toml-0.5.8 \
-		typenum-1.14.0 \
-		unicode-bidi-0.3.6 \
+		typenum-1.15.0 \
+		unicode-bidi-0.3.7 \
 		unicode-normalization-0.1.19 \
-		unicode-segmentation-1.8.0 \
+		unicode-segmentation-1.9.0 \
 		unicode-xid-0.2.2 \
 		untrusted-0.7.1 \
 		ureq-2.2.0 \
 		url-2.2.2 \
-		version_check-0.9.3 \
+		version_check-0.9.4 \
 		walkdir-2.3.2 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
-		wasi-0.10.2+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.78 \
-		wasm-bindgen-backend-0.2.78 \
-		wasm-bindgen-macro-0.2.78 \
-		wasm-bindgen-macro-support-0.2.78 \
-		wasm-bindgen-shared-0.2.78 \
-		web-sys-0.3.55 \
+		wasm-bindgen-0.2.79 \
+		wasm-bindgen-backend-0.2.79 \
+		wasm-bindgen-macro-0.2.79 \
+		wasm-bindgen-macro-support-0.2.79 \
+		wasm-bindgen-shared-0.2.79 \
+		web-sys-0.3.56 \
 		webpki-0.21.4 \
 		webpki-roots-0.21.1 \
-		which-4.2.2 \
+		which-4.2.4 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		x25519-dalek-1.2.0 \
 		zeroize-1.3.0 \
-		zeroize_derive-1.2.0
+		zeroize_derive-1.3.1
 
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
