@@ -293,7 +293,13 @@ post-patch:
 
 pre-build:
 	cd ${WRKDIR}/gn-${GN_VERSION} && \
-		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --platform freebsd
+		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --no-last-commit-position --platform freebsd
+
+	@${ECHO} "#ifndef OUT_LAST_COMMIT_POSITION_H_" > ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+	@${ECHO} "#define OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+	@${ECHO} "#define LAST_COMMIT_POSITION_NUM ${GN_VERSION}" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+	@${ECHO} '#define LAST_COMMIT_POSITION "${GN_VERSION}"' >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+	@${ECHO} "#endif  // OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
 	cd ${WRKDIR}/gn-${GN_VERSION} && \
 		ninja -C out
 
