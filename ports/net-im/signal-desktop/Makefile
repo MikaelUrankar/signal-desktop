@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.35.0
+DISTVERSION=	5.36.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
@@ -88,21 +88,21 @@ post-patch:
 do-build:
 	${ECHO} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
-#	# Replace these 2 binaries with their native one
+	# Replace these 2 binaries with their native one
 	${MKDIR} ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
 		 ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
-		 ${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.19.0-a32abe1c72df187b57b466078b3d9f2873ee6243/node_modules/ringrtc/build/freebsd
+		 ${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.19.2-9d03ddf06f2f1349fc5daee49077056c1c201e17/node_modules/ringrtc/build/freebsd
 
 	${CP} ${LOCALBASE}/lib/libsignal_node.so \
 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
 	${CP} ${LOCALBASE}/lib/libsignal_node.so \
 		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
 	${CP} ${LOCALBASE}/lib/libringrtc.so \
-		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.19.0-a32abe1c72df187b57b466078b3d9f2873ee6243/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
+		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.19.2-9d03ddf06f2f1349fc5daee49077056c1c201e17/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
 
 	# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
 	${CP} ${DISTDIR}/sqlite3.tar.gz \
-	       ${WRKDIR}/.cache/yarn/v6/npm-better-sqlite3-7.1.4-92ed9e36351577fe007d139fbd7b4f3e797a8454/node_modules/better-sqlite3/deps/sqlite3.tar.gz
+	       ${WRKDIR}/.cache/yarn/v6/npm-better-sqlite3-7.1.4-4f66ee7b85477016dd0b2c3d2f13dcb60abd452e/node_modules/better-sqlite3/deps/sqlite3.tar.gz
 
 #	# patch-package can't patch playwright-core
 	${CP} ${FILESDIR}/playwrigth-registry.js \
@@ -116,23 +116,23 @@ do-build:
 	${CP} ${TMPDIR}/package/bin/esbuild \
 		${WRKDIR}/.cache/yarn/v6/npm-esbuild-0.14.3-38db1d26aaeccc43f478225974538e2c4de9d6b1-integrity/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
- 	# Uncomment for online build
-	${RM} ${WRKDIR}/.npmrc
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn generate
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn build:webpack
+# 	# Uncomment for online build
+#	${RM} ${WRKDIR}/.npmrc
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn generate
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn build:webpack
 
-# 	# Uncomment for offline build
-#	${ECHO} offline=true > ${WRKDIR}/.npmrc
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn --offline generate
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
+ 	# Uncomment for offline build
+	${ECHO} offline=true > ${WRKDIR}/.npmrc
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn --offline generate
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
