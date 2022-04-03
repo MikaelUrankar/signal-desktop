@@ -135,13 +135,18 @@ do-build:
 		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron16/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron16 in TMPDIR, COPYTREE_SHARE will put the correct perm on electron
+	cd ${LOCALBASE}/share/electron16 && \
+		${COPYTREE_SHARE} . ${TMPDIR}/electron16
+
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
 # and editors/vscode
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${PACKAGE_ENV} yarn run electron-builder \
 			--linux --dir --config.npmRebuild=false \
 			--config.electronVersion=16 \
-			--config.electronDist=${LOCALBASE}/share/electron16 || ${TRUE}
+			--config.electronDist=${TMPDIR}/electron16
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${BUILD_WRKSRC}/dist/linux-unpacked && \
