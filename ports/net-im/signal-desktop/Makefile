@@ -88,6 +88,12 @@ post-patch:
 do-build:
 	${ECHO} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron16/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron16 in WRKDIR, COPYTREE_SHARE will put the correct perm on electron
+# needed for the do-install phase, it's here because of this issue https://github.com/MikaelUrankar/signal-desktop/issues/6
+	cd ${LOCALBASE}/share/electron16 && \
+		${COPYTREE_SHARE} . ${WRKDIR}/electron16
+
 	# Replace these 2 binaries with their native one
 	${MKDIR} ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
 		 ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
@@ -135,10 +141,6 @@ do-build:
 		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron16/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron16 in WRKDIR, COPYTREE_SHARE will put the correct perm on electron
-	cd ${LOCALBASE}/share/electron16 && \
-		${COPYTREE_SHARE} . ${WRKDIR}/electron16
 
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
 # and editors/vscode
