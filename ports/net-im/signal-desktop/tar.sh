@@ -5,6 +5,6 @@ find work/.cache  -type f -perm 755 -exec file {} \; | egrep "ELF|PE32+|Mach-O" 
 
 cd work
 
-tar czf ../signal-desktop-5.36.0-yarn-cache.tar.gz .cache yarn-cache
-tar czf ../signal-desktop-5.36.0-electron-gyp-cache.tar.gz .electron-gyp
-tar czf ../signal-desktop-5.36.0-npm-cache.tar.gz .npm
+tar czf ../signal-desktop-5.37.0-yarn-cache.tar.gz .cache yarn-cache
+tar czf ../signal-desktop-5.37.0-electron-gyp-cache.tar.gz .electron-gyp
+tar czf ../signal-desktop-5.37.0-npm-cache.tar.gz .npm
