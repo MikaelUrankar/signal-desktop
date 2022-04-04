@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.19.2
+DISTVERSION=	2.20.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
 		http://mikael.urankar.free.fr/ringrtc/:boringssl \
