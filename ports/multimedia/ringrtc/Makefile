@@ -2,19 +2,19 @@ PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.20.0
 CATEGORIES=	multimedia
-MASTER_SITES=	http://mikael.urankar.free.fr/ringrtc/:base \
-		http://mikael.urankar.free.fr/ringrtc/:boringssl \
-		http://mikael.urankar.free.fr/ringrtc/:build \
-		http://mikael.urankar.free.fr/ringrtc/:buildtools \
-		http://mikael.urankar.free.fr/ringrtc/:catapult \
-		http://mikael.urankar.free.fr/ringrtc/:icu \
-		http://mikael.urankar.free.fr/ringrtc/:nasm \
-		http://mikael.urankar.free.fr/ringrtc/:libjpeg_turbo \
-		http://mikael.urankar.free.fr/ringrtc/:libsrtp \
-		http://mikael.urankar.free.fr/ringrtc/:libvpx \
-		http://mikael.urankar.free.fr/ringrtc/:libyuv \
-		http://mikael.urankar.free.fr/ringrtc/:third_party \
-		http://mikael.urankar.free.fr/ringrtc/:testing
+MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:base \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:boringssl \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:build \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:buildtools \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:catapult \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:icu \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:nasm \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:libjpeg_turbo \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:libsrtp \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:libvpx \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:libyuv \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:third_party \
+		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:testing
 DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
 		build-${BUILD_REV}.tar.gz:build \
