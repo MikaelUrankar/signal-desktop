@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.0
+DISTVERSION=	2.20.1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:base \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:boringssl \
@@ -54,7 +54,7 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4638h
+WEBRTC_REV=	4638j
 GN_VERSION=	1714
 
 # egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" src/webrtc/src/DEPS | grep https
@@ -187,7 +187,7 @@ CARGO_CRATES=	aes-0.7.5 \
 		rand_core-0.5.1 \
 		rand_hc-0.2.0 \
 		redox_syscall-0.2.10 \
-		regex-1.5.4 \
+		regex-1.5.5 \
 		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
 		ring-0.16.20 \
@@ -242,7 +242,7 @@ CARGO_CRATES=	aes-0.7.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		x25519-dalek-1.2.0 \
 		zeroize-1.3.0 \
-		zeroize_derive-1.3.1
+		zeroize_derive-1.3.2
 
 CARGO_BUILD_ARGS=	--features electron
 CARGO_INSTALL=		no
