@@ -1,10 +1,10 @@
 grep ringrtc Signal-Desktop-XXX/package.json
-"ringrtc": "https://github.com/signalapp/signal-ringrtc-node.git#fc3a17abb293ffb3f16ead2c39fc16086ba53d31",
-https://github.com/signalapp/signal-ringrtc-node/commit/fc3a17abb293ffb3f16ead2c39fc16086ba53d31
-Update to RingRTC v2.20.0
+"ringrtc": "https://github.com/signalapp/signal-ringrtc-node.git#0464fe30a74b0617c976b66528c9a033fa80ad38",
+https://github.com/signalapp/signal-ringrtc-node/commit/0464fe30a74b0617c976b66528c9a033fa80ad38
+Update to RingRTC v2.20.1
 
 fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.0/config/version.sh | grep WEBRTC_VERSION
-WEBRTC_VERSION="4638i"
+WEBRTC_VERSION="4638j"
 
 grep signal-client Signal-Desktop-XXX/yarn.lock
-yarn.lock:"@signalapp/signal-client@0.12.4":
+yarn.lock:"@signalapp/libsignal-client@0.15.0"

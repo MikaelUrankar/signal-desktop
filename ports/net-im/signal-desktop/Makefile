@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.37.0
+DISTVERSION=	5.39.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
@@ -9,7 +9,7 @@ MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn 
 DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
 		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-		sqlite3.tar.gz:sqlite
+		sqlcipher.tar.gz:sqlite
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -81,6 +81,13 @@ MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
 _BUILD_DATE=	$$(date +'%s')
 
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.15.0-e35c949e390d76497acad7ac8b033a68899ae11e-integrity
+NPM_RINGRTC_DIR=	npm-ringrtc-2.20.1-0464fe30a74b0617c976b66528c9a033fa80ad38
+NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.0-3c4a7eebba3d5f5d8cb88fe83be1c01b8c0dea7d
+NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
+NPM_ESBUILD_VERS=	0.14.28
+NPM_ESBUILD_DIR=	npm-esbuild-${NPM_ESBUILD_VERS}-7738635d2ea19e446bd319d83a1802545e6aebb8-integrity
+
 post-patch:
 	${REINPLACE_CMD} "s#%%EPOCH%%#${_BUILD_DATE}#" \
 		${WRKSRC}/ts/scripts/get-expire-time.ts
@@ -96,34 +103,33 @@ do-build:
 	${CHMOD} -R a+w ${WRKDIR}/electron16
 
 	# Replace these 2 binaries with their native one
-	${MKDIR} ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
-		 ${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64 \
-		 ${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.20.0-fc3a17abb293ffb3f16ead2c39fc16086ba53d31/node_modules/ringrtc/build/freebsd
+	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-x64 \
+		 ${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd
 
 	${CP} ${LOCALBASE}/lib/libsignal_node.so \
-		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.4-19023456c9249db6afb01762b1841e18cc3614be-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
-	${CP} ${LOCALBASE}/lib/libsignal_node.so \
-		${WRKDIR}/.cache/yarn/v6/npm-@signalapp-signal-client-0.12.1-d587811e76308e53376f14fc294f8d0c0af39d91-integrity/node_modules/@signalapp/signal-client/prebuilds/freebsd-x64/node.napi.node
+		${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-x64/node.napi.node
 	${CP} ${LOCALBASE}/lib/libringrtc.so \
-		${WRKDIR}/.cache/yarn/v6/npm-ringrtc-2.20.0-fc3a17abb293ffb3f16ead2c39fc16086ba53d31/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
+		${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd/libringrtc-x64.node
 
-	# sqlite3.tar.gz requires git-lfs to fetch, just copy a previously downloaded one
-	${CP} ${DISTDIR}/sqlite3.tar.gz \
-	       ${WRKDIR}/.cache/yarn/v6/npm-better-sqlite3-7.1.4-4f66ee7b85477016dd0b2c3d2f13dcb60abd452e/node_modules/better-sqlite3/deps/sqlite3.tar.gz
+	# sqlcipher.tar.gz requires git-lfs to fetch, just copy a previously downloaded one (I have to use ubuntu for that,
+	# as I didn't manage to do it with FreeBSD, see https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md for instructions)
+	mkdir -p ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps
+	${CP} ${DISTDIR}/sqlcipher.tar.gz \
+		${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps/sqlcipher.tar.gz
 
 	# patch-package can't patch playwright-core
 	${CP} ${FILESDIR}/playwrigth-registry.js \
-	 	${WRKDIR}/.cache/yarn/v6/npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity/node_modules/playwright-core/lib/utils/registry.js
+	 	${WRKDIR}/.cache/yarn/v6/${NPM_PLAYWRITE_DIR}/node_modules/playwright-core/lib/utils/registry.js
 
-#	# npm sucks
+	# npm sucks
 	# also, patch .cache/yarn/v6/npm-esbuild-0.14.3-38db1d26aaeccc43f478225974538e2c4de9d6b1-integrity/node_modules/esbuild/install.js
 	# (downloadDirectlyFromNPM) to not throw an error
 	# XXX arch
-	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-0.14.27.tgz -C ${TMPDIR}
+	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-${NPM_ESBUILD_VERS}.tgz -C ${TMPDIR}
 	${CP} ${TMPDIR}/package/bin/esbuild \
-		${WRKDIR}/.cache/yarn/v6/npm-esbuild-0.14.27-41fe0f1b6b68b9f77cac025009bc54bb96e616f1-integrity/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
+		${WRKDIR}/.cache/yarn/v6/${NPM_ESBUILD_DIR}/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
- 	# Uncomment for online build
+# 	# Uncomment for online build
 #	${RM} ${WRKDIR}/.npmrc
 #	cd ${WRKSRC} && \
 #		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
@@ -142,7 +148,6 @@ do-build:
 		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
-
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
 # and editors/vscode
 	cd ${WRKSRC} && \
