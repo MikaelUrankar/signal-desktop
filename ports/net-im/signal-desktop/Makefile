@@ -14,6 +14,8 @@ DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
 
+BROKEN=		fails to run: requires electron17: https://github.com/signalapp/Signal-Desktop/commit/f7c3a44056229a4206d814de72befab4b5ca07c7
+
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
