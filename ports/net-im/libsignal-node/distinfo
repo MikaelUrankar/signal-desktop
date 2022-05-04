@@ -1,6 +1,6 @@
-TIMESTAMP = 1649696039
-SHA256 (libsignal-node-0.15.0-yarn-cache.tar.gz) = a7b954ffc4776729548f509fe41be91137e9687a9ecec7737d82327c7a22ec6f
-SIZE (libsignal-node-0.15.0-yarn-cache.tar.gz) = 73621948
+TIMESTAMP = 1651677966
+SHA256 (libsignal-node-0.16.0-yarn-cache.tar.gz) = 3f0df227ee7b26ccdf0b8f75a2c8b64c4a1012227c3381493983ddcc205d29f7
+SIZE (libsignal-node-0.16.0-yarn-cache.tar.gz) = 73603951
 SHA256 (rust/crates/addr2line-0.17.0.crate) = b9ecd88a8c8378ca913a680cd98f0f13ac67383d35993f86c90a70e3f137816b
 SIZE (rust/crates/addr2line-0.17.0.crate) = 32260
 SHA256 (rust/crates/adler-1.0.2.crate) = f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe
@@ -425,5 +425,5 @@ SHA256 (dignifiedquire-num-bigint-56576b592fea6341b7e1711a1629e4cc1bfc419c_GH0.t
 SIZE (dignifiedquire-num-bigint-56576b592fea6341b7e1711a1629e4cc1bfc419c_GH0.tar.gz) = 131335
 SHA256 (signalapp-curve25519-dalek-b3329ed05ce7ffae5b7c18b9b6e1fd3588eaf468_GH0.tar.gz) = 9fc304f167c7bfdacab11459b816d346a138acc82bb2a0587adf717445dc29fd
 SIZE (signalapp-curve25519-dalek-b3329ed05ce7ffae5b7c18b9b6e1fd3588eaf468_GH0.tar.gz) = 517635
-SHA256 (signalapp-libsignal-v0.15.0_GH0.tar.gz) = 48e0b8d92c4482a2a79045bc72cf538421ea461f0cbfa1cdc2351678b188350a
-SIZE (signalapp-libsignal-v0.15.0_GH0.tar.gz) = 557451
+SHA256 (signalapp-libsignal-v0.16.0_GH0.tar.gz) = 98cff75cec917960cd51fe38dcd2d003cc260257949c69d6e614dee584b53a7e
+SIZE (signalapp-libsignal-v0.16.0_GH0.tar.gz) = 566453
