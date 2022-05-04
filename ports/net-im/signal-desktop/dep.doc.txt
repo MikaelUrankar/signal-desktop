@@ -1,10 +1,14 @@
-grep ringrtc Signal-Desktop-XXX/package.json
-"ringrtc": "https://github.com/signalapp/signal-ringrtc-node.git#0464fe30a74b0617c976b66528c9a033fa80ad38",
-https://github.com/signalapp/signal-ringrtc-node/commit/0464fe30a74b0617c976b66528c9a033fa80ad38
-Update to RingRTC v2.20.1
+#!/bin/sh
+SIGNAL_VERS=v5.42.0-beta.1
 
-fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.0/config/version.sh | grep WEBRTC_VERSION
-WEBRTC_VERSION="4638j"
+ringrtc_hash=$(fetch -qo - https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/package.json | grep '"ringrtc": "https' | awk -F "#" '{print $2}' | sed 's#",##')
+echo "RINGRTC_HASH= ${ringrtc_hash}"
 
-grep signal-client Signal-Desktop-XXX/yarn.lock
-yarn.lock:"@signalapp/libsignal-client@0.15.0"
+ringrtc_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/signal-ringrtc-node/${ringrtc_hash}/package.json |  grep '"version":' | awk -F ":" '{print $2}' | sed -e 's# "##' -e 's#",##')
+echo "RINGRTC_VERSION= ${ringrtc_version}"
+
+webrtc_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v${ringrtc_version}/config/version.sh | grep WEBRTC_VERSION)
+echo "WEBRTC_VERSION= ${webrtc_version}"
+
+libsignalclient_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/yarn.lock | grep 'signalapp/libsignal-client@' | awk -F '@' '{print $3}' | sed 's#", "##')
+echo "LIBSIGNAL_VERSION= ${libsignalclient_version}"

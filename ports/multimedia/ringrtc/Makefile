@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.1
+DISTVERSION=	2.20.2
 CATEGORIES=	multimedia
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:base \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:boringssl \
@@ -22,11 +22,11 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		catapult-${CATAPULT_REV}.tar.gz:catapult \
 		icu-${ICU_REV}.tar.gz:icu \
 		nasm-${NASM_REV}.tar.gz:nasm \
-		libjpeg_turbo-${LIBJPEG_REV}.tar.gz:libjpeg_turbo \
+		libjpeg_turbo-${LIBJPEG_TURBO_REV}.tar.gz:libjpeg_turbo \
 		libsrtp-${LIBSRTP_REV}.tar.gz:libsrtp \
 		libvpx-${LIBVPX_REV}.tar.gz:libvpx \
 		libyuv-${LIBYUV_REV}.tar.gz:libyuv \
-		third_party-${THIRDPARTY_REV}.tar.gz:third_party \
+		third_party-${THIRD_PARTY_REV}.tar.gz:third_party \
 		testing-${TESTING_REV}.tar.gz:testing
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -35,6 +35,7 @@ COMMENT=	Middleware library for Signal-Desktop
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
+BUILD_DEPENDS=	gn:devel/gn
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfreetype.so:print/freetype2 \
 		libpulse.so:audio/pulseaudio
@@ -45,8 +46,8 @@ USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
-		signalapp:webrtc:${WEBRTC_REV}:webrtc \
-		cglogic:gn:v${GN_VERSION}:gn
+		signalapp:webrtc:${WEBRTC_REV}:webrtc
+#		cglogic:gn:v${GN_VERSION}:gn
 
 # Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
 # Nested variable expansion avoids executing the test when not needed for
@@ -54,23 +55,23 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4638j
-GN_VERSION=	1714
+WEBRTC_REV=	4896
+#GN_VERSION=	1714
 
-# egrep "base@|boringssl.git@|build@|buildtools@|catapult.git@|icu.git@|libjpeg_turbo.git@|libsrtp.git@|libvpx.git|libyuv.git@|nasm.git@|testing@|third_party@" src/webrtc/src/DEPS | grep https
-BASE_REV=	bdbd6f899ce50ac0efc87008384cf25a3eb0a03f
-BORINGSSL_REV=	dddb60eb9700110835ff6e2b429de40a17006429
-BUILD_REV=	f90eed6a5e137d43526c24eecfd96382a3233ee3
-BUILDTOOLS_REV=	7ea3a871db68ae2cbbeaf5433a3192a799ef3c11
-CATAPULT_REV=	d9a9ebbe89eaa7f479612b4e23ee38a313197d5e
-ICU_REV=	ece15d049f2d360721716089372e3749fb89e0f4
-LIBJPEG_REV=	ff19e5b2e176c61d552f68768e0e051867745321
+# modify deps.sh and sh deps.sh
+BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
+BORINGSSL_REV=	4d955d20d27bcf3ae71df091ad17d95229a7eb56
+BUILD_REV=	b42b2033819f95b3e43f24e541938c671110966d
+BUILDTOOLS_REV=	d8c375426d8f7f4147f7d4109bb63c12655fb8d6
+CATAPULT_REV=	389f33bb40a3345b73a68613178c789476ceaecf
+ICU_REV=	a9359a84a3969b3019db7d62899afb19642eefcd
+LIBJPEG_TURBO_REV=	22f1a22c99e9dde8cd3c72ead333f425c5a7aa77
 LIBSRTP_REV=	5b7c744eb8310250ccc534f3f86a2015b3887a0a
-LIBVPX_REV=	15a75b45304248f746634b43763c496322bf8968
-LIBYUV_REV=	49ebc996aa8c4bdf89c1b5ea461eb677234c61cc
-NASM_REV=	4e6fe9d1549e4ffb6c804494573e404849dfe7de
-TESTING_REV=	59835db543d03c36bafe56fb10d6a8b68e377621
-THIRDPARTY_REV=	a299c990bc6b40774066cb84281975a0371e7a8b
+LIBVPX_REV=	df0d06de6d3b64e35b9e75ad72c571af061bc7b3
+LIBYUV_REV=	3aebf69d668177e7ee6dbbe0025e5c3dbb525ff2
+NASM_REV=	9215e8e1d0fe474ffd3e16c1a07a0f97089e6224
+TESTING_REV=	c4769e51cb122096ea4cdc5ed6f7e57aa2315447
+THIRD_PARTY_REV=	7835795588c74a353beb1e03b74d45fabfdf295f
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
@@ -279,8 +280,8 @@ post-patch:
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
-	@${REINPLACE_CMD} 's/"python"/"${PYTHON_CMD:T}"/' \
-		${WRKDIR}/gn-${GN_VERSION}/src/gn/exec_process_unittest.cc
+#	@${REINPLACE_CMD} 's/"python"/"${PYTHON_CMD:T}"/' \
+#		${WRKDIR}/gn-${GN_VERSION}/src/gn/exec_process_unittest.cc
 
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259334
 # XXX use patch files instead
@@ -292,19 +293,21 @@ post-patch:
 		${WRKSRC}/../webrtc/src/third_party/boringssl/BUILD.gn
 
 pre-build:
-	cd ${WRKDIR}/gn-${GN_VERSION} && \
-		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --no-last-commit-position --platform freebsd
-
-	@${ECHO} "#ifndef OUT_LAST_COMMIT_POSITION_H_" > ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-	@${ECHO} "#define OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-	@${ECHO} "#define LAST_COMMIT_POSITION_NUM ${GN_VERSION}" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-	@${ECHO} '#define LAST_COMMIT_POSITION "${GN_VERSION}"' >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-	@${ECHO} "#endif  // OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-	cd ${WRKDIR}/gn-${GN_VERSION} && \
-		ninja -C out
-
+#	cd ${WRKDIR}/gn-${GN_VERSION} && \
+#		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --no-last-commit-position --platform freebsd
+#
+#	@${ECHO} "#ifndef OUT_LAST_COMMIT_POSITION_H_" > ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+#	@${ECHO} "#define OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+#	@${ECHO} "#define LAST_COMMIT_POSITION_NUM ${GN_VERSION}" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+#	@${ECHO} '#define LAST_COMMIT_POSITION "${GN_VERSION}"' >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+#	@${ECHO} "#endif  // OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
+#	cd ${WRKDIR}/gn-${GN_VERSION} && \
+#		ninja -C out
+#
+#	cd ${WEBRTCDIR} && \
+#		${SETENV} ${CONFIGURE_ENV} ${WRKDIR}/gn-${GN_VERSION}/out/gn gen out/release --args='${GN_ARGS}'
 	cd ${WEBRTCDIR} && \
-		${SETENV} ${CONFIGURE_ENV} ${WRKDIR}/gn-${GN_VERSION}/out/gn gen out/release --args='${GN_ARGS}'
+		${SETENV} ${CONFIGURE_ENV} gn gen out/release --args='${GN_ARGS}'
 
 # build webrtc first, ringrtc needs libwebrtc.a
 	cd ${WEBRTCDIR} \

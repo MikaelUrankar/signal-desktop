@@ -1,20 +1,19 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.39.0
+DISTVERSION=	5.42.0
+DISTVERSIONSUFFIX=	-beta.1
 CATEGORIES=	net-im
-MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:npm \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:sqlite
-DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
-		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
-		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-		sqlcipher.tar.gz:sqlite
+#MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
+#		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
+#		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:npm \
+#		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:sqlite
+#DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
+#		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
+#		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
+#		sqlcipher.tar.gz:sqlite
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
-
-BROKEN=		fails to run: requires electron17: https://github.com/signalapp/Signal-Desktop/commit/f7c3a44056229a4206d814de72befab4b5ca07c7
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

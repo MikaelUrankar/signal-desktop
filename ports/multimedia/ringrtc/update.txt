@@ -1,0 +1,5 @@
+update:
+DISTVERSION
+WEBRTC_REV (see signal-desktop/dep.doc.txt)
+*_REV if necessary (sh deps.sh)
+CARGO_CRATES
