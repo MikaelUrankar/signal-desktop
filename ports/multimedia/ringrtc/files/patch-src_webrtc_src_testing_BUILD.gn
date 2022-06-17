@@ -1,5 +1,5 @@
---- ../../src/webrtc/src/testing/BUILD.gn.orig	2022-02-18 10:35:44.628343000 +0100
-+++ ../../src/webrtc/src/testing/BUILD.gn	2022-02-18 10:35:26.448234000 +0100
+--- ../../src/webrtc/src/testing/BUILD.gn.orig	2022-02-18 10:35:44 UTC
++++ ../../src/webrtc/src/testing/BUILD.gn
 @@ -44,14 +44,14 @@ group("run_perf_test") {
    }
  }

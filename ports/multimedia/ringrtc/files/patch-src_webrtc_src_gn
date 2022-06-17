@@ -1,5 +1,5 @@
---- ../../src/webrtc/src/.gn.orig	2022-02-18 09:45:12.366145000 +0100
-+++ ../../src/webrtc/src/.gn	2022-02-18 09:44:57.707173000 +0100
+--- ../../src/webrtc/src/.gn.orig	2022-02-18 09:45:12 UTC
++++ ../../src/webrtc/src/.gn
 @@ -24,7 +24,7 @@ secondary_source = "//build/secondary/"
  # matching these patterns (see "gn help label_pattern" for format) will not have
  # their includes checked for proper dependencies when you run either
