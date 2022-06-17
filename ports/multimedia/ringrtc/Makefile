@@ -99,7 +99,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
 # fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.8/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk
-# cd ${WRKSRC}/src/rust awk -f /usr/ports/Mk/Scripts/cargo-crates.awk Cargo.lock
 CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
 		anyhow-1.0.53 \

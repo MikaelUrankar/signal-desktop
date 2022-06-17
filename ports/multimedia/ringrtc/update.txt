@@ -1,5 +1,5 @@
-update:
-DISTVERSION
-WEBRTC_REV (see signal-desktop/dep.doc.txt)
-*_REV if necessary (sh deps.sh)
-CARGO_CRATES
+To update this port:
+Bump DISTVERSION
+maybe bump WEBRTC_REV (sh net-im/signal-desktop/deps.sh)
+maybe update *_REV (sh net-im/signal-desktop/deps.sh)
+maybe update CARGO_CRATES
