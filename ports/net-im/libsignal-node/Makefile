@@ -1,13 +1,10 @@
-# env ELECTRON_OVERRIDE_DIST_PATH=/usr/local/share/electron16 ELECTRON_SKIP_BINARY_DOWNLOAD=1 yarn install
-# DISTVERSION=$(grep signal-client Signal-Desktop-5.32.0/package.json)
-
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16.0
 CATEGORIES=	net-im
-PKGNAMESUFFIX=	-node
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn
-DISTFILES=      libsignal-node-${DISTVERSION}-yarn-cache.tar.gz:yarn
+PKGNAMESUFFIX=	-node
+DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Implementation of the Signal client protocol
@@ -263,7 +260,7 @@ do-install:
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r  ${WRKDIR}/.cache/yarn/v6/.tmp
-	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} rm
+	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
 
 	cd ${WRKDIR} && \
 		${TAR} czf libsignal-node-${DISTVERSION}-yarn-cache.tar.gz .cache yarn-cache

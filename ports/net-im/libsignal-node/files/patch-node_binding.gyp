@@ -1,5 +1,5 @@
---- node/binding.gyp.orig	2022-02-25 14:33:26.423189000 +0100
-+++ node/binding.gyp	2022-02-25 14:33:43.931681000 +0100
+--- node/binding.gyp.orig	2022-02-25 14:33:26 UTC
++++ node/binding.gyp
 @@ -6,6 +6,7 @@
  {
      'conditions': [
