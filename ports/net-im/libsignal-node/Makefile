@@ -233,10 +233,10 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=3.0.0-lizard2\#b3329ed05ce7ffae5b7c18b9b6e1fd3588eaf468
 
 MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron18 \
-		HOME=${WRKDIR} \
-		XDG_CACHE_HOME=${WRKDIR}/.cache \
 		ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
-		PYTHON=${PYTHON_CMD}
+		HOME=${WRKDIR} \
+		PYTHON=${PYTHON_CMD} \
+		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 USE_LDCONFIG=		yes
 
