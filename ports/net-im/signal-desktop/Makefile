@@ -53,7 +53,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxshmfence.so:x11/libxshmfence
 
-USES=		desktop-file-utils jpeg gettext-runtime gl gnome xorg
+USES=		desktop-file-utils gettext-runtime gl gnome jpeg xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Desktop
@@ -68,9 +68,7 @@ MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron18 \
 		PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/.cache \
 		PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true \
 		PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true \
-		USE_SYSTEM_APP_BUILDER=true \
-
-TMPDIR=		/tmp
+		USE_SYSTEM_APP_BUILDER=true
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
@@ -120,8 +118,9 @@ do-build:
 	${CP} ${FILESDIR}/playwrigth-registry.js \
 	 	${WRKDIR}/.cache/yarn/v6/${NPM_PLAYWRITE_DIR}/node_modules/playwright-core/lib/utils/registry.js
 
-	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-${NPM_ESBUILD_VERS}.tgz -C ${TMPDIR}
-	${CP} ${TMPDIR}/package/bin/esbuild \
+	${MKDIR} ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}
+	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}
+	${CP} ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS} \
 		${WRKDIR}/.cache/yarn/v6/${NPM_ESBUILD_DIR}/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
 # 	# Uncomment for online build
