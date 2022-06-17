@@ -1,5 +1,5 @@
---- yarn.lock.orig	2022-06-16 19:08:59.000000000 +0200
-+++ yarn.lock	2022-06-17 14:57:37.497133000 +0200
+--- yarn.lock.orig	2022-06-16 19:08:59 UTC
++++ yarn.lock
 @@ -6220,10 +6220,10 @@ electron-window@^0.8.0:
    dependencies:
      is-electron-renderer "^2.0.0"

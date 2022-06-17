@@ -112,7 +112,7 @@ do-build:
 
 	# sqlcipher.tar.gz requires git-lfs to fetch, just copy a previously downloaded one (I've had to use ubuntu for that,
 	# as I didn't manage to do it with FreeBSD, see https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md for instructions)
-	mkdir -p ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps
+	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps
 	${CP} ${DISTDIR}/sqlcipher.tar.gz \
 		${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps/sqlcipher.tar.gz
 
@@ -172,7 +172,7 @@ do-install:
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r  ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked ${WRKDIR}/.cache/yarn/v6/.tmp
-	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} rm
+	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
 
 	cd ${WRKDIR} && \
 		${TAR} czf signal-desktop-${DISTVERSION}-yarn-cache.tar.gz .cache yarn-cache
