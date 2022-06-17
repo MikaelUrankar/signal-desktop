@@ -47,7 +47,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
-#		cglogic:gn:v${GN_VERSION}:gn
 
 # Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
 # Nested variable expansion avoids executing the test when not needed for
@@ -56,7 +55,6 @@ EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 WEBRTC_REV=	4896c
-#GN_VERSION=	1714
 
 # modify scripts/webrtc_fetch.sh and sh scripts/webrtc_fetch.sh
 BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
@@ -281,9 +279,6 @@ post-patch:
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
-#	@${REINPLACE_CMD} 's/"python"/"${PYTHON_CMD:T}"/' \
-#		${WRKDIR}/gn-${GN_VERSION}/src/gn/exec_process_unittest.cc
-
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259334
 # XXX use patch files instead
 	${REINPLACE_CMD} -e 's|-D_XOPEN_SOURCE=700||' \
@@ -294,19 +289,6 @@ post-patch:
 		${WRKSRC}/../webrtc/src/third_party/boringssl/BUILD.gn
 
 pre-build:
-#	cd ${WRKDIR}/gn-${GN_VERSION} && \
-#		env GN_VERSION=${GN_VERSION} ${PYTHON_CMD} ./build/gen.py --no-last-commit-position --platform freebsd
-#
-#	@${ECHO} "#ifndef OUT_LAST_COMMIT_POSITION_H_" > ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-#	@${ECHO} "#define OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-#	@${ECHO} "#define LAST_COMMIT_POSITION_NUM ${GN_VERSION}" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-#	@${ECHO} '#define LAST_COMMIT_POSITION "${GN_VERSION}"' >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-#	@${ECHO} "#endif  // OUT_LAST_COMMIT_POSITION_H_" >> ${WRKDIR}/gn-${GN_VERSION}/out/last_commit_position.h
-#	cd ${WRKDIR}/gn-${GN_VERSION} && \
-#		ninja -C out
-#
-#	cd ${WEBRTCDIR} && \
-#		${SETENV} ${CONFIGURE_ENV} ${WRKDIR}/gn-${GN_VERSION}/out/gn gen out/release --args='${GN_ARGS}'
 	cd ${WEBRTCDIR} && \
 		${SETENV} ${CONFIGURE_ENV} gn gen out/release --args='${GN_ARGS}'
 
