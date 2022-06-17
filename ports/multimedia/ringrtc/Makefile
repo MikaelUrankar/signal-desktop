@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.2
+DISTVERSION=	2.20.8
 CATEGORIES=	multimedia
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:base \
 		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/ringrtc/:boringssl \
@@ -55,10 +55,10 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
-WEBRTC_REV=	4896
+WEBRTC_REV=	4896c
 #GN_VERSION=	1714
 
-# modify deps.sh and sh deps.sh
+# modify scripts/webrtc_fetch.sh and sh scripts/webrtc_fetch.sh
 BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
 BORINGSSL_REV=	4d955d20d27bcf3ae71df091ad17d95229a7eb56
 BUILD_REV=	b42b2033819f95b3e43f24e541938c671110966d
@@ -100,6 +100,7 @@ MAKE_ARGS=	-C out/${BUILDTYPE}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
+# fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.8/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk
 # cd ${WRKSRC}/src/rust awk -f /usr/ports/Mk/Scripts/cargo-crates.awk Cargo.lock
 CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
