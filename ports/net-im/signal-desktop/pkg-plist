@@ -10,7 +10,7 @@ share/pixmaps/signal-desktop.png
 %%DATADIR%%/libGLESv2.so
 %%DATADIR%%/libffmpeg.so
 %%DATADIR%%/libvk_swiftshader.so
-%%DATADIR%%/libvulkan.so.1
+%%DATADIR%%/libvulkan.so
 %%DATADIR%%/locales/af.pak
 %%DATADIR%%/locales/am.pak
 %%DATADIR%%/locales/ar.pak

@@ -1,20 +1,20 @@
---- package.json.orig	2022-04-14 20:25:34.000000000 +0200
-+++ package.json	2022-04-15 13:38:50.994244000 +0200
+--- package.json.orig	2022-06-16 19:08:59.000000000 +0200
++++ package.json	2022-06-17 14:55:27.896781000 +0200
 @@ -264,7 +264,7 @@
      "cross-env": "5.2.0",
      "css-loader": "3.2.0",
      "debug": "4.3.3",
--    "electron": "17.3.1",
-+    "electron": "16.0.8",
-     "electron-builder": "23.0.1",
+-    "electron": "18.3.2",
++    "electron": "18.3.3",
+     "electron-builder": "23.0.8",
      "electron-mocha": "11.0.2",
-     "electron-notarize": "0.1.1",
+     "electron-notarize": "1.2.1",
 @@ -309,7 +309,7 @@
      "sharp/color/color-string": "1.7.4"
    },
    "engines": {
--    "node": "16.13.0"
-+    "node": "16.14.2"
+-    "node": "16.13.2"
++    "node": "16.15.1"
    },
    "build": {
      "appId": "org.whispersystems.signal-desktop",
