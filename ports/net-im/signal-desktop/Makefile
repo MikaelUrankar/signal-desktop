@@ -18,7 +18,7 @@ LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
-		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-client-node \
+		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		app-builder>0:devel/app-builder \
 		electron18:devel/electron18 \
 		npm:www/npm-node16 \
