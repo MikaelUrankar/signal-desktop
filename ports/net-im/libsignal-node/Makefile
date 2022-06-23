@@ -7,7 +7,7 @@ PKGNAMESUFFIX=	-node
 DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz:yarn
 
 MAINTAINER=	mikael@FreeBSD.org
-COMMENT=	Implementation of the Signal client protocol
+COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
