@@ -2,7 +2,7 @@ PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16.0
 CATEGORIES=	net-im
-MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn
+MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn
 PKGNAMESUFFIX=	-node
 DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz:yarn
 
