@@ -54,9 +54,10 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
+# sh net-im/signal-desktop/get_deps.sh
 WEBRTC_REV=	4896c
 
-# modify scripts/webrtc_fetch.sh and sh scripts/webrtc_fetch.sh
+# modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
 BORINGSSL_REV=	4d955d20d27bcf3ae71df091ad17d95229a7eb56
 BUILD_REV=	b42b2033819f95b3e43f24e541938c671110966d
