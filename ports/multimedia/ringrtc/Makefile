@@ -278,15 +278,6 @@ post-patch:
 	${ECHO} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
 	${ECHO} "qqchose " > ${WEBRTCDIR}/build/util/LASTCHANGE
 
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259334
-# XXX use patch files instead
-	${REINPLACE_CMD} -e 's|-D_XOPEN_SOURCE=700||' \
-		${WRKSRC}/../webrtc/src/third_party/boringssl/src/util/BUILD.toplevel \
-		${WRKSRC}/../webrtc/src/third_party/boringssl/src/util/generate_build_files.py \
-		${WRKSRC}/../webrtc/src/third_party/boringssl/src/CMakeLists.txt
-	${REINPLACE_CMD} -e 's|_XOPEN_SOURCE=700||' \
-		${WRKSRC}/../webrtc/src/third_party/boringssl/BUILD.gn
-
 pre-build:
 	cd ${WEBRTCDIR} && \
 		${SETENV} ${CONFIGURE_ENV} gn gen out/release --args='${GN_ARGS}'
