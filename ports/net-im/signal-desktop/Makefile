@@ -2,10 +2,10 @@ PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.46.0
 CATEGORIES=	net-im
-MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:yarn \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:electron_gyp \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:npm \
-		https://cocyte.westeurope.cloudapp.azure.com/signal-desktop/:sqlite
+MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
+		LOCAL/mikael/signal-desktop/:electron_gyp \
+		LOCAL/mikael/signal-desktop/:npm \
+		LOCAL/mikael/signal-desktop/:sqlite
 DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
 		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
@@ -123,7 +123,7 @@ do-build:
 	${CP} ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}/package/bin/esbuild \
 		${WRKDIR}/.cache/yarn/v6/${NPM_ESBUILD_DIR}/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
 
-# 	# Uncomment for online build
+# 	# For online build
 #	${RM} ${WRKDIR}/.npmrc
 #	cd ${WRKSRC} && \
 #		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
@@ -132,7 +132,7 @@ do-build:
 #	cd ${WRKSRC} && \
 #		${SETENV} ${MAKE_ENV} yarn build:webpack
 
- 	# Uncomment for offline build
+ 	# For offline build
 	${ECHO} offline=true > ${WRKDIR}/.npmrc
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
