@@ -1,21 +1,6 @@
 --- yarn.lock.orig	2022-06-23 21:39:35 UTC
 +++ yarn.lock
-@@ -1267,10 +1267,10 @@
-     fs-extra "^9.0.1"
-     minimist "^1.2.5"
- 
--"@electron/get@^1.14.1":
--  version "1.14.1"
--  resolved "https://registry.yarnpkg.com/@electron/get/-/get-1.14.1.tgz#16ba75f02dffb74c23965e72d617adc721d27f40"
--  integrity sha512-BrZYyL/6m0ZXz/lDxy/nlVhQz+WF+iPS6qXolEU8atw7h6v1aYkjwJZ63m+bJMBTxDE66X+r2tPS4a/8C82sZw==
-+"@electron/get@^1.13.0":
-+  version "1.13.1"
-+  resolved "https://registry.yarnpkg.com/@electron/get/-/get-1.13.1.tgz#42a0aa62fd1189638bd966e23effaebb16108368"
-+  integrity sha512-U5vkXDZ9DwXtkPqlB45tfYnnYBN8PePp1z/XDCupnSpdrxT8/ThCv9WCwPLf9oqiSGZTkH6dx2jDUPuoXpjkcA==
-   dependencies:
-     debug "^4.1.1"
-     env-paths "^2.2.0"
-@@ -6870,12 +6870,12 @@ electron-window@^0.8.0:
+@@ -6870,10 +6870,10 @@ electron-window@^0.8.0:
    dependencies:
      is-electron-renderer "^2.0.0"
  
@@ -23,13 +8,10 @@
 -  version "19.0.5"
 -  resolved "https://registry.yarnpkg.com/electron/-/electron-19.0.5.tgz#852042c3f598cf2b3874cbcccc0308002c2b3fe9"
 -  integrity sha512-gC4kPr/Mf7QbeE5NAo1AC4Zg/SXLnW0ttlyzhVdyB2aErBspWh231UhHLJUlOdaVNqitdbnppdaXjoZHsR5QzQ==
-+electron@18.3.5:
-+  version "18.3.5"
-+  resolved "https://registry.yarnpkg.com/electron/-/electron-18.3.5.tgz#a589c2bfa3fe807914a055f54f665999329b739b"
-+  integrity "sha512-/GJ39X3ijpyZiOtYQ1ha5Ly0hWiIzF19CGEapM9euaM2AZrmt79x+MckQDXqJxOaVA9YHXju5Ho6b9pB9a/2pQ=="
++electron@19.0.6:
++  version "19.0.6"
++  resolved "https://registry.npmjs.org/electron/-/electron-19.0.6.tgz#7aacfa4e968f134eecc36a1b03e3f9954ed8f6a5"
++  integrity sha512-S9Yud32nKhB0iWC0lGl2JXz4FQnCiLCnP5Vehm1/CqyeICcQGmgQaZl2HYpCJ2pesKIsYL9nsgmku/10cxm/gg==
    dependencies:
--    "@electron/get" "^1.14.1"
-+    "@electron/get" "^1.13.0"
+     "@electron/get" "^1.14.1"
      "@types/node" "^16.11.26"
-     extract-zip "^1.0.3"
- 
