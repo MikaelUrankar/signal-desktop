@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.46.0
+DISTVERSION=	5.47.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -79,8 +79,8 @@ MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
 _BUILD_DATE=	$$(date +'%s')
 
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.16.0-7acba54b7ba05f513cdcf7f555efa1ccc6ce0145-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.20.8-ebd88d19b7a520f5887e5bed529db9fa5631d07e
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.17.0-ffe6763d80f56148b45192bca29deb16f9a0aea8-integrity
+NPM_RINGRTC_DIR=	npm-ringrtc-2.20.10-4450aa43e0f95e09e61cf49e970d864b19fa9d50
 NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.0-3c4a7eebba3d5f5d8cb88fe83be1c01b8c0dea7d
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
 NPM_ESBUILD_VERS=	0.14.28
