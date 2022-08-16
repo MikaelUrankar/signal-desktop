@@ -12,7 +12,8 @@ COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	protoc:devel/protobuf \
+BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
+		protoc:devel/protobuf \
 		yarn:www/yarn-node16
 
 USES=		cargo gmake python:3.7+,build
