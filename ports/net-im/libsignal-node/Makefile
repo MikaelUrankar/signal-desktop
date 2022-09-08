@@ -1,7 +1,6 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.19.2
-PORTREVISION=	1
+DISTVERSION=	0.20.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn
 PKGNAMESUFFIX=	-node
@@ -230,8 +229,8 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		x25519-dalek-1.1.1 \
 		zeroize-1.3.0 \
 		zeroize_derive-1.3.2 \
-		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#e1c719c0964ba37e6935355e9bf19821b072797e \
-		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=lizard2\#4f0aa6653c51598daa0a2f53b8ba54ce0eedfbdd
+		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=lizard2\#4f0aa6653c51598daa0a2f53b8ba54ce0eedfbdd \
+		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#b95cb545b97395cdf5da36814f7dfb6e3856a99c
 
 MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron18 \
 		ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
@@ -260,13 +259,13 @@ post-patch:
 
 # Check hash here: https://github.com/signalapp/boring/tree/libsignal/boring-sys/deps
 post-extract:
-	${MV} ${WRKDIR}/boringssl-f1c75347daa2ea81a941e953f2263e0a4d970c8d/* ${WRKDIR}/boring-e1c719c0964ba37e6935355e9bf19821b072797e/boring-sys/deps/boringssl
-	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-e1c719c0964ba37e6935355e9bf19821b072797e/boring-sys/deps/boringssl-fips
+	${MV} ${WRKDIR}/boringssl-f1c75347daa2ea81a941e953f2263e0a4d970c8d/* ${WRKDIR}/boring-b95cb545b97395cdf5da36814f7dfb6e3856a99c/boring-sys/deps/boringssl
+	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-b95cb545b97395cdf5da36814f7dfb6e3856a99c/boring-sys/deps/boringssl-fips
 
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 	cd ${WRKSRC}/node && \
-		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional #--offline
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} yarn tsc
 
