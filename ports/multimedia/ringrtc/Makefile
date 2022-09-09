@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.14
+DISTVERSION=	2.21.0
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -56,22 +56,22 @@ EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	4896g
+WEBRTC_REV=	5005a
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
-BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
-BORINGSSL_REV=	4d955d20d27bcf3ae71df091ad17d95229a7eb56
-BUILD_REV=	b42b2033819f95b3e43f24e541938c671110966d
-BUILDTOOLS_REV=	d8c375426d8f7f4147f7d4109bb63c12655fb8d6
-CATAPULT_REV=	389f33bb40a3345b73a68613178c789476ceaecf
-ICU_REV=	a9359a84a3969b3019db7d62899afb19642eefcd
+BASE_REV=		d714333bb07eb8444f600ea4d2dc56be55730a51
+BORINGSSL_REV=		27ffcc6e19bbafddf1b59ec0bc6df2904de7eb2c
+BUILD_REV=		bb1c23c67d2328cbb89966535bfca2916854bb8e
+BUILDTOOLS_REV=		c2e4795660817c2776dbabd778b92ed58c074032
+CATAPULT_REV=		e9e999a4a88a2963b60bec778f340d3c3d00fa1a
+ICU_REV=		1fd0dbea04448c3f73fe5cb7599f9472f0f107f1
 LIBJPEG_TURBO_REV=	22f1a22c99e9dde8cd3c72ead333f425c5a7aa77
-LIBSRTP_REV=	5b7c744eb8310250ccc534f3f86a2015b3887a0a
-LIBVPX_REV=	df0d06de6d3b64e35b9e75ad72c571af061bc7b3
-LIBYUV_REV=	3aebf69d668177e7ee6dbbe0025e5c3dbb525ff2
-NASM_REV=	9215e8e1d0fe474ffd3e16c1a07a0f97089e6224
-TESTING_REV=	c4769e51cb122096ea4cdc5ed6f7e57aa2315447
-THIRD_PARTY_REV=	7835795588c74a353beb1e03b74d45fabfdf295f
+LIBSRTP_REV=		5b7c744eb8310250ccc534f3f86a2015b3887a0a
+LIBVPX_REV=		bf672f23a5336cb54dbcb2e4417142139f44cc3e
+LIBYUV_REV=		f4d25308467cbd50c2706a46fa0ddcef939e715a
+NASM_REV=		9215e8e1d0fe474ffd3e16c1a07a0f97089e6224
+TESTING_REV=		d2cc6b1f9d361923efea2c822f9e6c346861dc9f
+THIRD_PARTY_REV=	5a0acdf2e317019f2c55ad5de72a144e9a758cdf
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
@@ -100,7 +100,7 @@ MAKE_ARGS=	-C out/${BUILDTYPE}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
-# fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.14/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
+# fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.21.0/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
 CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
 		anyhow-1.0.53 \
