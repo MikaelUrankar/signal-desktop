@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.56.0
+DISTVERSION=	5.58.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -83,11 +83,11 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	19
+ELECTRON_VER_MAJOR=	20
 
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.19.2-319da45eac91fe0809bd602528f841346050b7f4-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.20.14-928dae72e8009c5cc4dfb218d3007e2808acf5ab
-NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.0-3c4a7eebba3d5f5d8cb88fe83be1c01b8c0dea7d
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.20.0-d3160575e61592dcc85cb216ff9f38074b24d554-integrity
+NPM_RINGRTC_DIR=	npm-ringrtc-2.21.0-25788b37d34e51ad3b4106173476d1366d9a4c67
+NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.1-a92f637708b41a478601c388f5a66223f766021b
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
 NPM_ESBUILD_VERS=	0.14.28
 
@@ -105,8 +105,8 @@ post-patch:
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron19/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron19 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron20/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron20 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
