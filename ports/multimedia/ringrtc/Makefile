@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.21.0
+DISTVERSION=	2.21.5
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -56,7 +56,7 @@ EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	5005a
+WEBRTC_REV=	5005b
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=		d714333bb07eb8444f600ea4d2dc56be55730a51
@@ -101,143 +101,143 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
 # fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.21.0/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
-CARGO_CRATES=	aes-0.7.5 \
-		aho-corasick-0.7.18 \
-		anyhow-1.0.53 \
+CARGO_CRATES=	aes-0.8.1 \
+		aho-corasick-0.7.19 \
+		anyhow-1.0.65 \
 		atty-0.2.14 \
 		autocfg-1.1.0 \
 		base64-0.13.0 \
 		bitflags-1.3.2 \
-		block-buffer-0.9.0 \
-		bumpalo-3.9.1 \
+		block-buffer-0.10.3 \
+		bumpalo-3.11.0 \
 		byteorder-1.4.3 \
-		bytes-1.1.0 \
-		cc-1.0.72 \
+		bytes-1.2.1 \
+		cc-1.0.73 \
 		cesu8-1.1.0 \
 		cfg-if-1.0.0 \
 		chunked_transfer-1.4.0 \
-		cipher-0.3.0 \
-		combine-4.6.3 \
-		cpufeatures-0.2.1 \
-		crypto-mac-0.11.1 \
-		cslice-0.2.0 \
-		ctr-0.8.0 \
-		curve25519-dalek-3.2.0 \
+		cipher-0.4.3 \
+		combine-4.6.6 \
+		cpufeatures-0.2.5 \
+		crypto-common-0.1.6 \
+		ctr-0.9.2 \
+		curve25519-dalek-3.2.1 \
 		digest-0.9.0 \
-		either-1.6.1 \
-		env_logger-0.8.4 \
-		fastrand-1.7.0 \
-		fixedbitset-0.2.0 \
-		form_urlencoded-1.0.1 \
-		futures-0.3.21 \
-		futures-channel-0.3.21 \
-		futures-core-0.3.21 \
-		futures-executor-0.3.21 \
-		futures-io-0.3.21 \
-		futures-macro-0.3.21 \
-		futures-sink-0.3.21 \
-		futures-task-0.3.21 \
-		futures-util-0.3.21 \
-		generic-array-0.14.5 \
+		digest-0.10.5 \
+		either-1.8.0 \
+		env_logger-0.9.1 \
+		fastrand-1.8.0 \
+		fixedbitset-0.4.2 \
+		form_urlencoded-1.1.0 \
+		futures-0.3.24 \
+		futures-channel-0.3.24 \
+		futures-core-0.3.24 \
+		futures-executor-0.3.24 \
+		futures-io-0.3.24 \
+		futures-macro-0.3.24 \
+		futures-sink-0.3.24 \
+		futures-task-0.3.24 \
+		futures-util-0.3.24 \
+		generic-array-0.14.6 \
 		getrandom-0.1.16 \
-		hashbrown-0.11.2 \
-		heck-0.3.3 \
+		hashbrown-0.12.3 \
+		heck-0.4.0 \
 		hermit-abi-0.1.19 \
 		hex-0.4.3 \
-		hkdf-0.11.0 \
-		hmac-0.11.0 \
+		hkdf-0.12.3 \
+		hmac-0.12.1 \
 		humantime-2.1.0 \
-		idna-0.2.3 \
-		indexmap-1.8.0 \
+		idna-0.3.0 \
+		indexmap-1.9.1 \
+		inout-0.1.3 \
 		instant-0.1.12 \
-		itertools-0.10.3 \
-		itoa-1.0.1 \
+		itertools-0.10.5 \
+		itoa-1.0.3 \
 		jni-0.19.0 \
 		jni-sys-0.3.0 \
-		js-sys-0.3.56 \
+		js-sys-0.3.60 \
 		lazy_static-1.4.0 \
-		libc-0.2.117 \
+		libc-0.2.134 \
 		libloading-0.6.7 \
-		log-0.4.14 \
-		matches-0.1.9 \
-		memchr-2.4.1 \
+		log-0.4.17 \
+		memchr-2.5.0 \
 		multimap-0.8.3 \
-		neon-0.9.1 \
-		neon-build-0.9.1 \
-		neon-macros-0.9.1 \
-		neon-runtime-0.9.1 \
+		neon-0.10.1 \
+		neon-build-0.10.1 \
+		neon-macros-0.10.1 \
+		neon-runtime-0.10.1 \
 		num_cpus-1.13.1 \
-		num_enum-0.5.6 \
-		num_enum_derive-0.5.6 \
-		once_cell-1.9.0 \
-		opaque-debug-0.3.0 \
-		percent-encoding-2.1.0 \
-		petgraph-0.5.1 \
-		pin-project-lite-0.2.8 \
+		num_enum-0.5.7 \
+		num_enum_derive-0.5.7 \
+		once_cell-1.15.0 \
+		percent-encoding-2.2.0 \
+		petgraph-0.6.2 \
+		pin-project-lite-0.2.9 \
 		pin-utils-0.1.0 \
 		ppv-lite86-0.2.16 \
-		proc-macro-crate-1.1.0 \
-		proc-macro2-1.0.36 \
-		prost-0.8.0 \
-		prost-build-0.8.0 \
-		prost-derive-0.8.0 \
-		prost-types-0.8.0 \
-		quote-1.0.15 \
+		proc-macro-crate-1.2.1 \
+		proc-macro2-1.0.46 \
+		prost-0.11.0 \
+		prost-build-0.11.1 \
+		prost-derive-0.11.0 \
+		prost-types-0.11.1 \
+		quote-1.0.21 \
 		rand-0.7.3 \
 		rand_chacha-0.2.2 \
 		rand_core-0.5.1 \
 		rand_hc-0.2.0 \
-		redox_syscall-0.2.10 \
-		regex-1.5.5 \
+		redox_syscall-0.2.16 \
+		regex-1.6.0 \
 		regex-automata-0.1.10 \
 		regex-syntax-0.6.27 \
 		remove_dir_all-0.5.3 \
 		ring-0.16.20 \
 		rustls-0.19.1 \
-		ryu-1.0.9 \
+		ryu-1.0.11 \
 		same-file-1.0.6 \
 		sct-0.6.1 \
 		semver-0.9.0 \
 		semver-parser-0.7.0 \
-		serde-1.0.136 \
-		serde_derive-1.0.136 \
-		serde_json-1.0.78 \
-		sha2-0.9.9 \
-		slab-0.4.5 \
-		smallvec-1.8.0 \
+		serde-1.0.145 \
+		serde_derive-1.0.145 \
+		serde_json-1.0.85 \
+		sha2-0.10.6 \
+		slab-0.4.7 \
+		smallvec-1.10.0 \
 		spin-0.5.2 \
 		static_assertions-1.1.0 \
 		subtle-2.4.1 \
-		syn-1.0.86 \
+		syn-1.0.101 \
+		syn-mid-0.5.3 \
 		synstructure-0.12.6 \
 		tempfile-3.3.0 \
-		termcolor-1.1.2 \
-		thiserror-1.0.30 \
-		thiserror-impl-1.0.30 \
-		tinyvec-1.5.1 \
+		termcolor-1.1.3 \
+		thiserror-1.0.37 \
+		thiserror-impl-1.0.37 \
+		tinyvec-1.6.0 \
 		tinyvec_macros-0.1.0 \
-		tokio-1.16.1 \
-		toml-0.5.8 \
+		tokio-1.21.2 \
+		toml-0.5.9 \
 		typenum-1.15.0 \
-		unicode-bidi-0.3.7 \
-		unicode-normalization-0.1.19 \
-		unicode-segmentation-1.9.0 \
-		unicode-xid-0.2.2 \
+		unicode-bidi-0.3.8 \
+		unicode-ident-1.0.4 \
+		unicode-normalization-0.1.22 \
+		unicode-xid-0.2.4 \
 		untrusted-0.7.1 \
 		ureq-2.2.0 \
-		url-2.2.2 \
+		url-2.3.1 \
 		version_check-0.9.4 \
 		walkdir-2.3.2 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.79 \
-		wasm-bindgen-backend-0.2.79 \
-		wasm-bindgen-macro-0.2.79 \
-		wasm-bindgen-macro-support-0.2.79 \
-		wasm-bindgen-shared-0.2.79 \
-		web-sys-0.3.56 \
+		wasm-bindgen-0.2.83 \
+		wasm-bindgen-backend-0.2.83 \
+		wasm-bindgen-macro-0.2.83 \
+		wasm-bindgen-macro-support-0.2.83 \
+		wasm-bindgen-shared-0.2.83 \
+		web-sys-0.3.60 \
 		webpki-0.21.4 \
 		webpki-roots-0.21.1 \
-		which-4.2.4 \
+		which-4.3.0 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
