@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.58.0
+DISTVERSION=	6.0.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -83,13 +83,13 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	20
+ELECTRON_VER_MAJOR=	21
 
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.20.0-d3160575e61592dcc85cb216ff9f38074b24d554-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.21.0-25788b37d34e51ad3b4106173476d1366d9a4c67
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.21.1-381d6162ae0e7719dc625780c1d6c3f9f558c33d-integrity
+NPM_RINGRTC_DIR=	npm-ringrtc-2.21.5-e062457b82340f698999470ae792ecdc3ee1af8c
 NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.1-a92f637708b41a478601c388f5a66223f766021b
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
-NPM_ESBUILD_VERS=	0.14.28
+NPM_ESBUILD_VERS=	0.15.8
 
 ESBUILD_ARCH=		${ARCH:S/aarch64/arm/:S/amd64//}
 NODE_ARCH=		${ARCH:S/aarch64/arm64/:S/amd64/x64/}
@@ -105,8 +105,8 @@ post-patch:
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron20/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron20 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron21/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron21 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
@@ -137,23 +137,23 @@ do-build:
 	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
 	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-${ESBUILD_ARCH}64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
-# 	# For online build
-#	${RM} ${WRKDIR}/.npmrc
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn generate
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn build:webpack
+ 	# For online build
+	${RM} ${WRKDIR}/.npmrc
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn install #--frozen-lockfile --ignore-optional
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn generate
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn build:webpack
 
- 	# For offline build
-	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --offline generate
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
+# 	# For offline build
+#	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn --offline generate
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
