@@ -7,7 +7,7 @@ MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official
 PKGNAMESUFFIX=	${ELECTRON_VER_MAJOR}
 DISTFILES=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX}:chromium \
 		${CHROMIUM_TEST_FONTS_HASH}:chromium_testfonts \
-		electron-yarn-cache-${ELECTRON_VER}${EXTRACT_SUFX}
+		electron-yarn-cache-${ELECTRON_VER}${EXTRACT_SUFX}:prefetch
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -175,18 +175,17 @@ GN_ARGS+=		clang_use_chrome_plugins=false \
 			use_system_freetype=false \
 			use_system_harfbuzz=true \
 			use_system_libjpeg=true \
-                	use_system_libwayland=true \
-                	use_system_wayland_scanner=true \
+			use_system_libwayland=true \
+			use_system_wayland_scanner=true \
 			use_udev=false \
 			extra_cxxflags="${CXXFLAGS}" \
-			extra_ldflags="${LDFLAGS}" \
-			chrome_pgo_phase=0
+			extra_ldflags="${LDFLAGS}"
 GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild --skip-generate-buildfiles
 
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_VERSION} < 130
+.if ${COMPILER_VERSION} != 130
 LLVM_DEFAULT=	13
 BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=	cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
@@ -253,7 +252,7 @@ post-extract:
 	${MV} ${WRKSRC}/electron/package.json ${WRKSRC}/electron/package.json.bak
 	${CP} ${FILESDIR}/package.json ${WRKSRC}/electron
 	cd ${WRKSRC}/electron && \
-		${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache yarn --frozen-lockfile #--offline
+		${SETENV} HOME=${WRKDIR} XDG_CACHE_HOME=${WRKDIR}/.cache yarn --frozen-lockfile --offline
 
 pre-patch:
 	${SH} ${FILESDIR}/apply-electron-patches.sh ${WRKSRC}
