@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.0.0
+DISTVERSION=	6.1.0-beta.1
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -85,9 +85,10 @@ _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	21
 
+# ll work/.cache/yarn/v6 | egrep "ringrtc|signal-client|npm-better-sqlite3|esbuild-freebsd-64"
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.21.1-381d6162ae0e7719dc625780c1d6c3f9f558c33d-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.21.5-e062457b82340f698999470ae792ecdc3ee1af8c
-NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.1-a92f637708b41a478601c388f5a66223f766021b
+NPM_RINGRTC_DIR=	npm-ringrtc-2.22.0-9a9d9fbc1ca43e7a0707a960ce9642dbf82dc64a/
+NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.1-afdbd49cf18d0046d7385ca4d23da20c66f00d50/
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
 NPM_ESBUILD_VERS=	0.15.8
 
