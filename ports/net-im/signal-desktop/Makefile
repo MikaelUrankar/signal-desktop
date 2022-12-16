@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.1.0-beta.1
+DISTVERSION=	6.1.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -138,23 +138,23 @@ do-build:
 	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
 	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-${ESBUILD_ARCH}64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
- 	# For online build
-	${RM} ${WRKDIR}/.npmrc
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn install #--frozen-lockfile --ignore-optional
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn generate
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} yarn build:webpack
+# 	# For online build
+#	${RM} ${WRKDIR}/.npmrc
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn generate
+#	cd ${WRKSRC} && \
+#		${SETENV} ${MAKE_ENV} yarn build:webpack
 
-# 	# For offline build
-#	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn --offline generate
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
+	# For offline build
+	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn --offline generate
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn --offline build:webpack
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
