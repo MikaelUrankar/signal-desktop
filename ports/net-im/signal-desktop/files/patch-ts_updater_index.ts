@@ -1,5 +1,5 @@
---- ts/updater/index.ts.orig	2022-12-04 09:57:09.358920000 +0100
-+++ ts/updater/index.ts	2022-12-04 09:57:29.200929000 +0100
+--- ts/updater/index.ts.orig	2022-12-04 09:57:09 UTC
++++ ts/updater/index.ts
 @@ -61,6 +61,6 @@ function autoUpdateDisabled() {
  
  function autoUpdateDisabled() {

@@ -1,5 +1,5 @@
---- ts/components/SearchInput.tsx.orig	2022-12-04 09:59:26.653818000 +0100
-+++ ts/components/SearchInput.tsx	2022-12-04 09:59:58.177111000 +0100
+--- ts/components/SearchInput.tsx.orig	2022-12-04 09:59:26 UTC
++++ ts/components/SearchInput.tsx
 @@ -67,7 +67,7 @@ export const SearchInput = forwardRef<HTMLInputElement
              const { ctrlKey, key } = event;
  
