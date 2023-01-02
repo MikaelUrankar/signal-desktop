@@ -2,14 +2,14 @@ PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.1.0
 CATEGORIES=	net-im
-MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
-		LOCAL/mikael/signal-desktop/:electron_gyp \
-		LOCAL/mikael/signal-desktop/:npm \
-		LOCAL/mikael/signal-desktop/:sqlite
-DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
-		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
-		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-		sqlcipher.tar.gz:sqlite
+#MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
+#		LOCAL/mikael/signal-desktop/:electron_gyp \
+#		LOCAL/mikael/signal-desktop/:npm \
+#		LOCAL/mikael/signal-desktop/:sqlite
+#DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
+#		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
+#		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
+#		sqlcipher.tar.gz:sqlite
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -108,29 +108,29 @@ do-build:
 	@${CP} -pR ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
 	${CHMOD} -R a+w ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
 
-	# Install libsignal_node.so and libringrtc.so binaries in the yarn cache
-	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH} \
-		 ${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd
-	${CP} ${LOCALBASE}/lib/libsignal_node.so \
-		${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH}/node.napi.node
-	${CP} ${LOCALBASE}/lib/libringrtc.so \
-		${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
-
-	# sqlcipher.tar.gz requires git-lfs to fetch, just copy a previously downloaded one (I've had to use ubuntu for that,
-	# as I didn't manage to do it with FreeBSD, see https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md for instructions)
-	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps
-	${CP} ${DISTDIR}/sqlcipher.tar.gz \
-		${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps/sqlcipher.tar.gz
-
-	# patch-package can't patch playwright-core, patch the yarn cache instead
-	${CP} ${FILESDIR}/playwrigth-registry.js \
-	 	${WRKDIR}/.cache/yarn/v6/${NPM_PLAYWRITE_DIR}/node_modules/playwright-core/lib/utils/registry.js
-
-	# patch-package can't patch sqlite3 on aarch64, patch the yarn cache instead
-	cd ${WRKDIR}/.cache/yarn/v6 && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
-
-	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
-	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-${ESBUILD_ARCH}64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
+#	# Install libsignal_node.so and libringrtc.so binaries in the yarn cache
+#	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH} \
+#		 ${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd
+#	${CP} ${LOCALBASE}/lib/libsignal_node.so \
+#		${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH}/node.napi.node
+#	${CP} ${LOCALBASE}/lib/libringrtc.so \
+#		${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
+#
+#	# sqlcipher.tar.gz requires git-lfs to fetch, just copy a previously downloaded one (I've had to use ubuntu for that,
+#	# as I didn't manage to do it with FreeBSD, see https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md for instructions)
+#	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps
+#	${CP} ${DISTDIR}/sqlcipher.tar.gz \
+#		${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/better-sqlite3/deps/sqlcipher.tar.gz
+#
+#	# patch-package can't patch playwright-core, patch the yarn cache instead
+#	${CP} ${FILESDIR}/playwrigth-registry.js \
+#	 	${WRKDIR}/.cache/yarn/v6/${NPM_PLAYWRITE_DIR}/node_modules/playwright-core/lib/utils/registry.js
+#
+#	# patch-package can't patch sqlite3 on aarch64, patch the yarn cache instead
+#	cd ${WRKDIR}/.cache/yarn/v6 && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
+#
+#	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
+#	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-${ESBUILD_ARCH}64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
 # 	# For online build
 #	${RM} ${WRKDIR}/.npmrc
