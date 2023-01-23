@@ -1,0 +1,5 @@
+
+egrep -r "BASE_URI|HASH|SQLCIPHER_VERSION|OPENSSL_VERSION" npm-@signalapp-better-sqlite3-8.0.4-53ed2074634b69e83116573b26ae1d927c4aab22-integrity
+
+URL = ${BASE_URI}/sqlcipher-${SQLCIPHER_VERSION}--${OPENSSL_VERSION}-${HASH}.tar.gz
+
