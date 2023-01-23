@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.2.0
+DISTVERSION=	6.3.0-beta.1
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -10,7 +10,6 @@ DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 		signal-desktop-${DISTVERSION}-electron-gyp-cache.tar.gz:electron_gyp \
 		signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
 		sqlcipher-4.5.2--3.0.7-4587e88a4219cb76fd595a5b73f82bfd919b235d75626f40783525f4f58a7503.tar.gz:sqlcipher
-		
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -79,12 +78,12 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	21
+ELECTRON_VER_MAJOR=	22
 
-# ll work/.cache/yarn/v6 | egrep "ringrtc|signal-client|npm-better-sqlite3|esbuild-freebsd-64"
+# ll work/.cache/yarn/v6 | egrep "@signalapp|esbuild-freebsd-64"
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.21.1-381d6162ae0e7719dc625780c1d6c3f9f558c33d-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.22.0-9a9d9fbc1ca43e7a0707a960ce9642dbf82dc64a/
-NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.0.3-c279ca3f1d1e7f6554d2a629d717e96e1ec45809-integrity/
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.23.0-982fb6268eab2eb35a61624149b5f9ce9af28907-integrity
+NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.0.4-53ed2074634b69e83116573b26ae1d927c4aab22-integrity
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
 NPM_ESBUILD_VERS=	0.15.8
 
@@ -98,8 +97,8 @@ PLIST_SUB=		NODE_ARCH=${NODE_ARCH} \
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-cache"' > ${WRKSRC}/.yarnrc
 
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron21/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron21 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron22/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron22 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
@@ -108,11 +107,11 @@ do-build:
 
 	# Install libsignal_node.so and libringrtc.so binaries in the yarn cache
 	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH} \
-		 ${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd
+		 ${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/@signalapp/ringrtc/build/freebsd
 	${CP} ${LOCALBASE}/lib/libsignal_node.so \
 		${WRKDIR}/.cache/yarn/v6/${NPM_SIGNAL_DIR}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH}/node.napi.node
 	${CP} ${LOCALBASE}/lib/libringrtc.so \
-		${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
+		${WRKDIR}/.cache/yarn/v6/${NPM_RINGRTC_DIR}/node_modules/@signalapp/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
 
 	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/@signalapp/better-sqlite3/deps
 	${CP} ${DISTDIR}/sqlcipher-4.5.2--3.0.7-4587e88a4219cb76fd595a5b73f82bfd919b235d75626f40783525f4f58a7503.tar.gz \
