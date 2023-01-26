@@ -13,6 +13,8 @@ COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+FETCH_DEPENDS=	yarn-node16>0:www/yarn-node16
+EXTRACT_DEPENDS=yarn-node16>0:www/yarn-node16
 BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		protoc:devel/protobuf \
 		yarn:www/yarn-node16
