@@ -23,7 +23,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 
-EXTRACT_DEPENDS=yarn-node16>0:www/yarn-node16
+EXTRACT_DEPENDS=jq:textproc/jq \
+		yarn-node16>0:www/yarn-node16
 BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		${LOCALBASE}/lib/libsignal_tokenizer.a:devel/signal-fts5-extension \
@@ -108,12 +109,12 @@ fetch-yarn:
 		${MKDIR} /tmp/signal-desktop; \
 		# fetch package.json and update node engine
 		${FETCH_CMD} -o - https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/package.json | \
-			jq '.engines.node = "${NODE_VERSION}"' > /tmp/signal-desktop/package.json; \
+			${PREFIX}/bin/jq '.engines.node = "${NODE_VERSION}"' > /tmp/signal-desktop/package.json; \
 		${FETCH_CMD} -o /tmp/signal-desktop/yarn.lock https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/yarn.lock; \
 		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
 			/tmp/signal-desktop/.yarnrc; \
-		# remove mock-server as it doesn't build
-		jq 'del(.devDependencies."@signalapp/mock-server")' /tmp/signal-desktop/package.json > /tmp/signal-desktop/package.json.tmp
+		# remove mock-server as it doesn't build and is useless
+		${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' /tmp/signal-desktop/package.json > /tmp/signal-desktop/package.json.tmp
 		${MV} /tmp/signal-desktop/package.json.tmp /tmp/signal-desktop/package.json
 		cd /tmp/signal-desktop && ${SETENV} HOME=/tmp/signal-desktop XDG_CACHE_HOME=/tmp/signal-desktop/.cache \
 			yarn --frozen-lockfile --ignore-scripts; \
@@ -142,10 +143,10 @@ post-extract:
 	# install yarn modules and fail silently
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
 	# Update node engine
-	jq '.engines.node = "${NODE_VERSION}"' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
+	${PREFIX}/bin/jq '.engines.node = "${NODE_VERSION}"' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
-	# remove mock-server as it doesn't build
-	jq 'del(.devDependencies."@signalapp/mock-server")' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
+	# remove mock-server as it doesn't build and is useless
+	${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline || ${TRUE}
