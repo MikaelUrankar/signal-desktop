@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.14.0
+DISTVERSION=	6.15.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -86,7 +86,7 @@ ELECTRON_VER_MAJOR=	22
 # keep NODE_VERSION in sync with www/node16 DISTVERSION
 NODE_VERSION=		16.20.0
 # bump ELECTRON_GYP_VERSION when ELECTRON_VER_MAJOR is changed
-ELECTRON_GYP_VERSION=	22.3.3
+ELECTRON_GYP_VERSION=	22.3.5
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.22.0-d57441612df46f90df68fc5d9ad45b857b9d2c44-integrity
