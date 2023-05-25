@@ -1,7 +1,6 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.22.0
-PORTREVISION=	2
+DISTVERSION=	0.24.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://nodejs.org/download/release/v${NODE_VERSION}/:node
 PKGNAMESUFFIX=	-node
@@ -37,7 +36,8 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		aes-gcm-siv-0.10.3 \
 		aho-corasick-0.7.18 \
 		anes-0.1.6 \
-		anyhow-1.0.56 \
+		anyhow-1.0.70 \
+		argon2-0.5.0 \
 		arrayref-0.3.6 \
 		asn1-0.9.1 \
 		asn1_derive-0.9.1 \
@@ -46,18 +46,22 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		autocfg-1.1.0 \
 		backtrace-0.3.64 \
 		base64-0.13.0 \
+		base64ct-1.6.0 \
 		bincode-1.3.3 \
-		bindgen-0.60.1 \
+		bindgen-0.62.0 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
 		bitflags-1.3.2 \
 		blake2-0.9.2 \
+		blake2-0.10.6 \
 		block-buffer-0.9.0 \
+		block-buffer-0.10.4 \
 		block-modes-0.8.1 \
 		block-padding-0.2.1 \
 		bumpalo-3.7.1 \
+		bytemuck-1.13.1 \
 		byteorder-1.4.3 \
-		bytes-1.1.0 \
+		bytes-1.4.0 \
 		cast-0.3.0 \
 		cc-1.0.73 \
 		cesu8-1.1.0 \
@@ -75,6 +79,7 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		clap_lex-0.2.4 \
 		cmake-0.1.48 \
 		combine-4.6.3 \
+		convert_case-0.4.0 \
 		cpufeatures-0.2.2 \
 		criterion-0.4.0 \
 		criterion-plot-0.5.0 \
@@ -82,12 +87,28 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		crossbeam-deque-0.8.1 \
 		crossbeam-epoch-0.9.8 \
 		crossbeam-utils-0.8.8 \
+		crypto-common-0.1.6 \
 		crypto-mac-0.8.0 \
 		crypto-mac-0.11.1 \
 		ctr-0.8.0 \
+		darling-0.14.4 \
+		darling_core-0.14.4 \
+		darling_macro-0.14.4 \
+		derive-where-1.2.1 \
+		derive_builder-0.12.0 \
+		derive_builder_core-0.12.0 \
+		derive_builder_macro-0.12.0 \
+		derive_more-0.99.17 \
 		digest-0.9.0 \
+		digest-0.10.6 \
 		displaydoc-0.2.3 \
+		downcast-rs-1.2.0 \
+		dunce-1.0.3 \
+		dyn-clonable-0.9.0 \
+		dyn-clonable-impl-0.9.0 \
+		dyn-clone-1.0.11 \
 		either-1.6.1 \
+		error-stack-0.3.1 \
 		fastrand-1.7.0 \
 		fixedbitset-0.4.1 \
 		fnv-1.0.7 \
@@ -95,6 +116,7 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		foreign-types-macros-0.2.2 \
 		foreign-types-shared-0.3.1 \
 		futures-core-0.3.21 \
+		futures-io-0.3.28 \
 		futures-macro-0.3.21 \
 		futures-task-0.3.21 \
 		futures-util-0.3.21 \
@@ -112,26 +134,29 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		hex-literal-0.3.4 \
 		hkdf-0.11.0 \
 		hmac-0.11.0 \
+		ident_case-1.0.1 \
 		indexmap-1.8.0 \
 		instant-0.1.12 \
 		itertools-0.10.3 \
 		itoa-1.0.1 \
 		jni-0.19.0 \
 		jni-sys-0.3.0 \
+		jobserver-0.1.26 \
 		js-sys-0.3.56 \
 		lazy_static-1.4.0 \
 		lazycell-1.3.0 \
 		libc-0.2.121 \
 		libloading-0.6.7 \
 		libloading-0.7.3 \
-		linkme-0.2.10 \
-		linkme-impl-0.2.10 \
-		log-0.4.14 \
+		linkme-0.3.9 \
+		linkme-impl-0.3.9 \
+		log-0.4.17 \
 		log-panics-2.1.0 \
 		memchr-2.4.1 \
 		memoffset-0.6.5 \
 		minimal-lexical-0.2.1 \
 		miniz_oxide-0.4.4 \
+		mp4san-0.2.0 \
 		multimap-0.8.3 \
 		neon-0.10.0 \
 		neon-build-0.10.0 \
@@ -147,6 +172,7 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		oorandom-11.1.3 \
 		opaque-debug-0.3.0 \
 		os_str_bytes-6.3.0 \
+		password-hash-0.5.0 \
 		paste-1.0.6 \
 		peeking_take_while-0.1.2 \
 		pest-2.1.3 \
@@ -159,8 +185,11 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		poly1305-0.7.2 \
 		polyval-0.5.3 \
 		ppv-lite86-0.2.16 \
+		pqcrypto-internals-0.2.4 \
+		pqcrypto-kyber-0.7.6 \
+		pqcrypto-traits-0.3.4 \
 		proc-macro-crate-1.1.3 \
-		proc-macro2-1.0.29 \
+		proc-macro2-1.0.56 \
 		proptest-1.0.0 \
 		prost-0.9.0 \
 		prost-build-0.9.0 \
@@ -168,13 +197,13 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		prost-types-0.9.0 \
 		quick-error-1.2.3 \
 		quick-error-2.0.1 \
-		quote-1.0.10 \
+		quote-1.0.26 \
 		rand-0.7.3 \
 		rand-0.8.5 \
 		rand_chacha-0.2.2 \
 		rand_chacha-0.3.1 \
 		rand_core-0.5.1 \
-		rand_core-0.6.3 \
+		rand_core-0.6.4 \
 		rand_hc-0.2.0 \
 		rand_xorshift-0.3.0 \
 		rayon-1.5.1 \
@@ -186,12 +215,14 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		rustc-demangle-0.1.21 \
 		rustc-hash-1.1.0 \
 		rustc_version-0.3.3 \
+		rustc_version-0.4.0 \
 		rusty-fork-0.3.0 \
 		ryu-1.0.9 \
 		same-file-1.0.6 \
 		scopeguard-1.1.0 \
 		semver-0.9.0 \
 		semver-0.11.0 \
+		semver-1.0.17 \
 		semver-parser-0.7.0 \
 		semver-parser-0.10.2 \
 		serde-1.0.136 \
@@ -204,19 +235,22 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		smallvec-1.8.0 \
 		snow-0.8.0 \
 		static_assertions-1.1.0 \
+		strsim-0.10.0 \
 		subtle-2.4.1 \
-		syn-1.0.80 \
+		syn-1.0.109 \
+		syn-2.0.15 \
 		syn-mid-0.5.3 \
 		synstructure-0.12.6 \
 		tempfile-3.3.0 \
 		textwrap-0.15.0 \
-		thiserror-1.0.30 \
-		thiserror-impl-1.0.30 \
+		thiserror-1.0.40 \
+		thiserror-impl-1.0.40 \
 		time-0.1.44 \
 		tinytemplate-1.2.1 \
 		toml-0.5.8 \
 		typenum-1.15.0 \
 		ucd-trie-0.1.3 \
+		unicode-ident-1.0.8 \
 		unicode-segmentation-1.9.0 \
 		unicode-xid-0.2.2 \
 		universal-hash-0.4.1 \
@@ -242,7 +276,7 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		x25519-dalek-1.1.1 \
 		zeroize-1.3.0 \
 		zeroize_derive-1.3.2 \
-		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#25e1dd8fa519ae90772008fbd4a284582096fece \
+		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#bdf9d2ac062963db2da9841744b8446eb0bf420b \
 		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=lizard2\#4f0aa6653c51598daa0a2f53b8ba54ce0eedfbdd
 
 MAKE_ENV=	HOME=${WRKDIR} \
@@ -290,8 +324,8 @@ post-patch:
 
 # Check hash here: https://github.com/signalapp/boring/tree/libsignal/boring-sys/deps
 post-extract:
-	${MV} ${WRKDIR}/boringssl-f1c75347daa2ea81a941e953f2263e0a4d970c8d/* ${WRKDIR}/boring-25e1dd8fa519ae90772008fbd4a284582096fece/boring-sys/deps/boringssl
-	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-25e1dd8fa519ae90772008fbd4a284582096fece/boring-sys/deps/boringssl-fips
+	${MV} ${WRKDIR}/boringssl-f1c75347daa2ea81a941e953f2263e0a4d970c8d/* ${WRKDIR}/boring-bdf9d2ac062963db2da9841744b8446eb0bf420b/boring-sys/deps/boringssl
+	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-bdf9d2ac062963db2da9841744b8446eb0bf420b/boring-sys/deps/boringssl-fips
 
 	${CP} ${FILESDIR}/node/package.json ${WRKSRC}/node
 
