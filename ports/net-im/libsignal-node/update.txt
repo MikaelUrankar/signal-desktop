@@ -1,3 +1,3 @@
-update yarn.lock and package.json
-fetch -o files/node https://github.com/signalapp/libsignal/blob/v0.22.2/node/yarn.lock
-fetch -o files/node https://github.com/signalapp/libsignal/blob/v0.22.2/node/package.json
+#update yarn.lock and package.json
+fetch -o files/node https://raw.githubusercontent.com/signalapp/libsignal/v0.27.0/node/yarn.lock
+fetch -o files/node https://raw.githubusercontent.com/signalapp/libsignal/v0.27.0/node/package.json
