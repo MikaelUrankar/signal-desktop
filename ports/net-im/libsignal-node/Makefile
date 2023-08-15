@@ -12,11 +12,11 @@ WWW=		https://github.com/signalapp/libsignal
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-FETCH_DEPENDS=	yarn-node16>0:www/yarn-node16
-EXTRACT_DEPENDS=yarn-node16>0:www/yarn-node16
+FETCH_DEPENDS=	yarn-node18>0:www/yarn-node18
+EXTRACT_DEPENDS=yarn-node18>0:www/yarn-node18
 BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		protoc:devel/protobuf \
-		yarn:www/yarn-node16
+		yarn:www/yarn-node18
 
 USES=		cargo gmake python:build
 USE_GITHUB=	yes
@@ -158,8 +158,8 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		libloading-0.7.4 \
 		libm-0.1.4 \
 		libm-0.2.7 \
-		linkme-0.3.9 \
-		linkme-impl-0.3.9 \
+		linkme-0.3.0 \
+		linkme-impl-0.3.0\
 		linux-raw-sys-0.3.8 \
 		log-0.4.17 \
 		log-panics-2.1.0 \
@@ -202,14 +202,14 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		pqcrypto-kyber-0.7.6 \
 		pqcrypto-traits-0.3.4 \
 		proc-macro-crate-1.3.1 \
-		proc-macro2-1.0.59 \
+		proc-macro2-1.0.63 \
 		proptest-1.2.0 \
 		prost-0.9.0 \
 		prost-build-0.9.0 \
 		prost-derive-0.9.0 \
 		prost-types-0.9.0 \
 		quick-error-1.2.3 \
-		quote-1.0.28 \
+		quote-1.0.29 \
 		rand-0.7.3 \
 		rand-0.8.5 \
 		rand_chacha-0.2.2 \
@@ -250,6 +250,7 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		subtle-2.4.1 \
 		syn-1.0.109 \
 		syn-2.0.17 \
+		syn-2.0.23 \
 		syn-mid-0.5.3 \
 		tempfile-3.5.0 \
 		termcolor-1.2.0 \
