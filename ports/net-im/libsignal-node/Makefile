@@ -158,8 +158,8 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		libloading-0.7.4 \
 		libm-0.1.4 \
 		libm-0.2.7 \
-		linkme-0.3.0 \
-		linkme-impl-0.3.0\
+		linkme-0.3.9 \
+		linkme-impl-0.3.9 \
 		linux-raw-sys-0.3.8 \
 		log-0.4.17 \
 		log-panics-2.1.0 \
@@ -314,7 +314,8 @@ CARGO_CRATES=	addr2line-0.19.0 \
 
 MAKE_ENV=	HOME=${WRKDIR} \
 		PYTHON=${PYTHON_CMD} \
-		XDG_CACHE_HOME=${WRKDIR}/.cache
+		XDG_CACHE_HOME=${WRKDIR}/.cache \
+		RUSTFLAGS=-Clink-dead-code
 
 MAKE_ENV+=	RUSTC_BOOTSTRAP=aes,polyval
 
