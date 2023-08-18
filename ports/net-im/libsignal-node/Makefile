@@ -314,8 +314,8 @@ CARGO_CRATES=	addr2line-0.19.0 \
 
 MAKE_ENV=	HOME=${WRKDIR} \
 		PYTHON=${PYTHON_CMD} \
-		XDG_CACHE_HOME=${WRKDIR}/.cache \
-		RUSTFLAGS=-Clink-dead-code
+		RUSTFLAGS=-Clink-dead-code \
+		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 MAKE_ENV+=	RUSTC_BOOTSTRAP=aes,polyval
 
