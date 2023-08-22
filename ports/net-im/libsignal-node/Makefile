@@ -312,6 +312,9 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#3809a7e1ca2f60a9495620da514f8432f148cde7 \
 		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=lizard2\#4f0aa6653c51598daa0a2f53b8ba54ce0eedfbdd
 
+# RUSTFLAGS=-Clink-dead-code is required to have a functional libsignal-node binary:
+# linkme is broken with https://github.com/dtolnay/linkme/commit/64e7c63c106848481bea8f66c4885b52c26ca9ec
+# It's probably related to https://github.com/dtolnay/linkme/issues/49
 MAKE_ENV=	HOME=${WRKDIR} \
 		PYTHON=${PYTHON_CMD} \
 		RUSTFLAGS=-Clink-dead-code \
