@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WEBRTC_REV=5615e
+WEBRTC_REV=5845d
 
 base_url="https://chromium.googlesource.com/chromium/src/base.git/+archive/"
 boringssl_url="https://boringssl.googlesource.com/boringssl.git/+archive/"
@@ -86,19 +86,19 @@ echo "fetch -o dist_tmp/testing-${testing_hash}.tar.gz ${testing_url}${testing_h
 echo "fetch -o dist_tmp/third_party-${third_party_hash}.tar.gz ${third_party_url}${third_party_hash}.tar.gz"
 
 mkdir -p base boringssl build buildtools catapult icu libjpeg_turbo libsrtp libvpx libyuv nasm testing third_party
-tar xf dist_tmp/base-${base_hash}.tar.gz -C base
-tar xf dist_tmp/boringssl-${boringssl_hash}.tar.gz -C boringssl
-tar xf dist_tmp/build-${build_hash}.tar.gz -C build
-tar xf dist_tmp/buildtools-${buildtools_hash}.tar.gz -C buildtools
-tar xf dist_tmp/catapult-${catapult_hash}.tar.gz -C catapult
-tar xf dist_tmp/icu-${icu_hash}.tar.gz -C icu
-tar xf dist_tmp/libjpeg_turbo-${libjpeg_turbo_hash}.tar.gz -C libjpeg_turbo
-tar xf dist_tmp/libsrtp-${libsrtp_hash}.tar.gz -C libsrtp
-tar xf dist_tmp/libvpx-${libvpx_hash}.tar.gz -C libvpx
-tar xf dist_tmp/libyuv-${libyuv_hash}.tar.gz -C libyuv
-tar xf dist_tmp/nasm-${nasm_hash}.tar.gz -C nasm
-tar xf dist_tmp/testing-${testing_hash}.tar.gz -C testing
-tar xf dist_tmp/third_party-${third_party_hash}.tar.gz -C third_party
+#tar xf dist_tmp/base-${base_hash}.tar.gz -C base
+#tar xf dist_tmp/boringssl-${boringssl_hash}.tar.gz -C boringssl
+#tar xf dist_tmp/build-${build_hash}.tar.gz -C build
+#tar xf dist_tmp/buildtools-${buildtools_hash}.tar.gz -C buildtools
+#tar xf dist_tmp/catapult-${catapult_hash}.tar.gz -C catapult
+#tar xf dist_tmp/icu-${icu_hash}.tar.gz -C icu
+#tar xf dist_tmp/libjpeg_turbo-${libjpeg_turbo_hash}.tar.gz -C libjpeg_turbo
+#tar xf dist_tmp/libsrtp-${libsrtp_hash}.tar.gz -C libsrtp
+#tar xf dist_tmp/libvpx-${libvpx_hash}.tar.gz -C libvpx
+#tar xf dist_tmp/libyuv-${libyuv_hash}.tar.gz -C libyuv
+#tar xf dist_tmp/nasm-${nasm_hash}.tar.gz -C nasm
+#tar xf dist_tmp/testing-${testing_hash}.tar.gz -C testing
+#tar xf dist_tmp/third_party-${third_party_hash}.tar.gz -C third_party
 
 mkdir dist_good
 tar czf dist_good/base-${base_hash}.tar.gz base
@@ -115,4 +115,4 @@ tar czf dist_good/nasm-${nasm_hash}.tar.gz nasm
 tar czf dist_good/testing-${testing_hash}.tar.gz testing
 tar czf dist_good/third_party-${third_party_hash}.tar.gz third_party
 
-rm -rf base boringssl build buildtools catapult icu libjpeg_turbo libsrtp libvpx libyuv nasm testing third_party
+#rm -rf base boringssl build buildtools catapult icu libjpeg_turbo libsrtp libvpx libyuv nasm testing third_party
