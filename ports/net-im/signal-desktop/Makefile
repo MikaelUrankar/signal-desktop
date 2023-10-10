@@ -37,9 +37,11 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libcups.so:print/cups \
 		libdbus-1.so:devel/dbus \
 		libdrm.so:graphics/libdrm \
+		libepoll-shim.so:devel/libepoll-shim \
 		libevent.so:devel/libevent \
 		libexpat.so:textproc/expat2 \
 		libFLAC.so:audio/flac \
+		libffi.so:devel/libffi \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
@@ -100,6 +102,14 @@ PLIST_SUB=	NODE_ARCH=${NODE_ARCH} \
 		SHARP_ARCH=${ARCH:S/aarch64/arm64v8/:S/amd64/x64/}
 
 YARN_TIMESTAMP=	1661146515
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == aarch64
+PLIST_SUB+=	NOT_AARCH64="@comment "
+.elif ${ARCH} == amd64
+PLIST_SUB+=	NOT_AARCH64=""
+.endif
 
 fetch-yarn:
 	if [ ! -f ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz ]; then \
@@ -227,4 +237,4 @@ create-caches-tarball:
 	cd ${WRKDIR} && \
 		${TAR} czf signal-desktop-${DISTVERSION}-npm-cache.tar.gz .npm
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
