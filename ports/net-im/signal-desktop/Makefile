@@ -133,10 +133,6 @@ fetch-yarn:
 		${RM} -r ${WRKDIR}; \
 	fi
 
-post-patch:
-	${REINPLACE_CMD} "s#%%EPOCH%%#${_BUILD_DATE}#" \
-		${WRKSRC}/ts/scripts/get-expire-time.ts
-
 post-extract:
 	# install yarn modules and fail silently
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
