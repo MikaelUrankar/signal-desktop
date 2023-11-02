@@ -1,6 +1,6 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.31.0
+DISTVERSION=	0.32.1
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	-node
 DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz
@@ -27,9 +27,11 @@ GH_TUPLE=	google:boringssl:3b74ab506eff560da3d67bfac9f1caa68bf31fbd:boringssl \
 CARGO_CRATES=	addr2line-0.20.0 \
 		adler-1.0.2 \
 		aead-0.4.3 \
+		aead-0.5.2 \
 		aes-0.7.5 \
+		aes-0.8.3 \
 		aes-gcm-0.9.2 \
-		aes-gcm-siv-0.10.1 \
+		aes-gcm-siv-0.11.1 \
 		aho-corasick-1.0.2 \
 		android-tzdata-0.1.1 \
 		android_system_properties-0.1.5 \
@@ -53,24 +55,27 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		bitflags-2.3.3 \
 		blake2-0.10.6 \
 		block-buffer-0.10.4 \
-		block-modes-0.8.1 \
-		block-padding-0.2.1 \
+		block-padding-0.3.3 \
 		bumpalo-3.13.0 \
 		bytemuck-1.13.1 \
 		byteorder-1.4.3 \
 		bytes-1.4.0 \
 		cast-0.3.0 \
+		cbc-0.1.2 \
 		cc-1.0.81 \
 		cesu8-1.1.0 \
 		cexpr-0.6.0 \
 		cfg-if-1.0.0 \
 		chacha20-0.8.2 \
+		chacha20-0.9.1 \
 		chacha20poly1305-0.9.1 \
+		chacha20poly1305-0.10.1 \
 		chrono-0.4.26 \
 		ciborium-0.2.1 \
 		ciborium-io-0.2.1 \
 		ciborium-ll-0.2.1 \
 		cipher-0.3.0 \
+		cipher-0.4.4 \
 		clang-sys-1.6.1 \
 		clap-4.3.19 \
 		clap_builder-4.3.19 \
@@ -88,7 +93,7 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		crossbeam-utils-0.8.16 \
 		crypto-common-0.1.6 \
 		ctr-0.7.0 \
-		ctr-0.8.0 \
+		ctr-0.9.2 \
 		darling-0.14.4 \
 		darling_core-0.14.4 \
 		darling_macro-0.14.4 \
@@ -124,6 +129,7 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		generic-array-0.14.7 \
 		getrandom-0.2.10 \
 		ghash-0.4.4 \
+		ghash-0.5.0 \
 		gimli-0.27.3 \
 		glob-0.3.1 \
 		half-1.8.2 \
@@ -141,10 +147,11 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		ident_case-1.0.1 \
 		indexmap-1.9.3 \
 		indexmap-2.0.0 \
+		inout-0.1.3 \
 		is-terminal-0.4.9 \
 		itertools-0.10.5 \
 		itoa-1.0.9 \
-		jni-0.19.0 \
+		jni-0.21.1 \
 		jni-sys-0.3.0 \
 		jobserver-0.1.26 \
 		js-sys-0.3.64 \
@@ -189,7 +196,9 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		plotters-backend-0.3.5 \
 		plotters-svg-0.3.5 \
 		poly1305-0.7.2 \
+		poly1305-0.8.0 \
 		polyval-0.5.3 \
+		polyval-0.6.1 \
 		ppv-lite86-0.2.17 \
 		pqcrypto-internals-0.2.4 \
 		pqcrypto-kyber-0.7.6 \
@@ -228,11 +237,12 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		serde-1.0.180 \
 		serde_derive-1.0.180 \
 		serde_json-1.0.104 \
-		sha-1-0.10.1 \
+		sha1-0.10.5 \
 		sha2-0.10.7 \
 		shlex-1.1.0 \
 		slab-0.4.8 \
 		smallvec-1.11.0 \
+		snow-0.9.3 \
 		static_assertions-1.1.0 \
 		strsim-0.10.0 \
 		subtle-2.5.0 \
@@ -252,6 +262,7 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		unicode-ident-1.0.11 \
 		unicode-segmentation-1.10.1 \
 		universal-hash-0.4.0 \
+		universal-hash-0.5.1 \
 		unzip3-1.0.0 \
 		uuid-1.4.1 \
 		variant_count-1.1.0 \
@@ -272,21 +283,30 @@ CARGO_CRATES=	addr2line-0.20.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		windows-0.48.0 \
+		windows-sys-0.45.0 \
 		windows-sys-0.48.0 \
+		windows-targets-0.42.2 \
 		windows-targets-0.48.1 \
+		windows_aarch64_gnullvm-0.42.2 \
 		windows_aarch64_gnullvm-0.48.0 \
+		windows_aarch64_msvc-0.42.2 \
 		windows_aarch64_msvc-0.48.0 \
+		windows_i686_gnu-0.42.2 \
 		windows_i686_gnu-0.48.0 \
+		windows_i686_msvc-0.42.2 \
 		windows_i686_msvc-0.48.0 \
+		windows_x86_64_gnu-0.42.2 \
 		windows_x86_64_gnu-0.48.0 \
+		windows_x86_64_gnullvm-0.42.2 \
 		windows_x86_64_gnullvm-0.48.0 \
+		windows_x86_64_msvc-0.42.2 \
 		windows_x86_64_msvc-0.48.0 \
 		winnow-0.5.3 \
+		x25519-dalek-2.0.0 \
 		zeroize-1.6.0 \
 		zeroize_derive-1.4.2 \
-		curve25519-dalek,curve25519-dalek-derive,x25519-dalek@git+https://github.com/signalapp/curve25519-dalek?tag=signal-curve25519-4.0.0\#463e5c7cba32561ffee8a281c4455ff3c25660d4 \
-		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#3809a7e1ca2f60a9495620da514f8432f148cde7 \
-		snow@git+https://github.com/mcginty/snow.git?rev=586292364a30ecc74c785228b41e60b3ef03e773\#586292364a30ecc74c785228b41e60b3ef03e773
+		curve25519-dalek,curve25519-dalek-derive@git+https://github.com/signalapp/curve25519-dalek?tag=signal-curve25519-4.0.0\#463e5c7cba32561ffee8a281c4455ff3c25660d4 \
+		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#3809a7e1ca2f60a9495620da514f8432f148cde7
 
 # RUSTFLAGS=-Clink-dead-code is required to have a functional libsignal-node binary:
 # linkme is broken with https://github.com/dtolnay/linkme/commit/64e7c63c106848481bea8f66c4885b52c26ca9ec
