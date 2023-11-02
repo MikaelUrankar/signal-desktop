@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.35.0
+DISTVERSION=	6.37.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -81,14 +81,12 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
-MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
-
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	25
 
 # sh get_deps.sh
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.31.0-f420a009f97b80ba5da216b9cdaec543f3ef7097-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.32.1-e1ac48debb399ceff8f2868f0b5ecb75c2fc2ed0-integrity
 NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.33.0-a18baa71c43e4a4d5ea996febcdfaac4e5a62f51-integrity
 NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.5.2-910669f44e76a46d06df45fabefcd3ac2e7c4cce-integrity
 NPM_ESBUILD_VERS=	0.17.11
