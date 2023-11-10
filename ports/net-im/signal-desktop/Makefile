@@ -179,7 +179,7 @@ do-build:
 		${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/@signalapp/better-sqlite3/deps/download.js
 
 	# patch-package can't patch sqlite3 on aarch64, patch the yarn cache instead
-#	cd ${WRKDIR}/.cache/yarn/v6 && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
+	cd ${WRKDIR}/.cache/yarn/v6 && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
 
 	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
 	${TAR} -xf ${WRKDIR}/yarn-offline-cache/@esbuild-freebsd-${ESBUILD_ARCH}-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
