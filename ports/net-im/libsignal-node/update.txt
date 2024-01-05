@@ -1,9 +1,9 @@
-vers=0.32.1
+vers=0.36.0
 
 echo DISTVERSION=${vers} | portedit merge -i Makefile
 make makesum
 
-fetch -qo - https://raw.githubusercontent.com/signalapp/libsignal/v0.32.0/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
+fetch -qo - https://raw.githubusercontent.com/signalapp/libsignal/v0.36.0/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
 make cargo-crates-merge
 
 fetch -o files/node https://raw.githubusercontent.com/signalapp/libsignal/v${vers}/node/yarn.lock
