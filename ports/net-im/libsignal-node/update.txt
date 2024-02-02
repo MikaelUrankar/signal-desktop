@@ -1,4 +1,4 @@
-vers=0.36.0
+vers=0.39.1
 
 echo DISTVERSION=${vers} | portedit merge -i Makefile
 make makesum
