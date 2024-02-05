@@ -29,7 +29,6 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		jq:textproc/jq \
 		npm:www/npm-node18 \
-		vips>0:graphics/vips \
 		yarn:www/yarn-node18
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libatk-bridge-2.0.so:accessibility/at-spi2-core \
