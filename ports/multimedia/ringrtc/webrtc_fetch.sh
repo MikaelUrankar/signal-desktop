@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WEBRTC_REV=6099a
+WEBRTC_REV=6099b
 # XXX also change fetch opus
 
 base_url="https://chromium.googlesource.com/chromium/src/base.git/+archive/"

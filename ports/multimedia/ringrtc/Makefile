@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.37.0
+DISTVERSION=	2.37.1
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -55,7 +55,7 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	6099a
+WEBRTC_REV=	6099b
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=		1546e3adb67bb711ca2fd39c3913cb56bd889748
@@ -71,7 +71,7 @@ LIBYUV_REV=		04821d1e7d60845525e8db55c7bcd41ef5be9406
 NASM_REV=		7fc833e889d1afda72c06220e5bed8fb43b2e5ce
 TESTING_REV=		46366a7e4d08bf9fceeb3c1c3b5eab8a6a5024b5
 THIRD_PARTY_REV=	64d9ec3158b4629163f88b779a53e16f1cc24f81
-OPUS_REV=		593419e833acab4d15b4901fe156177fb7315468
+OPUS_REV=		c38dc29860a72540eb2c4fdb8a8bfb27ef94ddf3
 
 BINARY_ALIAS=	vpython3=${PYTHON_CMD}
 
