@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.48.1
+DISTVERSION=	7.0.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -87,8 +87,8 @@ _BUILD_DATE=	$$(date +'%s')
 ELECTRON_VER_MAJOR=	28
 
 # sh get_deps.sh
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.39.1-15b41f15c516ae3eecf8a098a9c9c7aac00444d7-integrity
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.37.0-d8f98d839c8cd8737acacdec111fb3bf272af54c-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.40.0-2997f44b69d4d73aa474550243998b628d0d3a1a-integrity
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.37.1-2edd9c55e4c26505e42b24fbff745e47e1991e6d-integrity
 NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.6.0-0413f4d0626b99838cd64ad09c88720aa2bec6ed-integrity
 NPM_ESBUILD_VERS=	0.18.20
 SQLCIPHER=		sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
