@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.2.0
+DISTVERSION=	7.3.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:npm \
 		https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:sqlite \
@@ -84,7 +84,7 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	29
+ELECTRON_VER_MAJOR=	28
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.40.1-07ed6d3da9d2458aa7e66f5a71a8a7ef6b4a467a-integrity
