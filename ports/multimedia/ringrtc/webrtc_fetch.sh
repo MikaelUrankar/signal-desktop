@@ -65,8 +65,8 @@ printf "NASM_REV=\t${nasm_hash}\n"
 printf "NASM_REV=\t${nasm_hash}\n" | portedit merge -i Makefile
 
 opus_hash=$(grep 'opus.git@' /tmp/DEPS | awk -F '@' '{print $2}' | sed -e "s#',##" -e "s#'##")
-printf "OPUS_REV=\t${boringssl_hash}\n"
-printf "OPUS_REV=\t${boringssl_hash}\n" | portedit merge -i Makefile
+printf "OPUS_REV=\t${opus_hash}\n"
+printf "OPUS_REV=\t${opus_hash}\n" | portedit merge -i Makefile
 
 testing_hash=$(grep 'testing@' /tmp/DEPS | awk -F '@' '{print $2}' | sed -e "s#',##" -e "s#'##")
 printf "TESTING_REV=\t${testing_hash}\n"
