@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.39.0
+DISTVERSION=	2.39.2
 CATEGORIES=	multimedia
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:base \
 		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:boringssl \
@@ -55,7 +55,7 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	6261b
+WEBRTC_REV=	6261c
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=		36ecc8e397422620def3bb19a7ba392810ca2442
