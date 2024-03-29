@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.3.0
+DISTVERSION=	7.4.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:npm \
 		https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:sqlite \
@@ -87,8 +87,8 @@ _BUILD_DATE=	$$(date +'%s')
 ELECTRON_VER_MAJOR=	28
 
 # sh get_deps.sh
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.40.1-07ed6d3da9d2458aa7e66f5a71a8a7ef6b4a467a-integrity
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.39.0-134f7714b19db47aac0eaf16d007cb1ff342ef9e-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.41.2-da8d415168ab1f89c0b6e05d259feab60893e717-integrity
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.39.2-3b15a83f87c42ec068261270a9161451bef7fef1-integrity
 NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.7.1-0a09293aa833b836ec6b17f6ab0e790097f3fdeb-integrity
 NPM_ESBUILD_VERS=	0.18.20
 SQLCIPHER=		sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
