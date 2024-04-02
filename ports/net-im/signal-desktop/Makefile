@@ -184,6 +184,8 @@ do-build:
 	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
 	${TAR} -xf ${WRKDIR}/yarn-offline-cache/@esbuild-freebsd-${ESBUILD_ARCH}-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
+	${CP} ${FILESDIR}/dns-fallback.json ${WRKSRC}/build
+
 	# For offline build
 	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
 	cd ${WRKSRC} && \
