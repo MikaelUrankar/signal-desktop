@@ -224,4 +224,11 @@ do-install:
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@nodert-win10-rs4
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@signalapp/windows-dummy-keystroke
 
+create-caches-tarball:
+	# do some cleanup first
+	${RM} -r  ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked ${WRKDIR}/.cache/yarn/v6/.tmp
+
+	cd ${WRKDIR} && \
+		${TAR} czf signal-desktop-${DISTVERSION}-npm-cache.tar.gz .npm
+
 .include <bsd.port.post.mk>
