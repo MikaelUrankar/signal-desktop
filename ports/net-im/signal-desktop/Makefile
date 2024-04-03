@@ -84,7 +84,7 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	28
+ELECTRON_VER_MAJOR=	29
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.41.2-da8d415168ab1f89c0b6e05d259feab60893e717-integrity
