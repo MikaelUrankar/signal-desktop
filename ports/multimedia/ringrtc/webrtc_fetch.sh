@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WEBRTC_REV=6261c
+WEBRTC_REV=6261d
 OPUS_BRANCH=6261
 # XXX also change fetch opus
 
