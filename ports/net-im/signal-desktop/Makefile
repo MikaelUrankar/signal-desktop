@@ -2,9 +2,9 @@ PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.5.0
 CATEGORIES=	net-im
-MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:npm \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:sqlite \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/signal-desktop/:yarn \
+MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
+		LOCAL/mikael/signal-desktop/:sqlite \
+		LOCAL/mikael/signal-desktop/:yarn \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
 DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 		signal-desktop-6.37.0-npm-cache.tar.gz:npm \
