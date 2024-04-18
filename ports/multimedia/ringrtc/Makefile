@@ -2,20 +2,20 @@ PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.39.3
 CATEGORIES=	multimedia
-MASTER_SITES=	https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:base \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:boringssl \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:build \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:buildtools \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:catapult \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:icu \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:nasm \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:libjpeg_turbo \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:libsrtp \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:libvpx \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:libyuv \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:third_party \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:testing \
-		https://cocyte.westeurope.cloudapp.azure.com/mikael/ringrtc/:opus
+MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
+		LOCAL/mikael/ringrtc/:boringssl \
+		LOCAL/mikael/ringrtc/:build \
+		LOCAL/mikael/ringrtc/:buildtools \
+		LOCAL/mikael/ringrtc/:catapult \
+		LOCAL/mikael/ringrtc/:icu \
+		LOCAL/mikael/ringrtc/:nasm \
+		LOCAL/mikael/ringrtc/:libjpeg_turbo \
+		LOCAL/mikael/ringrtc/:libsrtp \
+		LOCAL/mikael/ringrtc/:libvpx \
+		LOCAL/mikael/ringrtc/:libyuv \
+		LOCAL/mikael/ringrtc/:third_party \
+		LOCAL/mikael/ringrtc/:testing \
+		LOCAL/mikael/ringrtc/:opus
 DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
 		build-${BUILD_REV}.tar.gz:build \
