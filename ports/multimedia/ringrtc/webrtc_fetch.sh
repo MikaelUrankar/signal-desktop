@@ -1,7 +1,6 @@
 #!/bin/sh
 
-WEBRTC_REV=6261d
-OPUS_BRANCH=6261
+WEBRTC_REV=6261e
 
 base_url="https://chromium.googlesource.com/chromium/src/base.git/+archive/"
 boringssl_url="https://boringssl.googlesource.com/boringssl.git/+archive/"
@@ -96,8 +95,9 @@ do
 done
 
 if [ ! -f /usr/ports/distfiles/opus-${opus_hash}.tar.gz ] && [ ! -f dist_good/opus-${opus_hash}.tar.gz ]; then
+	echo "Fetching Opus"
 	mkdir -p opus
-	fetch -qo - https://codeload.github.com/signalapp/opus/tar.gz/webrtc-${OPUS_BRANCH}?dummy=/ | tar xf - -C opus --strip-components 1
+	fetch -qo - https://codeload.github.com/xiph/opus/tar.gz/${opus_hash}?dummy=/ | tar xf - -C opus --strip-components 1
 	tar czf dist_good/opus-${opus_hash}.tar.gz opus
 	rm -rf dist_tmp/opus-${opus_hash}.tar.gz opus
 fi
