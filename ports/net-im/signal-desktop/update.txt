@@ -3,4 +3,3 @@ sh get_deps.sh
 bump portrevision in Makefile
 make fetch-yarn
 make makesum
-cp /tmp/signal-desktop/yarn.lock files

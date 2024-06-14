@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.11.0
+DISTVERSION=	7.12.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -84,7 +84,7 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	29
+ELECTRON_VER_MAJOR=	30
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.46.2-5f6139a7f585259dc5603ef27990b345afbbcc60-integrity
@@ -153,8 +153,8 @@ do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
 	${ECHO_CMD} 'nodedir "${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers"' >> ${WRKSRC}/.yarnrc
 
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron29/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron29 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron30/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron30 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
