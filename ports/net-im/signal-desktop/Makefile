@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.13.0
+DISTVERSION=	7.15.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -87,9 +87,9 @@ _BUILD_DATE=	$$(date +'%s')
 ELECTRON_VER_MAJOR=	30
 
 # sh get_deps.sh
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.50.0-5cff29a49b658916aa277943d0fc01a2668ef0c6-integrity
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.42.0-de6e58bf780279dad63a3877b79643b7dace461f-integrity
-NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.7.1-0a09293aa833b836ec6b17f6ab0e790097f3fdeb-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.51.1--integrity
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.44.2--integrity
+NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.7.1--integrity
 NPM_ESBUILD_VERS=	0.18.20
 SQLCIPHER=		sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
@@ -110,29 +110,30 @@ PLIST_SUB+=	NOT_AARCH64="@comment "
 PLIST_SUB+=	NOT_AARCH64=""
 .endif
 
-fetch-yarn:
-	if [ ! -f ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz ]; then \
-		${MKDIR} /tmp/signal-desktop; \
-		${FETCH_CMD} -o - https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/package.json | \
-			${PREFIX}/bin/jq '.devDependencies.esbuild = "0.18.20"' | \
-			${PREFIX}/bin/jq '.engines.node = ""' > /tmp/signal-desktop/package.json; \
-		${FETCH_CMD} -o /tmp/signal-desktop/yarn.lock https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/yarn.lock; \
-		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
-			/tmp/signal-desktop/.yarnrc; \
-		${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' /tmp/signal-desktop/package.json > /tmp/signal-desktop/package.json.tmp; \
-		${MV} /tmp/signal-desktop/package.json.tmp /tmp/signal-desktop/package.json; \
-		cd /tmp/signal-desktop && ${SETENV} HOME=/tmp/signal-desktop XDG_CACHE_HOME=/tmp/signal-desktop/.cache \
-			yarn  --ignore-scripts; \
-		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
-			-e 's:time=[0-9.]*:time=${YARN_TIMESTAMP}.000000000:' \
-			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
-			-e 's:flags=.*:flags=none:' \
-			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
-		${TAR} cJf ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz  \
-			@yarn-offline-cache.mtree; \
-		${RM} -r ${WRKDIR}; \
-		${CP} /tmp/signal-desktop/yarn.lock ${FILESDIR}; \
-	fi
+#fetch-yarn:
+#	if [ ! -f ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz ]; then \
+#		${MKDIR} /tmp/signal-desktop; \
+#		${FETCH_CMD} -o - https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/package.json | \
+#			${PREFIX}/bin/jq '.devDependencies.esbuild = "0.18.20"' | \
+#			${PREFIX}/bin/jq '.engines.node = ""' > /tmp/signal-desktop/package.json; \
+#		${FETCH_CMD} -o /tmp/signal-desktop/yarn.lock https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/yarn.lock; \
+#		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
+#			/tmp/signal-desktop/.yarnrc; \
+#		${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' /tmp/signal-desktop/package.json > /tmp/signal-desktop/package.json.tmp; \
+#		${MV} /tmp/signal-desktop/package.json.tmp /tmp/signal-desktop/package.json; \
+#		cd /tmp/signal-desktop && ${SETENV} HOME=/tmp/signal-desktop XDG_CACHE_HOME=/tmp/signal-desktop/.cache \
+#			yarn  --ignore-scripts; \
+#		${MTREE_CMD} -cbnSp yarn-offline-cache | ${MTREE_CMD} -C | ${SED} \
+#			-e 's:time=[0-9.]*:time=${YARN_TIMESTAMP}.000000000:' \
+#			-e 's:\([gu]id\)=[0-9]*:\1=0:g' \
+#			-e 's:flags=.*:flags=none:' \
+#			-e 's:^\.:./yarn-offline-cache:' > yarn-offline-cache.mtree; \
+#
+#		${TAR} cJf ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz  \
+#			@yarn-offline-cache.mtree; \
+#		${RM} -r ${WRKDIR}; \
+#		${CP} /tmp/signal-desktop/yarn.lock ${FILESDIR}; \
+#	fi
 
 post-extract:
 	# install yarn modules and fail silently
