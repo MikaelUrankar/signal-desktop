@@ -1,4 +1,4 @@
---- src/webrtc/src/build/gn_run_binary.py.orig	2019-07-24 18:58:02 UTC
+--- src/webrtc/src/build/gn_run_binary.py.orig	2023-03-09 06:31:50 UTC
 +++ src/webrtc/src/build/gn_run_binary.py
 @@ -23,7 +23,7 @@ if not os.path.isabs(path):
  # The rest of the arguments are passed directly to the executable.

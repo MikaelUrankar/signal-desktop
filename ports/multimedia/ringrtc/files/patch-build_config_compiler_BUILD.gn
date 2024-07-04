@@ -1,4 +1,4 @@
---- src/webrtc/src/build/config/compiler/BUILD.gn.orig	2022-02-16 12:34:12 UTC
+--- src/webrtc/src/build/config/compiler/BUILD.gn.orig	2024-06-18 16:34:35 UTC
 +++ src/webrtc/src/build/config/compiler/BUILD.gn
 @@ -199,7 +199,7 @@ declare_args() {
    # This greatly reduces the size of debug builds, at the cost of
@@ -9,7 +9,7 @@
  }
  
  declare_args() {
-@@ -251,13 +251,16 @@ config("no_unresolved_symbols") {
+@@ -251,13 +251,16 @@ config("default_include_dirs") {
  # Compiler instrumentation can introduce dependencies in DSOs to symbols in
  # the executable they are loaded into, so they are unresolved at link-time.
  config("no_unresolved_symbols") {
@@ -22,7 +22,7 @@
      ]
    }
 +  if (current_cpu == "x86" && is_openbsd) {
-+    ldflags = [ "-Wl,-z,notext" ]
++    ldflags = [ "-Wl,-z,notext", "-Wl,--strip-all" ]
 +  }
  }
  
@@ -74,7 +74,7 @@
        # TODO(https://crbug.com/1231236): Use -ffile-compilation-dir= here.
        cflags += [
          "-Xclang",
-@@ -1575,7 +1582,7 @@ config("clang_revision") {
+@@ -1575,7 +1582,7 @@ config("compiler_deterministic") {
  }
  
  config("clang_revision") {

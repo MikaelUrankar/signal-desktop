@@ -1,4 +1,4 @@
---- src/webrtc/src/build/config/linux/pkg-config.py.orig	2019-07-24 18:58:02 UTC
+--- src/webrtc/src/build/config/linux/pkg-config.py.orig	2023-03-09 06:31:50 UTC
 +++ src/webrtc/src/build/config/linux/pkg-config.py
 @@ -108,7 +108,7 @@ def main():
    # If this is run on non-Linux platforms, just return nothing and indicate

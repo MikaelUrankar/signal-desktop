@@ -1,4 +1,4 @@
---- src/webrtc/src/build/detect_host_arch.py.orig	2019-07-24 18:58:02 UTC
+--- src/webrtc/src/build/detect_host_arch.py.orig	2023-03-09 06:31:50 UTC
 +++ src/webrtc/src/build/detect_host_arch.py
 @@ -20,6 +20,8 @@ def HostArch():
      host_arch = 'ia32'
