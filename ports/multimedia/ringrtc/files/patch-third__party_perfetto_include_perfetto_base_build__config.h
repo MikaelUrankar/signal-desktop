@@ -1,5 +1,5 @@
---- third_party/perfetto/include/perfetto/base/build_config.h.orig	2022-02-07 13:39:41 UTC
-+++ third_party/perfetto/include/perfetto/base/build_config.h
+--- src/webrtc/src/third_party/perfetto/include/perfetto/base/build_config.h.orig	2022-02-07 13:39:41 UTC
++++ src/webrtc/src/third_party/perfetto/include/perfetto/base/build_config.h
 @@ -27,6 +27,7 @@
  #if defined(__ANDROID__)
  #define PERFETTO_BUILDFLAG_DEFINE_PERFETTO_OS_ANDROID() 1

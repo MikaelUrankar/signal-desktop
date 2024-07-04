@@ -1,5 +1,5 @@
---- third_party/perfetto/src/tracing/track.cc.orig	2023-05-31 08:12:17 UTC
-+++ third_party/perfetto/src/tracing/track.cc
+--- src/webrtc/src/third_party/perfetto/src/tracing/track.cc.orig	2023-05-31 08:12:17 UTC
++++ src/webrtc/src/third_party/perfetto/src/tracing/track.cc
 @@ -143,7 +143,7 @@ namespace internal {
  namespace {
  

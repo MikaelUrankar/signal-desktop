@@ -1,5 +1,5 @@
---- third_party/perfetto/protos/perfetto/trace/ftrace/v4l2.proto.orig	2022-09-24 10:57:32 UTC
-+++ third_party/perfetto/protos/perfetto/trace/ftrace/v4l2.proto
+--- src/webrtc/src/third_party/perfetto/protos/perfetto/trace/ftrace/v4l2.proto.orig	2022-09-24 10:57:32 UTC
++++ src/webrtc/src/third_party/perfetto/protos/perfetto/trace/ftrace/v4l2.proto
 @@ -10,7 +10,7 @@ message V4l2QbufFtraceEvent {
    optional uint32 field = 2;
    optional uint32 flags = 3;

@@ -1,5 +1,5 @@
---- third_party/perfetto/include/perfetto/base/thread_utils.h.orig	2023-01-11 09:17:16 UTC
-+++ third_party/perfetto/include/perfetto/base/thread_utils.h
+--- src/webrtc/src/third_party/perfetto/include/perfetto/base/thread_utils.h.orig	2023-01-11 09:17:16 UTC
++++ src/webrtc/src/third_party/perfetto/include/perfetto/base/thread_utils.h
 @@ -34,6 +34,7 @@ __declspec(dllimport) unsigned long __stdcall GetCurre
  #include <sys/syscall.h>
  #include <sys/types.h>

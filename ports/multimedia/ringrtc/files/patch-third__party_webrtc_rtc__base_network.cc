@@ -1,6 +1,6 @@
---- src/webrtc/src/rtc_base/network.cc.orig	2021-01-28 23:16:17 UTC
+--- src/webrtc/src/rtc_base/network.cc.orig	2024-06-17 12:56:06 UTC
 +++ src/webrtc/src/rtc_base/network.cc
-@@ -244,7 +244,12 @@ AdapterType GetAdapterTypeFromName(const char* network
+@@ -290,7 +290,12 @@ AdapterType GetAdapterTypeFromName(absl::string_view n
    }
  #endif
  
@@ -12,4 +12,4 @@
 +#endif
  }
  
- NetworkManager::NetworkManager() {}
+ NetworkManager::EnumerationPermission NetworkManager::enumeration_permission()

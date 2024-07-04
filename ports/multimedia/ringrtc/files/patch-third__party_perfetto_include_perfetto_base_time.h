@@ -1,5 +1,5 @@
---- third_party/perfetto/include/perfetto/base/time.h.orig	2024-05-21 18:07:39 UTC
-+++ third_party/perfetto/include/perfetto/base/time.h
+--- src/webrtc/src/third_party/perfetto/include/perfetto/base/time.h.orig	2024-05-21 18:07:39 UTC
++++ src/webrtc/src/third_party/perfetto/include/perfetto/base/time.h
 @@ -201,6 +201,9 @@ inline TimeNanos GetTimeInternalNs(clockid_t clk_id) {
  // Return ns from boot. Conversely to GetWallTimeNs, this clock counts also time
  // during suspend (when supported).

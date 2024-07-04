@@ -1,5 +1,5 @@
---- third_party/perfetto/src/base/unix_socket.cc.orig	2023-09-13 12:11:42 UTC
-+++ third_party/perfetto/src/base/unix_socket.cc
+--- src/webrtc/src/third_party/perfetto/src/base/unix_socket.cc.orig	2023-09-13 12:11:42 UTC
++++ src/webrtc/src/third_party/perfetto/src/base/unix_socket.cc
 @@ -44,7 +44,7 @@
  #include <unistd.h>
  #endif

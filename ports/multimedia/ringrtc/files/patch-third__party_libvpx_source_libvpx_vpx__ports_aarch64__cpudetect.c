@@ -2,7 +2,7 @@
 
 --- src/webrtc/src/third_party/libvpx/source/libvpx/vpx_ports/aarch64_cpudetect.c.orig	2024-02-09 17:15:31 UTC
 +++ src/webrtc/src/third_party/libvpx/source/libvpx/vpx_ports/aarch64_cpudetect.c
-@@ -91,9 +91,23 @@ static int arm_get_cpu_caps(void) {
+@@ -92,9 +92,23 @@ static int arm_get_cpu_caps(void) {
    return flags;
  }
  

@@ -1,5 +1,5 @@
---- third_party/perfetto/src/base/periodic_task.cc.orig	2023-04-05 11:05:06 UTC
-+++ third_party/perfetto/src/base/periodic_task.cc
+--- src/webrtc/src/third_party/perfetto/src/base/periodic_task.cc.orig	2023-04-05 11:05:06 UTC
++++ src/webrtc/src/third_party/perfetto/src/base/periodic_task.cc
 @@ -24,7 +24,7 @@
  #include "perfetto/base/time.h"
  #include "perfetto/ext/base/file_utils.h"
