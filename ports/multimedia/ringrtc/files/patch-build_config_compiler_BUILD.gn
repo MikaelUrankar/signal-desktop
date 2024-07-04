@@ -98,29 +98,11 @@
        ]
  
 -      if (!is_nacl) {
-+      if (!is_nacl && !is_bsd) {
++      if (!is_nacl && !is_openbsd) {
          cflags_cc += [
            # TODO(crbug.com/41486292): Fix and re-enable.
            "-Wno-c++11-narrowing-const-reference",
-@@ -2039,7 +2043,7 @@ config("chromium_code") {
-     ]
- 
-     # Thread safety analysis is broken under nacl: https://crbug.com/982423.
--    if (!is_nacl || is_nacl_saigo) {
-+    if (!is_bsd && (!is_nacl || is_nacl_saigo)) {
-       cflags += [
-         # Thread safety analysis. See base/thread_annotations.h and
-         # https://clang.llvm.org/docs/ThreadSafetyAnalysis.html
-@@ -2088,7 +2092,7 @@ config("no_chromium_code") {
-       # third-party libraries.
-       "-Wno-c++11-narrowing",
-     ]
--    if (!is_nacl) {
-+    if (!is_nacl && !is_freebsd) {
-       cflags += [
-         # Disabled for similar reasons as -Wunused-variable.
-         "-Wno-unused-but-set-variable",
-@@ -2616,7 +2620,7 @@ config("afdo") {
+@@ -2616,7 +2620,7 @@ config("afdo_optimize_size") {
  # There are some targeted places that AFDO regresses, so we provide a separate
  # config to allow AFDO to be disabled per-target.
  config("afdo") {
