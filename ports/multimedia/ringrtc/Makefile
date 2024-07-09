@@ -50,9 +50,10 @@ BUILD_DEPENDS=	gn:devel/gn \
 		protoc:devel/protobuf
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libpulse.so:audio/pulseaudio
 
-USES=		cargo gnome localbase:ldflags ninja pkgconfig python:build \
+USES=		cargo gnome jpeg localbase:ldflags ninja pkgconfig python:build \
 		tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
