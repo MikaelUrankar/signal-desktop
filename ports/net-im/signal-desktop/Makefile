@@ -6,7 +6,6 @@ MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
 DISTFILES=	signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
 		${SQLCIPHER}.tar.gz:sqlcipher
-#DISTFILES=	${SQLCIPHER}.tar.gz:sqlcipher
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -17,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 
-EXTRACT_DEPENDS=jq:textproc/jq
+EXTRACT_DEPENDS=jq:textproc/jq \
+		npm:www/npm-node20
 BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl \
 		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
@@ -129,7 +129,6 @@ do-build:
 	${CP} ${LOCALBASE}/lib/libringrtc.so \
 		${WRKSRC}/node_modules/@signalapp/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
 
-#	${MKDIR} ${WRKDIR}/.cache/yarn/v6/${NPM_SQLITE3_DIR}/node_modules/@signalapp/better-sqlite3/deps
 	${CP} ${DISTDIR}/${SQLCIPHER}.tar.gz \
 		${WRKSRC}/node_modules/@signalapp/better-sqlite3/deps/sqlcipher.tar.gz
 
