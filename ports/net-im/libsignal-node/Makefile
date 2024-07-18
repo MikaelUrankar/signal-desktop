@@ -47,16 +47,12 @@ USE_LDCONFIG=	yes
 PLIST_FILES=	lib/libsignal_node.so
 
 NODEJS_VERSION=	20
-NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/}
-RUST_ARCH=	${ARCH:S/amd64/x86_64/:S/i386/i686/}
+NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
+RUST_ARCH=	${ARCH:S/amd64/x86_64/}
 
 YARN_TIMESTAMP=	1661146515
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc64*}
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}-patch-node_binding.gyp
-.endif
 
 pre-fetch:
 	if [ ! -f ${DISTDIR}/libsignal-node-${DISTVERSION}-yarn-cache.tar.gz ]; \
