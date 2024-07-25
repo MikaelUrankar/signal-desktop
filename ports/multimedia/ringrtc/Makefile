@@ -15,7 +15,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:libyuv \
 		LOCAL/mikael/ringrtc/:opus \
 		LOCAL/mikael/ringrtc/:perfetto \
-		LOCAL/mikael/ringrtc/:protobuf \
+		LOCAL/mikael/ringrtc/:protobufjs \
 		LOCAL/mikael/ringrtc/:testing \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:tools
@@ -35,7 +35,7 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		protobuf_javascript-${PROTOBUFJS_REV}.tar.gz:protobufjs \
 		testing-${TESTING_REV}.tar.gz:testing \
 		third_party-${THIRD_PARTY_REV}.tar.gz:third_party \
-		tools-${TOOLS_REV}.tar.gz:tools \
+		tools-${TOOLS_REV}.tar.gz:tools
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Middleware library for Signal-Desktop
