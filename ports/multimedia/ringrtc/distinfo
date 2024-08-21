@@ -1,4 +1,4 @@
-TIMESTAMP = 1723647203
+TIMESTAMP = 1724161318
 SHA256 (base-2f20fae2cd5d41fc2dbc912fd462796419c72ce6.tar.gz) = 9d7c095e7d06d0b9692e915df569079b6d39a8b02a2cec2cc7f0daa844739d8f
 SIZE (base-2f20fae2cd5d41fc2dbc912fd462796419c72ce6.tar.gz) = 6049823
 SHA256 (boringssl-2db0eb3f96a5756298dcd7f9319e56a98585bd10.tar.gz) = 73028a170714903863e1152ae3efb7350da7a2cd42ec3a45618487f97df9ff1b
@@ -731,7 +731,7 @@ SHA256 (signalapp-libsignal-v0.51.1_GH0.tar.gz) = da01d542f8117cbabeff93c1293d75
 SIZE (signalapp-libsignal-v0.51.1_GH0.tar.gz) = 1481541
 SHA256 (signalapp-curve25519-dalek-signal-curve25519-4.1.3_GH0.tar.gz) = 8dd338dd7d558b7882310e8dc76ceca41ef448afd0532be208d4ff0f2924f334
 SIZE (signalapp-curve25519-dalek-signal-curve25519-4.1.3_GH0.tar.gz) = 808022
-SHA256 (signalapp-ringrtc-v2.45.0_GH0.tar.gz) = b10353671aa3e21dd77bf97448cf12d1f4e90401f71a1d4fe47b96e7b0e1f1b3
-SIZE (signalapp-ringrtc-v2.45.0_GH0.tar.gz) = 841782
-SHA256 (signalapp-webrtc-6478h_GH0.tar.gz) = 4db2d971a4153e2538300c858b78b090cd7cb142449f7026472a1ca17c93c44e
-SIZE (signalapp-webrtc-6478h_GH0.tar.gz) = 39905833
+SHA256 (signalapp-ringrtc-v2.46.0_GH0.tar.gz) = f5bfa8dd169edacd8ac9e0a1bab5975ee8d88e577fcb5ea955b2b251e6bd3527
+SIZE (signalapp-ringrtc-v2.46.0_GH0.tar.gz) = 824393
+SHA256 (signalapp-webrtc-6478i_GH0.tar.gz) = 8198007b606b5de102149480a7c09d52ec45f928ee35a170c08e18656f9b604e
+SIZE (signalapp-webrtc-6478i_GH0.tar.gz) = 39908486
