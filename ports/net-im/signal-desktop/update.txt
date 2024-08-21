@@ -1,5 +1,4 @@
 bump version in get_deps.sh
 sh get_deps.sh
 bump portrevision in Makefile
-make fetch-yarn
 make makesum
