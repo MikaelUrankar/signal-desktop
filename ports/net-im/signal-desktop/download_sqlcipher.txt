@@ -1,6 +1,12 @@
-egrep "BASE_URI|HASH|SQLCIPHER_VERSION|OPENSSL_VERSION|TOKENIZER_VERSION" npm-@signalapp-better-sqlite3-*/node_modules/@signalapp/better-sqlite3/deps/download.js
+egrep "BASE_URI|HASH|SQLCIPHER_VERSION|SQLCIPHER_VERSION|EXTENSION_VERSION|TAG|URL" npm-@signalapp-better-sqlite3-*/node_modules/@signalapp/better-sqlite3/deps/download.js
 
-const TAG = [SQLCIPHER_VERSION, OPENSSL_VERSION, TOKENIZER_VERSION].join('--');
-const URL = `${BASE_URI}/sqlcipher-${TAG}-${HASH}.tar.gz`;
+const BASE_URI = `https://build-artifacts.signal.org/desktop`;
+const HASH = 'a50990ae5d2bf6b88b0095c2bda5c64e5b78a6c0944398c59f94f7a1d097d1ed';
+const SQLCIPHER_VERSION = '4.6.1-signal-patch1';
+const EXTENSION_VERSION = '0.2.0';
+const TAG = [SQLCIPHER_VERSION, EXTENSION_VERSION].join('--');
+const URL = `${BASE_URI}/sqlcipher-v2-${TAG}-${HASH}.tar.gz`;
+
+https://build-artifacts.signal.org/desktop/sqlcipher-v2-4.6.1-signal-patch1--0.2.0-a50990ae5d2bf6b88b0095c2bda5c64e5b78a6c0944398c59f94f7a1d097d1ed.tar.gz
 
 https://build-artifacts.signal.org/desktop/sqlcipher-4.5.3-fts--3.0.7--0.2.1-b633825cf7e0fdd39a6cdf128f2bd76552a88d325f2b9cd07bb87a457cefb986.tar.gz
