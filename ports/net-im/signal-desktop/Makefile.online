@@ -2,10 +2,11 @@
 # make -f Makefile.online
 # make -f Makefile.online create-caches-tarball
 # meld Makefile.online Makefile
+# make makesum
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.32.0
+DISTVERSION=	7.34.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
@@ -28,7 +29,7 @@ EXTRACT_DEPENDS=jq:textproc/jq \
 BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl \
 		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
-		${LOCALBASE}/lib/libsignal_tokenizer.a:devel/signal-fts5-extension \
+		${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
 		app-builder>0:devel/app-builder \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		esbuild:devel/esbuild \
@@ -91,10 +92,10 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${LOCALBASE}/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	30
+ELECTRON_VER_MAJOR=	32
 ESBUILD_VERSION=	0.21.2
 
-SQLCIPHER=	sqlcipher-4.6.1-signal-patch1-----a50990ae5d2bf6b88b0095c2bda5c64e5b78a6c0944398c59f94f7a1d097d1ed
+SQLCIPHER=	sqlcipher-v2-4.6.1-signal-patch2--0.2.0-b0dbebe5b2d81879984bfa2318ba364fb4d436669ddc1668d2406eaaaee40b7e
 
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 APP_OUT_DIR=	linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
