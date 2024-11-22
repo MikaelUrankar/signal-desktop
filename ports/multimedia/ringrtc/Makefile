@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.48.4
+DISTVERSION=	2.48.7
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -9,6 +9,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:catapult \
 		LOCAL/mikael/ringrtc/:icu \
 		LOCAL/mikael/ringrtc/:nasm \
+		LOCAL/mikael/ringrtc/:libcubeb \
 		LOCAL/mikael/ringrtc/:libjpeg_turbo \
 		LOCAL/mikael/ringrtc/:libsrtp \
 		LOCAL/mikael/ringrtc/:libvpx \
@@ -26,6 +27,7 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		catapult-${CATAPULT_REV}.tar.gz:catapult \
 		icu-${ICU_REV}.tar.gz:icu \
 		nasm-${NASM_REV}.tar.gz:nasm \
+		libcubeb-${LIBCUBEB_VER}.tar.gz:libcubeb \
 		libjpeg_turbo-${LIBJPEG_TURBO_REV}.tar.gz:libjpeg_turbo \
 		libsrtp-${LIBSRTP_REV}.tar.gz:libsrtp \
 		libvpx-${LIBVPX_REV}.tar.gz:libvpx \
@@ -71,6 +73,7 @@ BUILD_REV=		8e0612cd2c4e4d7c15a456384760815bdbd64ef1
 BUILDTOOLS_REV=		e4f992c0660e6cee637c7b97aabf04d0a58d5555
 CATAPULT_REV=		296226a4a0067c8cffeb8831fb87526a8035f3cc
 ICU_REV=		9408c6fd4a39e6fef0e1c4077602e1c83b15f3fb
+LIBCUBEB_VER=		0.17.1
 LIBJPEG_TURBO_REV=	927aabfcd26897abb9776ecf2a6c38ea5bb52ab6
 LIBSRTP_REV=		000edd791434c8738455f10e0dd6b268a4852c0b
 LIBVPX_REV=		fbf63dff1f528d44f24bd662abb89fd01a4a1c25
@@ -155,6 +158,8 @@ post-patch:
 	${REINPLACE_CMD} "s|LOCALBASE|${LOCALBASE}|" \
 		${WEBRTCDIR}/build/toolchain/gcc_toolchain.gni \
 		${WEBRTCDIR}/buildtools/third_party/libc++/BUILD.gn
+	${REINPLACE_CMD} "s|WRKDIR|${WRKDIR}|" \
+		${WRKSRC}/cargo-crates/cubeb-sys-0.17.0/build.rs
 
 	${ECHO_CMD} "# Generated from 'DEPS'" > ${WEBRTCDIR}/build/config/gclient_args.gni
 	${ECHO_CMD} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
