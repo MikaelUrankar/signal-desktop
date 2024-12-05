@@ -1,10 +1,15 @@
+# make -f Makefile.online makesum
+# make -f Makefile.online
+# make -f Makefile.online create-caches-tarball
+# cp work/libsignal-*cache.tar.gz /usr/ports/distfiles/
+# meld Makefile.online Makefile
+# make makesum
+
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.62.0
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	-node
-MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
-DISTFILES=	libsignal-node-${DISTVERSION}-npm-cache.tar.gz:npm
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
@@ -67,7 +72,6 @@ post-extract:
 	${CP} ${FILESDIR}/node/package.json ${WRKSRC}/node
 
 do-build:
-	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-optional --nodedir=${LOCALBASE}
 	cd ${WRKSRC}/node && \
