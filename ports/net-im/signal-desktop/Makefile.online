@@ -1,12 +1,13 @@
 # make -f Makefile.online makesum
 # make -f Makefile.online
 # make -f Makefile.online create-caches-tarball
+# cp work/signal-desktop-*-npm-cache.tar.gz /usr/ports/distfiles/
 # meld Makefile.online Makefile
 # make makesum
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.34.0
+DISTVERSION=	7.35.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
