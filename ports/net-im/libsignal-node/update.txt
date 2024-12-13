@@ -6,7 +6,4 @@ make makesum
 fetch -qo - https://raw.githubusercontent.com/signalapp/libsignal/v${vers}/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
 make cargo-crates-merge
 
-fetch -o files/node https://raw.githubusercontent.com/signalapp/libsignal/v${vers}/node/yarn.lock
-fetch -o files/node https://raw.githubusercontent.com/signalapp/libsignal/v${vers}/node/package.json
-
 make patch

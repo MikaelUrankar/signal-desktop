@@ -52,6 +52,8 @@ RUST_ARCH=	${ARCH:S/amd64/x86_64/}
 
 YARN_TIMESTAMP=	1661146515
 
+#BINARY_ALIAS=	python=${PYTHON_CMD}
+
 .include <bsd.port.options.mk>
 
 post-patch:
@@ -64,14 +66,12 @@ post-extract:
 	${MV} ${WRKDIR}/boringssl-44b3df6f03d85c901767250329c571db405122d5/* ${WRKDIR}/boring-signal-v4.9.0b/boring-sys/deps/boringssl
 	${MV} ${WRKDIR}/boringssl-853ca1ea1168dff08011e5d42d94609cc0ca2e27/* ${WRKDIR}/boring-signal-v4.9.0b/boring-sys/deps/boringssl-fips
 
-	${CP} ${FILESDIR}/node/package.json ${WRKSRC}/node
-
 do-build:
 	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-optional --nodedir=${LOCALBASE}
 	cd ${WRKSRC}/node && \
-		${SETENV} ${MAKE_ENV} npx node-gyp rebuild --ignore-optional --nodedir=${LOCALBASE}
+		${SETENV} ${MAKE_ENV} npx node-gyp rebuild --nodedir=${LOCALBASE}
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} npm run tsc
 
