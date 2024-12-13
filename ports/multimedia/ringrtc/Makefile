@@ -127,7 +127,7 @@ WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 CARGO_BUILD_ARGS=	--package ringrtc --features electron
 CARGO_INSTALL=		no
 
-USE_LDCONFIG=	yes
+BUNDLE_LIBS=	yes
 
 MAKE_ENV=	OUTPUT_DIR=${WEBRTCDIR}/out
 

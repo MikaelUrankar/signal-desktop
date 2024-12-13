@@ -47,7 +47,7 @@ MAKE_ENV=	HOME=${WRKDIR} \
 
 MAKE_ENV+=	RUSTC_BOOTSTRAP=aes,polyval
 
-USE_LDCONFIG=	yes
+BUNDLE_LIBS=	yes
 
 PLIST_FILES=	lib/libsignal_node.so
 
