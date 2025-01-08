@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.36.0
+DISTVERSION=	7.36.1
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
@@ -87,7 +87,7 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${LOCALBASE}/bin/esbuild
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	32
-ESBUILD_VERSION=	0.21.2
+ESBUILD_VERSION=	0.24.0
 
 SQLCIPHER=	sqlcipher-v2-4.6.1-signal-patch2--0.2.0-b0dbebe5b2d81879984bfa2318ba364fb4d436669ddc1668d2406eaaaee40b7e
 
