@@ -1,14 +1,18 @@
 # https://build.opensuse.org/projects/network:im:signal/packages/nodejs-signal-ringrtc/files/prepare_vendor.sh?expand=1
 # https://github.com/mozilla/cubeb-rs/issues/109
 
-fetch https://codeload.github.com/mozilla/cubeb-rs/zip/refs/tags/cubeb-sys-v0.17.1
-tar xf cubeb-rs-cubeb-sys-v0.17.1.zip cubeb-rs-cubeb-sys-v0.17.1/cubeb-sys/libcubeb_vendored.tar
+fetch -o cubeb-rs-cubeb-sys-v0.18.0.tar.gz https://codeload.github.com/mozilla/cubeb-rs/tar.gz/refs/tags/cubeb-sys-v0.18.0
+tar xf cubeb-rs-cubeb-sys-v0.18.0.tar.gz cubeb-rs-cubeb-sys-v0.18.0/cubeb-sys/libcubeb_vendored.tar
+mv cubeb-rs-cubeb-sys-v0.18.0/cubeb-sys/libcubeb_vendored.tar .
+tar xf libcubeb_vendored.tar
 rm -rf libcubeb/src/cubeb-pulse-rs
-rm -rf libcubeb/src/subprojects
 cd libcubeb
 cargo generate-lockfile --verbose --manifest-path src/cubeb-coreaudio-rs/Cargo.toml
+cd ..
 
-tar cJf libcubeb_vendored.tar libcubeb
+tar czf libcubeb-0.18.0.tar.gz libcubeb
 
-fetch https://raw.githubusercontent.com/signalapp/ringrtc/v2.48.6/Cargo.lock
+fetch https://raw.githubusercontent.com/signalapp/ringrtc/v2.49.1/Cargo.lock
 cat Cargo.lock libcubeb/src/cubeb-coreaudio-rs/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
+
+cat Cargo.lock libcubeb/src/cubeb-coreaudio-rs/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | sort | uniq > Makefile.crates.2

@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.48.7
+DISTVERSION=	2.49.1
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -64,7 +64,7 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	6723a
+WEBRTC_REV=	6723b
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=		7f2a56694b330c2cb2954eee78469ffc69952448
@@ -73,7 +73,7 @@ BUILD_REV=		8e0612cd2c4e4d7c15a456384760815bdbd64ef1
 BUILDTOOLS_REV=		e4f992c0660e6cee637c7b97aabf04d0a58d5555
 CATAPULT_REV=		296226a4a0067c8cffeb8831fb87526a8035f3cc
 ICU_REV=		9408c6fd4a39e6fef0e1c4077602e1c83b15f3fb
-LIBCUBEB_VER=		0.17.1
+LIBCUBEB_VER=		0.18.0
 LIBJPEG_TURBO_REV=	927aabfcd26897abb9776ecf2a6c38ea5bb52ab6
 LIBSRTP_REV=		000edd791434c8738455f10e0dd6b268a4852c0b
 LIBVPX_REV=		fbf63dff1f528d44f24bd662abb89fd01a4a1c25
@@ -159,7 +159,7 @@ post-patch:
 		${WEBRTCDIR}/build/toolchain/gcc_toolchain.gni \
 		${WEBRTCDIR}/buildtools/third_party/libc++/BUILD.gn
 	${REINPLACE_CMD} "s|WRKDIR|${WRKDIR}|" \
-		${WRKSRC}/cargo-crates/cubeb-sys-0.17.0/build.rs
+		${WRKSRC}/cargo-crates/cubeb-sys-${LIBCUBEB_VER}/build.rs
 
 	${ECHO_CMD} "# Generated from 'DEPS'" > ${WEBRTCDIR}/build/config/gclient_args.gni
 	${ECHO_CMD} 1591703586 > ${WEBRTCDIR}/build/util/LASTCHANGE.committime
