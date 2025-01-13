@@ -7,13 +7,10 @@
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.36.1
+DISTVERSION=	7.37.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
-#DISTFILES=	signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-#		${SQLCIPHER}.tar.gz:sqlcipher
-# for online build
 DISTFILES=	${SQLCIPHER}.tar.gz:sqlcipher
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -127,13 +124,9 @@ post-extract:
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-optional --ignore-scripts || ${TRUE}
 
-#	# for offline build
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm install --ignore-optional --ignore-scripts --offline || ${TRUE}
-
 do-build:
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron30/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron30 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron32/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron32 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
@@ -151,7 +144,6 @@ do-build:
 	${CP} ${DISTDIR}/${SQLCIPHER}.tar.gz \
 		${WRKSRC}/node_modules/@signalapp/better-sqlite3/deps/sqlcipher.tar.gz
 
-	# patch-package can't patch sqlite3 on aarch64, patch the yarn cache instead
 	cd ${WRKSRC} && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
 
 	@${RM} -r ${WRKSRC}/node_modules/fs-xattr
@@ -161,13 +153,6 @@ do-build:
 		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-optional
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm run generate
-
-#	# offline build
-#	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-optional --offline
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm run generate --offline
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
