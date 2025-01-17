@@ -1,6 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.49.1
+DISTVERSION=	2.49.2
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -17,6 +17,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:opus \
 		LOCAL/mikael/ringrtc/:perfetto \
 		LOCAL/mikael/ringrtc/:protobufjs \
+		LOCAL/mikael/ringrtc/:re2 \
 		LOCAL/mikael/ringrtc/:testing \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:tools
@@ -35,6 +36,7 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		opus-${OPUS_REV}.tar.gz:opus \
 		perfetto-${PERFETTO_REV}.tar.gz:perfetto \
 		protobuf_javascript-${PROTOBUFJS_REV}.tar.gz:protobufjs \
+		re2-${RE2_REV}.tar.gz:re2 \
 		testing-${TESTING_REV}.tar.gz:testing \
 		third_party-${THIRD_PARTY_REV}.tar.gz:third_party \
 		tools-${TOOLS_REV}.tar.gz:tools
@@ -64,7 +66,7 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	6723b
+WEBRTC_REV=	6723c
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=		7f2a56694b330c2cb2954eee78469ffc69952448
@@ -82,6 +84,7 @@ NASM_REV=		f477acb1049f5e043904b87b825c5915084a9a29
 OPUS_REV=		0e30966b198ad28943799eaf5b3b08100b6f70c3
 PERFETTO_REV=		97a5d7ed4d7ddb3844a5cbd184e241b99fe6ebcc
 PROTOBUFJS_REV=		e34549db516f8712f678fcd4bc411613b5cc5295
+RE2_REV=		6dcd83d60f7944926bfd308cc13979fc53dd69ca
 TESTING_REV=		3f4138fcb15362469527d9310e21600dfdfab691
 THIRD_PARTY_REV=	27c9b4efc25d7ae5479b884a7d818058c6066d92
 TOOLS_REV=		453f7ad001cd0d341ecb437eb164fd6c4b5cc08d
@@ -115,10 +118,6 @@ GN_ARGS+=	rtc_build_examples=false \
 		use_udev=false \
 		extra_cxxflags="${CXXFLAGS}" \
 		extra_ldflags="${LDFLAGS}"
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.36.0-67d1b48bd4c1ea31c155ea14a0bd28f04e46eff5-integrity
-NPM_SIGNAL_DIR=	npm-@signalapp-libsignal-client-0.39.1-15b41f15c516ae3eecf8a098a9c9c7aac00444d7-integrity
-NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.6.0-0413f4d0626b99838cd64ad09c88720aa2bec6ed-integrity
-SQLCIPHER=	sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
 MAKE_ARGS=	-C out/${BUILDTYPE}
 
@@ -152,6 +151,7 @@ post-extract:
 	${MV} ${WRKDIR}/opus ${WEBRTCDIR}/ringrtc/opus/src
 	${MV} ${WRKDIR}/perfetto ${WEBRTCDIR}/third_party
 	${MV} ${WRKDIR}/protobuf_javascript ${WEBRTCDIR}/third_party/protobuf-javascript/src
+	${MV} ${WRKDIR}/re2 ${WEBRTCDIR}/third_party/re2/src
 	${MV} ${WRKDIR}/tools ${WEBRTCDIR}
 
 post-patch:
@@ -173,10 +173,8 @@ pre-build:
 	cd ${WEBRTCDIR} \
 		&& ${MAKE_ENV} CC=ccache CXX=ccache ninja -C out/release
 
-# it's not intended to be used outside of signal-desktop, put that in
-# /usr/local/share/ringrtc instead?
 do-install:
-	${INSTALL_LIB} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/release/libringrtc.so \
+	${INSTALL_LIB} ${CARGO_TARGET_DIR}/release/libringrtc.so \
 		${STAGEDIR}${PREFIX}/lib/
 
 .include <bsd.port.mk>
