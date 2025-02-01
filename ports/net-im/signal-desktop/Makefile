@@ -51,6 +51,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpci.so:devel/libpci \
 		libpng16.so:graphics/png \
 		libsnappy.so:archivers/snappy \
+		libsndio.so:audio/sndio \
 		libwayland-client.so:graphics/wayland \
 		libwebp.so:graphics/webp \
 		libxkbcommon.so:x11/libxkbcommon \
