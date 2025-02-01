@@ -97,6 +97,8 @@ CARGO_CRATES=	addr2line-0.24.1 \
 		derive_builder_core-0.12.0 \
 		derive_builder_macro-0.12.0 \
 		derive_more-0.99.18 \
+		derive_more-1.0.0 \
+		derive_more-impl-1.0.0 \
 		diff-0.1.13 \
 		difflib-0.4.0 \
 		digest-0.10.7 \
