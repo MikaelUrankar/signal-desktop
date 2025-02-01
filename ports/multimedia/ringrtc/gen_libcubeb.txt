@@ -16,3 +16,10 @@ fetch https://raw.githubusercontent.com/signalapp/ringrtc/v2.49.1/Cargo.lock
 cat Cargo.lock libcubeb/src/cubeb-coreaudio-rs/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
 
 cat Cargo.lock libcubeb/src/cubeb-coreaudio-rs/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | sort | uniq > Makefile.crates.2
+
+
+
+fetch https://raw.githubusercontent.com/signalapp/ringrtc/v2.49.3/Cargo.lock
+cat Cargo.lock work/ringrtc-2.49.3/cargo-crates/cubeb-sys-0.20.0/libcubeb/src/cubeb-coreaudio-rs/Cargo.lock  | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | sort | uniq > Makefile.crates.2
+
+cat Cargo.lock work/ringrtc-2.49.3/cargo-crates/cubeb-sys-0.20.0/libcubeb/src/cubeb-coreaudio-rs/Cargo.lock  | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
