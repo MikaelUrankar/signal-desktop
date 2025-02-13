@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.40.0
+DISTVERSION=	7.42.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
@@ -90,7 +90,7 @@ _BUILD_DATE=	$$(date +'%s')
 ELECTRON_VER_MAJOR=	32
 ESBUILD_VERSION=	0.24.0
 
-SQLCIPHER=	sqlcipher-v2-4.6.1-signal-patch2--0.2.1-9d2afebba9bfd8f18afd36a90a800df84fcf6975defacbfa1e1c5e1e8a6d05f1
+SQLCIPHER=	sqlcipher-v2-4.6.1-signal-patch2--0.2.1-asm2-6253f886c40e49bf892d5cdc92b2eb200b12cd8d80c48ce5b05967cfd01ee8c7
 
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 APP_OUT_DIR=	linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
