@@ -20,8 +20,7 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 
 EXTRACT_DEPENDS=jq:textproc/jq \
 		npm:www/npm-node20
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl \
-		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
+BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
 		app-builder>0:devel/app-builder \
@@ -57,7 +56,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxshmfence.so:x11/libxshmfence
 
-USES=		desktop-file-utils gettext-runtime gl gnome jpeg xorg
+USES=		desktop-file-utils gettext-runtime gl gnome jpeg ssl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Desktop
