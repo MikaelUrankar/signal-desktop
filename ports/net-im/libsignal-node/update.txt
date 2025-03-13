@@ -1,6 +1,7 @@
-vers=0.66.2
+vers=0.67.0
 
 echo DISTVERSION=${vers} | portedit merge -i Makefile.online
+echo DISTVERSION=${vers} | portedit merge -i Makefile
 make -f Makefile.online makesum
 
 fetch -qo - https://raw.githubusercontent.com/signalapp/libsignal/v${vers}/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile.crates
