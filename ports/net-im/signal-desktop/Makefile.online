@@ -6,9 +6,16 @@
 # make makesum
 # rsync /usr/ports/distfiles/signal-desktop-*-npm-cache.tar.gz freefall:public_distfiles/signal-desktop/
 
+# package.json:
+#   remove fs-xattr
+#   remove build:esbuild
+#   remove in "onlyBuiltDependencies": @signalapp/libsignal-client @signalapp/better-sqlite3 @signalapp/ringrtc
+#   add patch for sqlite3, electron-builder
+
+
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.44.0
+DISTVERSION=	7.46.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
@@ -25,13 +32,11 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 
 EXTRACT_DEPENDS=jq:textproc/jq \
 		npm:www/npm-node20
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl \
-		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
+BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
 		app-builder>0:devel/app-builder \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
-		esbuild:devel/esbuild \
 		jq:textproc/jq \
 		npm:www/npm-node20
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
@@ -62,7 +67,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxshmfence.so:x11/libxshmfence
 
-USES=		desktop-file-utils gettext-runtime gl gnome jpeg xorg
+USES=		desktop-file-utils gettext-runtime gl gnome jpeg ssl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Desktop
@@ -114,6 +119,10 @@ PLIST_SUB+=	NOT_AARCH64=""
 .endif
 
 post-extract:
+	cp ${FILESDIR}/package.json ${WRKSRC}
+	cp ${FILESDIR}/better-sqlite3.patch ${WRKSRC}/patches
+	cp ${FILESDIR}/electron-builder.patch ${WRKSRC}/patches
+
 	# Update node engine
 	${PREFIX}/bin/jq '.engines.node = ""' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp.1
 	${PREFIX}/bin/jq '.devDependencies.esbuild = "${ESBUILD_VERSION}"' ${WRKSRC}/package.json.tmp.1 > ${WRKSRC}/package.json.tmp.2
@@ -122,13 +131,16 @@ post-extract:
 	# remove mock-server as it doesn't build and is useless
 	${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
-	${RM} ${WRKSRC}/patches/app-builder-lib* ${WRKSRC}/patches/dmg-builder*
-	${CP} ${FILESDIR}/app-builder-lib+24.13.3.patch ${WRKSRC}/patches
-	${CP} ${FILESDIR}/dmg-builder+24.13.3.patch ${WRKSRC}/patches
+
+#	${RM} ${WRKSRC}/patches/app-builder-lib* ${WRKSRC}/patches/dmg-builder*
+#	${CP} ${FILESDIR}/app-builder-lib+24.13.3.patch ${WRKSRC}/patches
+#	${CP} ${FILESDIR}/dmg-builder+24.13.3.patch ${WRKSRC}/patches
 
 	# for online build
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm install --ignore-optional --ignore-scripts || ${TRUE}
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install pnpm@10.6.3
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-scripts || ${TRUE}
 
 do-build:
 # electron-builder is stupid and tries to open ${LOCALBASE}/share/electron32/electron with WRITE priv
@@ -150,15 +162,18 @@ do-build:
 	${CP} ${DISTDIR}/${SQLCIPHER}.tar.gz \
 		${WRKSRC}/node_modules/@signalapp/better-sqlite3/deps/sqlcipher.tar.gz
 
-	cd ${WRKSRC} && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
-
 	@${RM} -r ${WRKSRC}/node_modules/fs-xattr
+
+	# force rebuild better-sqlite3
+	@${RM} -r ${WRKSRC}/node_modules/@signalapp/better-sqlite3/build
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm rebuild @signalapp/better-sqlite3@9.0.13
 
 	# online build
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-optional
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm run generate
+		${SETENV} ${MAKE_ENV} pnpm run generate
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
@@ -189,6 +204,7 @@ do-install:
 # This seems to be only required for Windows:
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@nodert-win10-rs4
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@signalapp/windows-dummy-keystroke
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/pnpm
 
 create-caches-tarball:
 	# do some cleanup first

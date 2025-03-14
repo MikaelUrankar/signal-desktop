@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.44.0
+DISTVERSION=	7.46.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
@@ -25,7 +25,6 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
 		app-builder>0:devel/app-builder \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
-		esbuild:devel/esbuild \
 		jq:textproc/jq \
 		npm:www/npm-node20
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
@@ -108,25 +107,28 @@ PLIST_SUB+=	NOT_AARCH64=""
 .endif
 
 post-extract:
+	cp ${FILESDIR}/package.json ${WRKSRC}
+	cp ${FILESDIR}/better-sqlite3.patch ${WRKSRC}/patches
+	cp ${FILESDIR}/electron-builder.patch ${WRKSRC}/patches
+
 	# Update node engine
 	${PREFIX}/bin/jq '.engines.node = ""' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp.1
 	${PREFIX}/bin/jq '.devDependencies.esbuild = "${ESBUILD_VERSION}"' ${WRKSRC}/package.json.tmp.1 > ${WRKSRC}/package.json.tmp.2
-	${PREFIX}/bin/jq '.devDependencies."electron-builder"= "24.13.3"' ${WRKSRC}/package.json.tmp.2 > ${WRKSRC}/package.json.tmp.3
+	${PREFIX}/bin/jq '.devDependencies.electron= "32.3.0"' ${WRKSRC}/package.json.tmp.2 > ${WRKSRC}/package.json.tmp.3
 	${MV} ${WRKSRC}/package.json.tmp.3 ${WRKSRC}/package.json
 	# remove mock-server as it doesn't build and is useless
 	${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
-	${RM} ${WRKSRC}/patches/app-builder-lib* ${WRKSRC}/patches/dmg-builder*
-	${CP} ${FILESDIR}/app-builder-lib+24.13.3.patch ${WRKSRC}/patches
-	${CP} ${FILESDIR}/dmg-builder+24.13.3.patch ${WRKSRC}/patches
 
-#	# for online build
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm install --ignore-optional --ignore-scripts || ${TRUE}
+#	${RM} ${WRKSRC}/patches/app-builder-lib* ${WRKSRC}/patches/dmg-builder*
+#	${CP} ${FILESDIR}/app-builder-lib+24.13.3.patch ${WRKSRC}/patches
+#	${CP} ${FILESDIR}/dmg-builder+24.13.3.patch ${WRKSRC}/patches
 
 	# for offline build
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm install --ignore-optional --ignore-scripts --offline || ${TRUE}
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --offline pnpm@10.6.3
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install --ignore-scripts --offline || ${TRUE}
 
 do-build:
 # electron-builder is stupid and tries to open ${LOCALBASE}/share/electron32/electron with WRITE priv
@@ -148,22 +150,22 @@ do-build:
 	${CP} ${DISTDIR}/${SQLCIPHER}.tar.gz \
 		${WRKSRC}/node_modules/@signalapp/better-sqlite3/deps/sqlcipher.tar.gz
 
-	cd ${WRKSRC} && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
+	cd ${WRKSRC} && ${PATCH} -s -N -i ${FILESDIR}/electron-builder.diff || ${TRUE}
 
 	@${RM} -r ${WRKSRC}/node_modules/fs-xattr
 
-#	# online build
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-optional
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} npm run generate
+	# force rebuild better-sqlite3
+	@${RM} -r ${WRKSRC}/node_modules/@signalapp/better-sqlite3/build
+	cd ${WRKSRC} && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff || ${TRUE}
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm rebuild @signalapp/better-sqlite3@9.0.13
 
 	# offline build
 	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers npm install --ignore-optional --offline
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install --offline
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm run generate --offline
+		${SETENV} ${MAKE_ENV} pnpm run generate --offline
 
 do-install:
 # taken from https://github.com/tagattie/FreeBSD-Electron/blob/master/Mk/Uses/electron.mk#L387
@@ -194,6 +196,7 @@ do-install:
 # This seems to be only required for Windows:
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@nodert-win10-rs4
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@signalapp/windows-dummy-keystroke
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/pnpm
 
 create-caches-tarball:
 	# do some cleanup first

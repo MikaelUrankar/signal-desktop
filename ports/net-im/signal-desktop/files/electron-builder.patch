@@ -1,0 +1,11 @@
+--- a/out/cli/install-app-deps.js
++++ b/out/cli/install-app-deps.js
+@@ -23,7 +23,7 @@ function configureInstallAppDepsCommand(yargs) {
+         "camel-case-expansion": false,
+     })
+         .option("platform", {
+-        choices: ["linux", "darwin", "win32"],
++        choices: ["freebsd", "linux", "darwin", "win32"],
+         default: process.platform,
+         description: "The target platform",
+     })
