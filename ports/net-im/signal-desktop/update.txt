@@ -2,3 +2,5 @@ bump version in get_deps.sh
 sh get_deps.sh
 bump portrevision in Makefile
 make makesum
+
+fetch https://raw.githubusercontent.com/signalapp/Signal-Desktop/refs/tags/v7.48.0/package.json

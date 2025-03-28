@@ -1,5 +1,7 @@
 # make -f Makefile.online makesum
 # make -f Makefile.online
+# cp work/Signal-Desktop-*/package-lock.json files
+# cp work/Signal-Desktop-*/pnpm-lock.yaml files
 # make -f Makefile.online create-caches-tarball
 # cp work/signal-desktop-*-npm-cache.tar.gz /usr/ports/distfiles/
 # meld Makefile.online Makefile
@@ -8,38 +10,30 @@
 
 # Modification in package.json:
 #   remove optionalDependencies: fs-xattr (it only works on linux)
-#   In dependencies:
-#    add (problem with import.mjs isTabbable missing):
-#     "@react-aria/utils": "3.28.1",
-#     "@react-aria/selection": "3.23.1",
-#     "@react-aria/interactions": "3.24.1",
 #   In patchedDependencies:
 #    remove:
-#     "dmg-builder@26.0.0-alpha.8": "patches/dmg-builder+26.0.0-alpha.8.patch", (26 doesn't work, we use electron-builder / dmg-builder 24.13.3 instead)
-#     "app-builder-lib@26.0.0-alpha.8": "patches/app-builder-lib+26.0.0-alpha.8.patch",
+#     "dmg-builder@26.0.10": .* (I don't know why we need this patches, it works without)
+#     "app-builder-lib@26.0.10": .* 
 #    add:
-#     "electron-builder@24.13.3": "patches/electron-builder.patch",
-#     "@signalapp/better-sqlite3@9.0.13": "patches/better-sqlite3.patch"
-#     "@signalapp/ringrtc@2.50.1": "patches/signalapp-ringrtc.patch"
+#     "electron-builder": "patches/electron-builder.patch",
+#     "@signalapp/better-sqlite3": "patches/better-sqlite3.patch"
+#     "@signalapp/ringrtc": "patches/signalapp-ringrtc.patch"
 #   In devDependencies:
 #    remove:
-#     "@signalapp/mock-server": "11.1.0",
+#     "@signalapp/mock-server": "11.1.0", (it doesn't build)
 #    modify:
-#     "electron-builder": "24.13.3", (instead of 26.0.0-alpha.8)
+#     "electron-builder": "26.0.12", (instead of 26.0.10, this version doesn't work)
 #   In engines:
 #    modify:
 #     "node": "" (remove the version)
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.46.0
+DISTVERSION=	7.48.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
-DISTFILES=	signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-		${SQLCIPHER}.tar.gz:sqlcipher
-# for online build
-#DISTFILES=	${SQLCIPHER}.tar.gz:sqlcipher
+DISTFILES=	${SQLCIPHER}.tar.gz:sqlcipher
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Cross-platform centralized encrypted messaging service
@@ -50,7 +44,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 
-EXTRACT_DEPENDS=npm:www/npm-node20
 BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
@@ -91,7 +84,7 @@ GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Desktop
 
 USE_GL=		gbm gl
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 libxml2 libxslt pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 libxml2 libxslt pango
 USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xi xrandr xrender xtst
 
 PACKAGE_ENV=	SIGNAL_ENV=production \
@@ -140,7 +133,7 @@ do-build:
 	@${CP} -pR ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
 	${CHMOD} -R a+w ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
 
-	${ECHO_CMD} store-dir=true >> ${WRKSRC}/pnpm-store
+	${ECHO_CMD} store-dir=true >> ${WRKSRC}/.pnpm-store
 
 	cd ${WRKSRC} && \
 		${RM} ${WRKSRC}/package-lock.json ${WRKSRC}/pnpm-lock.yaml
@@ -192,9 +185,6 @@ do-install:
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
 	${RLN} ${STAGEDIR}${DATADIR}/signal-desktop ${STAGEDIR}${PREFIX}/bin
 
-# This seems to be only required for Windows:
-	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@nodert-win10-rs4
-	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@signalapp/windows-dummy-keystroke
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/pnpm
 
 create-caches-tarball:
