@@ -3,9 +3,13 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	7.48.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
-		https://build-artifacts.signal.org/desktop/:sqlcipher
+		https://build-artifacts.signal.org/desktop/:sqlcipher \
+		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
+		https://registry.npmjs.org/@esbuild/freebsd-x64/-/:esbuildx64
 DISTFILES=	signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm \
-		${SQLCIPHER}.tar.gz:sqlcipher
+		${SQLCIPHER}.tar.gz:sqlcipher \
+		freebsd-arm64-${ESBUILD_VERS}.tgz:esbuildarm64 \
+		freebsd-x64-${ESBUILD_VERS}.tgz:esbuildx64
 # for online build
 #DISTFILES=	${SQLCIPHER}.tar.gz:sqlcipher
 
@@ -78,13 +82,17 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
+MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
+
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	34
+ESBUILD_VERS=		0.24.0
 
 SQLCIPHER=	sqlcipher-v2-4.6.1-signal-patch2--0.2.1-asm2-6253f886c40e49bf892d5cdc92b2eb200b12cd8d80c48ce5b05967cfd01ee8c7
 
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
+ESBUILD_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 APP_OUT_DIR=	linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
 
 PLIST_SUB=	NODE_ARCH=${NODE_ARCH} \
@@ -112,6 +120,9 @@ do-build:
 
 	${CP} ${FILESDIR}/package-lock.json ${WRKSRC}
 	${CP} ${FILESDIR}/pnpm-lock.yaml ${WRKSRC}
+
+	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
+	${TAR} xf ${DISTDIR}/freebsd-${ESBUILD_ARCH}-${ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-scripts pnpm@10.6.3
