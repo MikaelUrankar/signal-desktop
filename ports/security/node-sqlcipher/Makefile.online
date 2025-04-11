@@ -1,0 +1,50 @@
+# make -f Makefile.online makesum
+# make -f Makefile.online
+# make -f Makefile.online create-caches-tarball
+# cp work/node-sqlcipher-*cache.tar.gz /usr/ports/distfiles/
+# meld Makefile.online Makefile
+# make makesum
+# rsync /usr/ports/distfiles/node-sqlcipher-*cache.tar.gz freefall:public_distfiles/signal-desktop/
+
+PORTNAME=	node-sqlcipher
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.0
+CATEGORIES=	security
+MASTER_SITES=	https://github.com/signalapp/node-sqlcipher/archive/refs/tags/${DISTVERSIONFULL}/:sqlcipher
+DISTFILES=	node-sqlcipher-${DISTVERSION}.tar.gz:sqlcipher
+
+MAINTAINER=	mikael@FreeBSD.org
+COMMENT=	Fast N-API-based Node.js addon wrapping sqlcipher and FTS5 segmenting APIs
+WWW=		https://github.com/signalapp/node-sqlcipher
+
+LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	npm:www/npm${NODEJS_SUFFIX}
+
+USES=		nodejs:20,build
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+
+PLIST_FILES=	lib/node_sqlcipher.node
+
+post-patch:
+	${REINPLACE_CMD} "s#PREFIX#${PREFIX}#g" \
+		${WRKSRC}/deps/sqlcipher/sqlcipher.gyp \
+		${WRKSRC}/binding.gyp
+
+do-build:
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} npm install --nodedir=${PREFIX}
+
+do-install:
+	${INSTALL_DATA} ${WRKSRC}/build/Release/obj.target/node_sqlcipher.node ${STAGEDIR}${PREFIX}/lib/
+
+create-caches-tarball:
+	# do some cleanup first
+	${RM} -r ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked
+
+	cd ${WRKDIR} && \
+		${TAR} czf node-sqlcipher-${DISTVERSION}-npm-cache.tar.gz .npm
+
+.include <bsd.port.mk>
