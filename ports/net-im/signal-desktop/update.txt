@@ -3,4 +3,4 @@ sh get_deps.sh
 bump portrevision in Makefile
 make makesum
 
-fetch https://raw.githubusercontent.com/signalapp/Signal-Desktop/refs/tags/v7.48.0/package.json
+fetch https://raw.githubusercontent.com/signalapp/Signal-Desktop/refs/tags/v7.50.0/package.json
