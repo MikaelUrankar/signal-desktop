@@ -83,7 +83,7 @@ do-install:
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked
-                
+
 	cd ${WRKDIR} && \
 		${TAR} czf libsignal-node-${DISTVERSION}-npm-cache.tar.gz .npm
 

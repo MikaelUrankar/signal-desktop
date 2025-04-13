@@ -2,8 +2,8 @@ PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.67.4
 CATEGORIES=	net-im
-PKGNAMESUFFIX=	-node
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
+PKGNAMESUFFIX=	-node
 DISTFILES=	libsignal-node-${DISTVERSION}-npm-cache.tar.gz:npm
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -78,7 +78,7 @@ do-install:
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked
-                
+
 	cd ${WRKDIR} && \
 		${TAR} czf libsignal-node-${DISTVERSION}-npm-cache.tar.gz .npm
 
