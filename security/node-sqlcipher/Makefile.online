@@ -7,11 +7,14 @@
 # rsync /usr/ports/distfiles/node-sqlcipher-*cache.tar.gz freefall:public_distfiles/signal-desktop/
 
 PORTNAME=	node-sqlcipher
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
+DISTVERSION=	2.0.0
 CATEGORIES=	security
-MASTER_SITES=	https://github.com/signalapp/node-sqlcipher/archive/refs/tags/${DISTVERSIONFULL}/:sqlcipher
-DISTFILES=	node-sqlcipher-${DISTVERSION}.tar.gz:sqlcipher
+MASTER_SITES=	https://github.com/signalapp/node-sqlcipher/archive/refs/tags/v${DISTVERSION}/:sqlcipher \
+		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
+		https://registry.npmjs.org/@esbuild/freebsd-x64/-/:esbuildx64
+DISTFILES=	freebsd-arm64-${ESBUILD_VERS}.tgz:esbuildarm64 \
+		freebsd-x64-${ESBUILD_VERS}.tgz:esbuildx64 \
+		node-sqlcipher-${DISTVERSION}.tar.gz:sqlcipher
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Fast N-API-based Node.js addon wrapping sqlcipher and FTS5 segmenting APIs
@@ -20,13 +23,23 @@ WWW=		https://github.com/signalapp/node-sqlcipher
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	npm:www/npm${NODEJS_SUFFIX}
+ONLY_FOR_ARCHS=	aarch64 amd64
+
+BUILD_DEPENDS=	${LOCALBASE}/lib/libsignal_sqlcipher_extension.a:devel/signal-sqlcipher-extension \
+		npm:www/npm${NODEJS_SUFFIX}
 
 USES=		nodejs:20,build
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
-
 PLIST_FILES=	lib/node_sqlcipher.node
+
+ESBUILD_VERS=	0.25.3
+ESBUILD_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
+
+MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
+
+post-extract:
+	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
+	${TAR} xf ${DISTDIR}/freebsd-${ESBUILD_ARCH}-${ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
 post-patch:
 	${REINPLACE_CMD} "s#PREFIX#${PREFIX}#g" \
