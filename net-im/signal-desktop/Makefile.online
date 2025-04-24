@@ -11,25 +11,19 @@
 # Modification in package.json:
 #   remove optionalDependencies: fs-xattr (it only works on linux)
 #   In patchedDependencies:
-#    remove:
-#     "dmg-builder@26.0.10": .* (I don't know why we need this patches, it works without)
-#     "app-builder-lib@26.0.10": .* 
 #    add:
 #     "electron-builder": "patches/electron-builder.patch",
-#     "@signalapp/better-sqlite3": "patches/better-sqlite3.patch"
 #     "@signalapp/ringrtc": "patches/signalapp-ringrtc.patch"
 #   In devDependencies:
 #    remove:
 #     "@signalapp/mock-server": "11.1.0", (it doesn't build)
-#    modify:
-#     "electron-builder": "26.0.12", (instead of 26.0.10, this version doesn't work)
 #   In engines:
 #    modify:
 #     "node": "" (remove the version)
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.51.0
+DISTVERSION=	7.52.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
@@ -107,7 +101,7 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
-MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
+MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
@@ -143,9 +137,6 @@ do-build:
 	cd ${WRKSRC} && \
 		${RM} ${WRKSRC}/package-lock.json ${WRKSRC}/pnpm-lock.yaml
 
-	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
-	${TAR} xf ${DISTDIR}/freebsd-${ESBUILD_ARCH}-${ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
-
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-scripts pnpm@10.6.3
 	cd ${WRKSRC} && \
@@ -162,6 +153,10 @@ do-build:
 		${WRKSRC}/node_modules/@signalapp/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
 	 ${CP} ${LOCALBASE}/lib/node_sqlcipher.node \
 		${WRKSRC}/node_modules/@signalapp/sqlcipher/prebuilds/freebsd-${NODE_ARCH}
+
+	# don't ask me why
+	${MKDIR} -p ${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}
+	${TAR} xf ${DISTDIR}/freebsd-${ESBUILD_ARCH}-${ESBUILD_VERS}.tgz -C ${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install
