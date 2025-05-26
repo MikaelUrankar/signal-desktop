@@ -134,7 +134,7 @@ do-build:
 		${WRKSRC}/node_modules/@signalapp/sqlcipher/prebuilds/freebsd-${NODE_ARCH}
 
 	# don't ask me why
-	${MKDIR} -p ${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}
+	${MKDIR} ${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}
 	${TAR} xf ${DISTDIR}/freebsd-${ESBUILD_ARCH}-${ESBUILD_VERS}.tgz -C ${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH}@${ESBUILD_VERS}/node_modules/@esbuild/freebsd-${ESBUILD_ARCH}
 
 	cd ${WRKSRC} && \

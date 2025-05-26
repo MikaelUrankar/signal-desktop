@@ -1,5 +1,5 @@
---- ts/util/getNotificationTextForMessage.ts.orig	2025-05-23 12:11:17.680610000 +0200
-+++ ts/util/getNotificationTextForMessage.ts	2025-05-23 12:10:46.972833000 +0200
+--- ts/util/getNotificationTextForMessage.ts.orig	2025-05-23 12:11:17 UTC
++++ ts/util/getNotificationTextForMessage.ts
 @@ -56,7 +56,7 @@ export function getNotificationTextForMessage(
        });
      }

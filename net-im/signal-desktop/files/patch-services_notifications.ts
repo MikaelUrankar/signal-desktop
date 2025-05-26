@@ -1,5 +1,5 @@
---- ts/services/notifications.ts.orig	2025-05-23 12:14:12.582421000 +0200
-+++ ts/services/notifications.ts	2025-05-23 12:14:29.526852000 +0200
+--- ts/services/notifications.ts.orig	2025-05-23 12:14:12 UTC
++++ ts/services/notifications.ts
 @@ -196,7 +196,7 @@ class NotificationService extends EventEmitter {
        this.#lastNotification?.close();
  

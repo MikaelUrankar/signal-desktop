@@ -1,5 +1,5 @@
---- ts/scripts/generate-preload-cache.ts.orig	2025-05-23 12:11:57.734840000 +0200
-+++ ts/scripts/generate-preload-cache.ts	2025-05-23 12:12:16.727521000 +0200
+--- ts/scripts/generate-preload-cache.ts.orig	2025-05-23 12:11:57 UTC
++++ ts/scripts/generate-preload-cache.ts
 @@ -19,7 +19,7 @@ async function main(): Promise<void> {
    const storagePath = await mkdtemp(join(tmpdir(), 'signal-preload-cache-'));
  
