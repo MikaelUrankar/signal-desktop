@@ -160,6 +160,13 @@ do-build:
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install
+
+	# found in reproducible-builds/docker-entrypoint.sh
+	cd ${WRKSRC}/sticker-creator && \
+		../node_modules/.bin/pnpm install
+	cd ${WRKSRC}/sticker-creator && \
+		../node_modules/.bin/pnpm run build
+
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} pnpm run generate
 
