@@ -83,7 +83,7 @@ ESBUILD_BINARY_PATH=${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	34
+ELECTRON_VER_MAJOR=	35
 ESBUILD_VERS=		0.24.0
 PNPM_VERS=		10.11
 
