@@ -1,5 +1,6 @@
 # make -f Makefile.online makesum
 # make -f Makefile.online
+# rm /usr/ports/distfiles/libsignal-*cache.tar.gz
 # make -f Makefile.online create-caches-tarball
 # cp work/libsignal-*cache.tar.gz /usr/ports/distfiles/
 # meld Makefile.online Makefile
@@ -8,7 +9,7 @@
 
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.76.7
+DISTVERSION=	0.78.3
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	-node
 
