@@ -2,8 +2,8 @@
 # make -f Makefile.online
 # cp -f work/Signal-Desktop-*/package-lock.json files
 # cp -f work/Signal-Desktop-*/pnpm-lock.yaml files
-# make -f Makefile.online create-caches-tarball
 # rm /usr/ports/distfiles/signal-desktop-*-npm-cache.tar.gz
+# make -f Makefile.online create-caches-tarball
 # cp work/signal-desktop-*-npm-cache.tar.gz /usr/ports/distfiles/
 # meld Makefile.online Makefile
 # make makesum
@@ -24,7 +24,7 @@
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.69.0
+DISTVERSION=	7.70.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
