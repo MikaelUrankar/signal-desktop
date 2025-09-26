@@ -89,7 +89,9 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		darling-0.20.11 \
 		darling_core-0.20.11 \
 		darling_macro-0.20.11 \
-		data-encoding-2.8.0 \
+		data-encoding-2.9.0 \
+		data-encoding-macro-0.1.18 \
+		data-encoding-macro-internal-0.1.16 \
 		debugid-0.8.0 \
 		der-0.7.9 \
 		deranged-0.4.0 \
@@ -436,7 +438,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		tokio-socks-0.5.2 \
 		tokio-stream-0.1.17 \
 		tokio-tungstenite-0.21.0 \
-		tokio-tungstenite-0.26.2 \
+		tokio-tungstenite-0.27.0 \
 		tokio-util-0.7.14 \
 		toml_datetime-0.6.8 \
 		toml_edit-0.22.24 \
@@ -452,7 +454,7 @@ CARGO_CRATES=	addr2line-0.24.2 \
 		tracing-subscriber-0.3.20 \
 		try-lock-0.2.5 \
 		tungstenite-0.21.0 \
-		tungstenite-0.26.2 \
+		tungstenite-0.27.0 \
 		typenum-1.18.0 \
 		ucd-trie-0.1.7 \
 		unarray-0.1.4 \
