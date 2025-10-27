@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.76.0
+DISTVERSION=	7.77.1
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
@@ -70,7 +70,7 @@ MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron${ELECTRON_VER
 		HOME=${WRKDIR} \
 		USE_SYSTEM_APP_BUILDER=true \
 		SOURCE_DATE_EPOCH=${_BUILD_DATE} \
-		PATH=${WRKSRC}/node_modules/.bin:${LOCALBASE}/bin:${PATH}
+		PATH=${WRKSRC}/node_modules/.bin:${WRKSRC}/pnpmbin/node_modules/.bin:${LOCALBASE}/bin:${PATH}
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
@@ -84,8 +84,8 @@ ESBUILD_BINARY_PATH=${WRKSRC}/node_modules/.pnpm/@esbuild+freebsd-${ESBUILD_ARCH
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	37
-ESBUILD_VERS=		0.24.0
-PNPM_VERS=		10.11
+ESBUILD_VERS=		0.25.9
+PNPM_VERS=		10.18.1
 
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 ESBUILD_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
@@ -114,11 +114,15 @@ do-build:
 	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
 	${ECHO_CMD} store-dir=true >> ${WRKSRC}/.pnpm-store
 
-	${CP} ${FILESDIR}/package-lock.json ${WRKSRC}
 	${CP} ${FILESDIR}/pnpm-lock.yaml ${WRKSRC}
+	${CP} ${FILESDIR}/pnpmfile.cjs ${WRKSRC}/.pnpmfile.cjs
 
-	cd ${WRKSRC} && \
+	# Install pnpm in its own dir otherwise all hell breaks loose
+	${MKDIR} ${WRKSRC}/pnpmbin
+	${CP} ${FILESDIR}/pnpm/package* ${WRKSRC}/pnpmbin
+	cd ${WRKSRC}/pnpmbin && \
 		${SETENV} ${MAKE_ENV} npm install --ignore-scripts pnpm@${PNPM_VERS}
+
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ESBUILD_BINARY_PATH=${ESBUILD_BINARY_PATH} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install --ignore-scripts || ${TRUE}
 
@@ -131,7 +135,7 @@ do-build:
 		${WRKSRC}/node_modules/@signalapp/libsignal-client/prebuilds/freebsd-${NODE_ARCH}/@signalapp+libsignal-client.node
 	${CP} ${LOCALBASE}/lib/libringrtc.so \
 		${WRKSRC}/node_modules/@signalapp/ringrtc/build/freebsd/libringrtc-${NODE_ARCH}.node
-	 ${CP} ${LOCALBASE}/lib/node_sqlcipher.node \
+	${CP} ${LOCALBASE}/lib/node_sqlcipher.node \
 		${WRKSRC}/node_modules/@signalapp/sqlcipher/prebuilds/freebsd-${NODE_ARCH}
 
 	# don't ask me why
@@ -140,10 +144,15 @@ do-build:
 
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ESBUILD_BINARY_PATH=${ESBUILD_BINARY_PATH} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} pnpm run clean-transpile
+
+	# sticker-creator won't build if pnpm-workspace.yaml is present, go figure
+	${RM} ${WRKSRC}/pnpm-workspace.yaml
 
 	# found in reproducible-builds/docker-entrypoint.sh
 	cd ${WRKSRC}/sticker-creator && \
-		${SETENV} ${MAKE_ENV} pnpm install
+		${SETENV} ${MAKE_ENV} pnpm install --frozen-lock
 	cd ${WRKSRC}/sticker-creator && \
 		${SETENV} ${MAKE_ENV} pnpm run build
 

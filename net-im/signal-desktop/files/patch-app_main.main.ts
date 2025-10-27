@@ -1,5 +1,5 @@
---- app/main.ts.orig	2023-10-19 19:29:53 UTC
-+++ app/main.ts
+--- app/main.main.ts.orig	2023-10-19 19:29:53 UTC
++++ app/main.main.ts
 @@ -616,7 +616,7 @@ if (OS.isWindows()) {
  
  if (OS.isWindows()) {
