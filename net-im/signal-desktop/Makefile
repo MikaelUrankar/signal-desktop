@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.79.0
+DISTVERSION=	7.80.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		https://registry.npmjs.org/@esbuild/freebsd-arm64/-/:esbuildarm64 \
@@ -146,9 +146,6 @@ do-build:
 		${SETENV} ${MAKE_ENV} ESBUILD_BINARY_PATH=${ESBUILD_BINARY_PATH} npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers pnpm install
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} pnpm run clean-transpile
-
-	# sticker-creator won't build if pnpm-workspace.yaml is present, go figure
-	${RM} ${WRKSRC}/pnpm-workspace.yaml
 
 	# found in reproducible-builds/docker-entrypoint.sh
 	cd ${WRKSRC}/sticker-creator && \
