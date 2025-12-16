@@ -34,7 +34,7 @@ patchedDependencies:
     hash: e8a96f71e52bf903c9f1eadba4740489a0beb48da33db52354adca484fe1f495
     path: patches/@vitest+expect+2.0.5.patch
   app-builder-lib:
-    hash: b412b44a47bb3d2be98e6edffed5dc4286cc62ac3c02fef42d1557927baa2420
+    hash: a1775a435732fdbd3b69305053bea4776c854378984940cbd2a541d692902664
     path: patches/app-builder-lib.patch
   casual@1.6.2:
     hash: b88b5052437cbdc1882137778b76ca5037f71b2a030ae9ef39dc97f51670d599
@@ -132,8 +132,8 @@ importers:
         specifier: 3.27.0
         version: 3.27.0(react@18.3.1)
       '@signalapp/libsignal-client':
-        specifier: 0.83.0
-        version: 0.83.0
+        specifier: 0.86.3
+        version: 0.86.3
       '@signalapp/minimask':
         specifier: 1.0.1
         version: 1.0.1
@@ -144,8 +144,8 @@ importers:
         specifier: 2.1.2
         version: 2.1.2
       '@signalapp/ringrtc':
-        specifier: 2.59.4
-        version: 2.59.4(patch_hash=16738d799318d4c5fe950f44ee7511dad758c4364ec26a25fb6b657203e9d8bf)
+        specifier: 2.60.7
+        version: 2.60.7(patch_hash=16738d799318d4c5fe950f44ee7511dad758c4364ec26a25fb6b657203e9d8bf)
       '@signalapp/sqlcipher':
         specifier: 2.4.4
         version: 2.4.4
@@ -630,6 +630,9 @@ importers:
       babel-plugin-lodash:
         specifier: 3.3.4
         version: 3.3.4
+      better-blockmap:
+        specifier: 1.0.2
+        version: 1.0.2
       casual:
         specifier: 1.6.2
         version: 1.6.2(patch_hash=b88b5052437cbdc1882137778b76ca5037f71b2a030ae9ef39dc97f51670d599)
@@ -661,8 +664,8 @@ importers:
         specifier: 4.3.7
         version: 4.3.7(supports-color@8.1.1)
       electron:
-        specifier: 39.2.1
-        version: 39.2.1
+        specifier: 39.2.4
+        version: 39.2.4
       electron-builder:
         specifier: 26.0.14
         version: 26.0.14(patch_hash=4efee114d8c7e2a77c68ff826373a94a9678edfde006eeec4eccb386c32dae15)(electron-builder-squirrel-windows@26.0.14)
@@ -3491,8 +3494,8 @@ packages:
   '@signalapp/libsignal-client@0.76.7':
     resolution: {integrity: sha512-iGWTlFkko7IKlm96Iy91Wz5sIN089nj02ifOk6BWtLzeVi0kFaNj+jK26Sl1JRXy/VfXevcYtiOivOg43BPqpg==}
 
-  '@signalapp/libsignal-client@0.83.0':
-    resolution: {integrity: sha512-QaXviPAvj4PA2QDmN6YyPnlkp699BE3fIgaJmKrfvZMsvBfMGeJ3H3BHFt0CV2vUWMbc3oEgxbwdXu//f6oTrA==}
+  '@signalapp/libsignal-client@0.86.3':
+    resolution: {integrity: sha512-aN/pgT9YqacuABrtxBtBbQ0AMesZJIHVNqU8nUq75kRTleIU5aKeuOXt7ZHYUUJW7ot4O2n6O6eaMnMLbwBXFQ==}
 
   '@signalapp/minimask@1.0.1':
     resolution: {integrity: sha512-QAwo0joA60urTNbW9RIz6vLKQjy+jdVtH7cvY0wD9PVooD46MAjE40MLssp4xUJrph91n2XvtJ3pbEUDrmT2AA==}
@@ -3507,8 +3510,8 @@ packages:
     resolution: {integrity: sha512-y2sgqdivlrG41J4Zvt/82xtH/PZjDlgItqlD2g/Cv3ZbjlR6cGhTNXbfNygCJB8nXj+C7I28pjt1Zm3k0pv2mg==}
     engines: {npm: '>=8.2.3'}
 
-  '@signalapp/ringrtc@2.59.4':
-    resolution: {integrity: sha512-Ml9ArS8gi8RJvdat0AuLXggGWMGkOsBizKkz2MtI5XALK0o09wh0r/Qdr0fmp4ewJqnqWGJ31tfr+gXoelG8gQ==}
+  '@signalapp/ringrtc@2.60.7':
+    resolution: {integrity: sha512-qx3w64/cmml+ZGXL7L/DGrePmxU9ZEBIY+cWEuJ1MJOslx4zQ0HfGDlpNEeDd/OeBvyirU+q/DPucgGeJNVQjA==}
     hasBin: true
 
   '@signalapp/sqlcipher@2.4.4':
@@ -4149,8 +4152,8 @@ packages:
   '@types/node@22.13.4':
     resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
 
-  '@types/node@22.18.8':
-    resolution: {integrity: sha512-pAZSHMiagDR7cARo/cch1f3rXy0AEXwsVsVH09FcyeJVAzCnGgmYis7P3JidtTUjyadhTeSo8TgRPswstghDaw==}
+  '@types/node@22.19.1':
+    resolution: {integrity: sha512-LCCV0HdSZZZb34qifBsyWlUmok6W7ouER+oQIGBScS8EsZsQbrtFTUrDX4hOl+CS6p7cnNC4td+qrSVGSCTUfQ==}
 
   '@types/normalize-path@3.0.2':
     resolution: {integrity: sha512-DO++toKYPaFn0Z8hQ7Tx+3iT9t77IJo/nDiqTXilgEP+kPNIYdpS9kh3fXuc53ugqwp9pxC1PVjCpV1tQDyqMA==}
@@ -5852,8 +5855,8 @@ packages:
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
-  electron@39.2.1:
-    resolution: {integrity: sha512-5oSki3qzLBsJAcXl0yWOLRArkufugbXd1qBb2UNZRrrKkYiVhM8GLE+KE3P16PC8UxGxGqCCfaB3Y1TK1dUuHg==}
+  electron@39.2.4:
+    resolution: {integrity: sha512-KxPtwpFceQKSxRtUY39piHLYhJMMyHfOhc70e6zRnKGrbRdK6hzEqssth8IGjlKOdkeT4KCvIEngnNraYk39+g==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -14280,7 +14283,7 @@ snapshots:
       type-fest: 4.26.1
       uuid: 11.0.2
 
-  '@signalapp/libsignal-client@0.83.0':
+  '@signalapp/libsignal-client@0.86.3':
     dependencies:
       node-gyp-build: 4.8.4
       type-fest: 4.26.1
@@ -14320,7 +14323,7 @@ snapshots:
       lodash: 4.17.21
       quill-delta: 5.1.0
 
-  '@signalapp/ringrtc@2.59.4(patch_hash=16738d799318d4c5fe950f44ee7511dad758c4364ec26a25fb6b657203e9d8bf)':
+  '@signalapp/ringrtc@2.60.7(patch_hash=16738d799318d4c5fe950f44ee7511dad758c4364ec26a25fb6b657203e9d8bf)':
     dependencies:
       https-proxy-agent: 7.0.6
       tar: 6.2.1
@@ -14431,7 +14434,7 @@ snapshots:
   '@storybook/builder-webpack5@8.4.4(@swc/core@1.10.16(@swc/helpers@0.5.15))(esbuild@0.25.9)(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10))(typescript@5.6.3)(webpack-cli@5.1.4)':
     dependencies:
       '@storybook/core-webpack': 8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10))
-      '@types/node': 22.18.8
+      '@types/node': 22.13.4
       '@types/semver': 7.5.8
       browser-assert: 1.2.1
       case-sensitive-paths-webpack-plugin: 2.4.0
@@ -14488,7 +14491,7 @@ snapshots:
 
   '@storybook/core-webpack@8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10))':
     dependencies:
-      '@types/node': 22.18.8
+      '@types/node': 22.13.4
       storybook: 8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10)
       ts-dedent: 2.2.0
 
@@ -14533,7 +14536,7 @@ snapshots:
       '@storybook/core-webpack': 8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10))
       '@storybook/react': 8.4.4(@storybook/test@8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.3.3)(utf-8-validate@5.0.10))(typescript@5.6.3)
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.6.3)(webpack@5.96.1)
-      '@types/node': 22.18.8
+      '@types/node': 22.13.4
       '@types/semver': 7.5.8
       find-up: 5.0.0
       magic-string: 0.30.17
@@ -15103,7 +15106,7 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
-  '@types/node@22.18.8':
+  '@types/node@22.19.1':
     dependencies:
       undici-types: 6.21.0
 
@@ -15238,7 +15241,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 22.19.1
     optional: true
 
   '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.56.0)(typescript@5.6.3))(eslint@8.56.0)(typescript@5.6.3)':
@@ -15659,7 +15662,7 @@ snapshots:
 
   app-builder-bin@5.0.0-alpha.12: {}
 
-  app-builder-lib@26.0.14(patch_hash=b412b44a47bb3d2be98e6edffed5dc4286cc62ac3c02fef42d1557927baa2420)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14):
+  app-builder-lib@26.0.14(patch_hash=a1775a435732fdbd3b69305053bea4776c854378984940cbd2a541d692902664)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14):
     dependencies:
       '@develar/schema-utils': 2.6.5
       '@electron/asar': 3.4.1
@@ -16878,7 +16881,7 @@ snapshots:
 
   dmg-builder@26.0.14(patch_hash=cb72ed47fa8d45513a36db33fcb41cb75c30cada4737da067bf3fa1f063725f2)(electron-builder-squirrel-windows@26.0.14):
     dependencies:
-      app-builder-lib: 26.0.14(patch_hash=b412b44a47bb3d2be98e6edffed5dc4286cc62ac3c02fef42d1557927baa2420)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
+      app-builder-lib: 26.0.14(patch_hash=a1775a435732fdbd3b69305053bea4776c854378984940cbd2a541d692902664)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
       builder-util: 26.0.13
       builder-util-runtime: 9.3.2
       fs-extra: 10.1.0
@@ -17024,7 +17027,7 @@ snapshots:
 
   electron-builder-squirrel-windows@26.0.14(dmg-builder@26.0.14):
     dependencies:
-      app-builder-lib: 26.0.14(patch_hash=b412b44a47bb3d2be98e6edffed5dc4286cc62ac3c02fef42d1557927baa2420)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
+      app-builder-lib: 26.0.14(patch_hash=a1775a435732fdbd3b69305053bea4776c854378984940cbd2a541d692902664)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
       builder-util: 26.0.13
       electron-winstaller: 5.4.0
     transitivePeerDependencies:
@@ -17034,7 +17037,7 @@ snapshots:
 
   electron-builder@26.0.14(patch_hash=4efee114d8c7e2a77c68ff826373a94a9678edfde006eeec4eccb386c32dae15)(electron-builder-squirrel-windows@26.0.14):
     dependencies:
-      app-builder-lib: 26.0.14(patch_hash=b412b44a47bb3d2be98e6edffed5dc4286cc62ac3c02fef42d1557927baa2420)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
+      app-builder-lib: 26.0.14(patch_hash=a1775a435732fdbd3b69305053bea4776c854378984940cbd2a541d692902664)(dmg-builder@26.0.14)(electron-builder-squirrel-windows@26.0.14)
       builder-util: 26.0.13
       builder-util-runtime: 9.3.2
       chalk: 4.1.2
@@ -17096,10 +17099,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@39.2.1:
+  electron@39.2.4:
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 22.18.8
+      '@types/node': 22.19.1
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
