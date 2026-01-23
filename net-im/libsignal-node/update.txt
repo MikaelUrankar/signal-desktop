@@ -1,4 +1,4 @@
-vers=0.86.3
+vers=0.86.9
 
 echo "CARGO_CRATES=" | portedit merge -i Makefile.crates
 echo DISTVERSION=${vers} | portedit merge -i Makefile.online
