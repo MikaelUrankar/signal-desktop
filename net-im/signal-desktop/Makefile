@@ -45,7 +45,9 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
 		libpci.so:devel/libpci \
+		libpipewire-0.3.so:multimedia/pipewire \
 		libpng16.so:graphics/png \
+		libpulse.so:audio/pulseaudio \
 		libsnappy.so:archivers/snappy \
 		libsndio.so:audio/sndio \
 		libwayland-client.so:graphics/wayland \
