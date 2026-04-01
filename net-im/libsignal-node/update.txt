@@ -1,4 +1,4 @@
-vers=0.88.0
+vers=0.89.1
 
 echo "CARGO_CRATES=" | portedit merge -i Makefile.crates
 echo DISTVERSION=${vers} | portedit merge -i Makefile.online
@@ -9,3 +9,6 @@ make -f Makefile.online makesum
 make -f Makefile.online cargo-crates-merge
 
 make -f Makefile.online patch
+
+fetch -o files/packagejsons/ https://raw.githubusercontent.com/signalapp/libsignal/refs/tags/v${vers}/node/package.json
+fetch -o files/packagejsons/ https://raw.githubusercontent.com/signalapp/libsignal/refs/tags/v${vers}/node/package-lock.json
