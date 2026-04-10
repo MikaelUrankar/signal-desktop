@@ -1,15 +1,15 @@
 --- app/main.main.ts.orig	2023-10-19 19:29:53 UTC
 +++ app/main.main.ts
-@@ -616,7 +616,7 @@ if (OS.isWindows()) {
+@@ -623,7 +623,7 @@ if (OS.isWindows()) {
  
  if (OS.isWindows()) {
-   windowIcon = join(__dirname, '../build/icons/win/icon.ico');
+   windowIcon = join(rootDir, 'build', 'icons', 'win', 'icon.ico');
 -} else if (OS.isLinux()) {
 +} else if (OS.isLinux() || OS.isFreeBSD()) {
-   windowIcon = join(__dirname, '../images/signal-logo-desktop-linux.png');
+   windowIcon = join(rootDir, 'images', 'signal-logo-desktop-linux.png');
  } else {
-   windowIcon = join(__dirname, '../build/icons/png/512x512.png');
-@@ -1613,6 +1613,7 @@ function getSQLKey(): string {
+   windowIcon = join(rootDir, 'build', 'icons', 'png', '512x512.png');
+@@ -1627,6 +1627,7 @@ function getSQLKey(): string {
  function getSQLKey(): string {
    let update = false;
    const isLinux = OS.isLinux();
@@ -17,7 +17,7 @@
    const legacyKeyValue = userConfig.get('key');
    const modernKeyValue = userConfig.get('encryptedKey');
    const previousBackend = isLinux
-@@ -2570,7 +2571,7 @@ ipc.on('draw-attention', () => {
+@@ -2669,7 +2670,7 @@ ipc.on('draw-attention', () => {
      return;
    }
  
