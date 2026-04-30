@@ -1,5 +1,5 @@
 #!/bin/sh
-SIGNAL_VERS=v8.6.0
+SIGNAL_VERS=v8.8.0
 
 fetch -qo /tmp/package.json https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/package.json
 node_version=$(awk /'"node":'/'{print $2}' /tmp/package.json | head -n 1 | sed 's/"//g')
@@ -19,9 +19,6 @@ echo "devel/electronXX= ${electron_version}"
 
 sqlcipher_version=$(grep '"@signalapp/sqlcipher":' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
 echo "security/node-sqlcipher: ${sqlcipher_version}"
-
-esbuild_version=$(grep '"esbuild":' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
-echo "ESBUILD_VERS= ${esbuild_version}"
 
 pnpm_version=$(grep '"packageManager":' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g' | sed 's#pnpm@##')
 echo "PNPM_VERS= ${pnpm_version}"

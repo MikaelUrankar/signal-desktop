@@ -1,6 +1,6 @@
 --- package.json.orig	2025-05-28 20:17:57 UTC
 +++ package.json
-@@ -391,11 +391,12 @@
+@@ -361,13 +361,14 @@
        "app-builder-lib": "patches/app-builder-lib.patch",
        "dmg-builder": "patches/dmg-builder.patch",
        "eslint-plugin-better-tailwindcss": "patches/eslint-plugin-better-tailwindcss.patch",
@@ -8,14 +8,16 @@
        "@types/chai": "patches/@types__chai.patch",
        "@napi-rs/canvas@0.1.61": "patches/@napi-rs__canvas@0.1.61.patch",
        "playwright-core@1.58.2": "patches/playwright-core@1.58.2.patch",
--      "tsx": "patches/tsx.patch"
-+      "tsx": "patches/tsx.patch",
+       "tsx": "patches/tsx.patch",
+       "node-fetch@3.3.2": "patches/node-fetch@3.3.2.patch",
+-      "zod@4.3.6": "patches/zod@4.3.6.patch"
++      "zod@4.3.6": "patches/zod@4.3.6.patch",
 +      "electron-builder": "patches/electron-builder.patch",
 +      "@signalapp/ringrtc": "patches/signalapp-ringrtc.patch"
      },
      "onlyBuiltDependencies": [
        "@indutny/mac-screen-share",
-@@ -533,20 +534,6 @@
+@@ -505,20 +506,6 @@
        "asarUnpack": [
          "build/icons/win/icon.ico"
        ]
