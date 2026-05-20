@@ -23,7 +23,6 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		npm:www/npm${NODEJS_SUFFIX}
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libatk-bridge-2.0.so:accessibility/at-spi2-core \
-		libatspi.so:accessibility/at-spi2-core \
 		libcups.so:print/cups \
 		libdbus-1.so:devel/dbus \
 		libdrm.so:graphics/libdrm \
@@ -51,7 +50,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxshmfence.so:x11/libxshmfence
 
-USES=		desktop-file-utils gettext-runtime gl gnome jpeg nodejs:24,build pkgconfig ssl xorg
+USES=		desktop-file-utils gettext-runtime gl gnome jpeg nodejs:24,build pkgconfig python:build ssl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
 GH_PROJECT=	Signal-Desktop
@@ -68,7 +67,8 @@ MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron${ELECTRON_VER
 		HOME=${WRKDIR} \
 		USE_SYSTEM_APP_BUILDER=true \
 		SOURCE_DATE_EPOCH=${_BUILD_DATE} \
-		PATH=${WRKSRC}/node_modules/.bin:${WRKSRC}/pnpmbin/node_modules/.bin:${LOCALBASE}/bin:${PATH}
+		PATH=${WRKSRC}/node_modules/.bin:${WRKSRC}/pnpmbin/node_modules/.bin:${LOCALBASE}/bin:${PATH} \
+		PYTHON=${PYTHON_CMD} 
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
