@@ -20,7 +20,7 @@
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.12.0
+DISTVERSION=	8.13.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
 
