@@ -1,0 +1,3 @@
+vers=3.2.1
+fetch -o files/packagejsons/ https://raw.githubusercontent.com/signalapp/node-sqlcipher/refs/tags/v${vers}/package.json
+fetch -o files/packagejsons/ https://raw.githubusercontent.com/signalapp/node-sqlcipher/refs/tags/v${vers}/pnpm-lock.yaml

@@ -1,9 +1,8 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.54.1
+DISTVERSION=	2.69.4
 CATEGORIES=	multimedia
-MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
-		LOCAL/mikael/ringrtc/:boringssl \
+MASTER_SITES=	LOCAL/mikael/ringrtc/:boringssl \
 		LOCAL/mikael/ringrtc/:build \
 		LOCAL/mikael/ringrtc/:buildtools \
 		LOCAL/mikael/ringrtc/:catapult \
@@ -20,8 +19,7 @@ MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:testing \
 		LOCAL/mikael/ringrtc/:third_party \
 		LOCAL/mikael/ringrtc/:tools
-DISTFILES=	base-${BASE_REV}.tar.gz:base \
-		boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
+DISTFILES=	boringssl-${BORINGSSL_REV}.tar.gz:boringssl \
 		build-${BUILD_REV}.tar.gz:build \
 		buildtools-${BUILDTOOLS_REV}.tar.gz:buildtools \
 		catapult-${CATAPULT_REV}.tar.gz:catapult \
@@ -46,7 +44,7 @@ WWW=		https://github.com/signalapp/ringrtc
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	gn:devel/gn \
 		protoc:devel/protobuf
@@ -64,30 +62,30 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	7103e
+WEBRTC_REV=	7778c
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
-BASE_REV=		1d80e43078965dbe6ded5521fbffb128f59124a6
-BORINGSSL_REV=		a9993612faac4866bc33ca8ff37bfd0659af1c48
-BUILD_REV=		52d62707eaec02b88722a99e335315d166ceda77
-BUILDTOOLS_REV=		6f359296daa889aa726f3d05046b9f37be241169
-CATAPULT_REV=		5bda0fdab9d93ec9963e2cd858c7b49ad7fec7d4
-ICU_REV=		c9fb4b3a6fb54aa8c20a03bbcaa0a4a985ffd34b
-LIBCUBEB_VER=		0.27.0
-LIBJPEG_TURBO_REV=	e14cbfaa85529d47f9f55b0f104a579c1061f9ad
-LIBSRTP_REV=		a52756acb1c5e133089c798736dd171567df11f5
-LIBVPX_REV=		027bbee30a0103b99d86327b48d29567fed11688
-LIBYUV_REV=		ccdf870348764e4b77fa3b56accb2a896a901bad
-NASM_REV=		767a169c8811b090df222a458b25dfa137fc637e
-OPUS_REV=		0e30966b198ad28943799eaf5b3b08100b6f70c3
-PERFETTO_REV=		40b529923598b739b2892a536a7692eedbed5685
-PROTOBUFJS_REV=		eb785a9363664a402b6336dfe96aad27fb33ffa8
-RE2_REV=		c84a140c93352cdabbfb547c531be34515b12228
-TESTING_REV=		f46b86c7f1fc7a7f52e61c11dbd0573a48cf7a6a
-THIRD_PARTY_REV=	10064104c1f11074312018c3a9c4b66f25584bdd
-TOOLS_REV=		3460fbcdee33353d37800dad5caa6bba327ad8c8
+BORINGSSL_REV=		8dce4fd20ab7e768c0a5103edc1d8cb7e54366ba
+BUILD_REV=		dd54dd5186566a13bda647123c22540666b12ace
+BUILDTOOLS_REV=		95ed44cf5f06dbb5861030b91c9db9ccb4316762
+CATAPULT_REV=		5a34891efa6e41c8aca8842386b8ee528963ffdf
+ICU_REV=		b4aae6832c06df9d538d41b249403cf0678f16b4
+LIBCUBEB_VER=		0.35.3
+LIBJPEG_TURBO_REV=	d1f5f2393e0d51f840207342ae86e55a86443288
+LIBSRTP_REV=		e8383771af8aa4096f5bcfe3743a5ea128f88a9a
+LIBVPX_REV=		3fce57ecc905d95a4619f33d09851d68c5a88663
+LIBYUV_REV=		30809ff64a9ca5e45f86439c0d474c2d3eef3d05
+NASM_REV=		45252858722aad12e545819b2d0f370eb865431b
+OPUS_REV=		22244de5a79bd1d6d623c32e72bf1954b56235be
+PERFETTO_REV=		40b1342aa7bd47d9c963c3617fd98ec1551528f9
+PROTOBUFJS_REV=		e6d763860001ba1a76a63adcff5efb12b1c96024
+RE2_REV=		972a15cedd008d846f1a39b2e88ce48d7f166cbd
+TESTING_REV=		629b7bb6055714e23d8125bf790cfc8d94a94159
+THIRD_PARTY_REV=	4923971b35e39f6bd9be8bc19c4680785a15c80d
+TOOLS_REV=		f363a79871a91f36322e845e3134e2f04e1fc18a
 
-BINARY_ALIAS=	vpython3=${PYTHON_CMD}
+BINARY_ALIAS=	python3=${PYTHON_CMD} \
+		vpython3=${PYTHON_CMD}
 
 # Keep in sync with https://github.com/signalapp/ringrtc/blob/v2.53.0/bin/build-desktop#L130
 # Run "gn args out/release --list" for all variables.
@@ -110,6 +108,7 @@ GN_ARGS+=	rtc_build_examples=false \
 		use_custom_libcxx=false \
 		use_custom_libunwind=true \
 		use_lld=true \
+		use_llvm_libatomic=false \
 		use_sysroot=false \
 		use_system_freetype=false \
 		use_system_harfbuzz=true \
@@ -133,6 +132,7 @@ PLIST_FILES=	lib/libringrtc.so
 
 RUSTC_VERSION!= rustc -V 2>/dev/null || true
 MAKE_ENV+=	RUSTC_BOOTSTRAP=1
+
 GN_ARGS+=	enable_rust=true \
 		rust_sysroot_absolute="${LOCALBASE}" \
 		rustc_version="${RUSTC_VERSION}"
@@ -140,7 +140,6 @@ GN_ARGS+=	enable_rust=true \
 post-extract:
 	${MKDIR} ${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc
 	${MV} ${WRKDIR}/webrtc-${WEBRTC_REV} ${WEBRTCDIR}
-	${MV} ${WRKDIR}/base ${WEBRTCDIR}
 	${MV} ${WRKDIR}/build ${WEBRTCDIR}
 	${MV} ${WRKDIR}/buildtools ${WEBRTCDIR}
 	${MV} ${WRKDIR}/testing ${WEBRTCDIR}
