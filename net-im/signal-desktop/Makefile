@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.24.1
+DISTVERSION=	8.26.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
 DISTFILES=	signal-desktop-${DISTVERSION}-npm-cache.tar.gz:npm
@@ -168,7 +168,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 
-.for f in chromedriver mksnapshot v8_context_snapshot_generator version
+.for f in chromedriver mksnapshot v8_context_snapshot_generator version resources/*.policy
 	${RM} ${STAGEDIR}${DATADIR}/${f}
 .endfor
 	${RM} -r ${STAGEDIR}${DATADIR}/gen
