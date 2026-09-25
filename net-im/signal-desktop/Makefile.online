@@ -1,6 +1,6 @@
 # Only if pnpm version changes:
 #   mkdir /tmp/pnpm ; cd /tmp/pnpm
-#   npm install pnpm@10.18.1
+#   npm install pnpm@11.24.0
 #   cp package* net-im/signal-desktop/files/pnpm
 # make -f Makefile.online makesum
 # make -f Makefile.online
@@ -20,7 +20,7 @@
 
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.27.0
+DISTVERSION=	8.28.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
 
@@ -98,26 +98,14 @@ MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	43
-PNPM_VERS=		10.18.1
-
-NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
-APP_OUT_DIR=	linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
-
-PLIST_SUB=	NODE_ARCH=${NODE_ARCH} \
-		SHARP_ARCH=${ARCH:S/aarch64/arm64v8/:S/amd64/x64/}
+ELECTRON_VER_MAJOR=	44
+PNPM_VERS=		11.24.0
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == aarch64
-PLIST_SUB+=	NOT_AARCH64="@comment "
-.elif ${ARCH} == amd64
-PLIST_SUB+=	NOT_AARCH64=""
-.endif
-
 do-build:
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron43/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron43 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron44/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron44 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}
