@@ -51,9 +51,6 @@ USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libsignal_node.so
 
-NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
-RUST_ARCH=	${ARCH:S/amd64/x86_64/}
-
 .include <bsd.port.options.mk>
 
 post-extract:
@@ -62,9 +59,9 @@ post-extract:
 do-build:
 	${ECHO_CMD} offline=true >> ${WRKSRC}/.npmrc
 	cd ${WRKSRC}/node && \
-		${SETENV} ${MAKE_ENV} npm install --ignore-optional --nodedir=${LOCALBASE}
+		${SETENV} ${MAKE_ENV} npm install
 	cd ${WRKSRC}/node && \
-		${SETENV} ${MAKE_ENV} npm run build --nodedir=${LOCALBASE}
+		${SETENV} ${MAKE_ENV} npm run build
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} npm run tsc
 
