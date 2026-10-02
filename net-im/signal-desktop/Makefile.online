@@ -160,7 +160,7 @@ do-install:
 			--config.electronDist=${WRKDIR}/electron${ELECTRON_VER_MAJOR}
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	cd ${WRKSRC}/dist/${APP_OUT_DIR} && \
+	cd ${WRKSRC}/dist/linux-unpacked && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
 	# install polkit policies so that backup works
