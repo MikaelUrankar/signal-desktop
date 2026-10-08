@@ -1,5 +1,5 @@
-fetch -o /tmp/828 https://github.com/signalapp/Signal-Desktop/compare/v8.27.0...v8.28.0.patch
-grep -i linux /tmp/828
-
 fetch -o /tmp/829 https://github.com/signalapp/Signal-Desktop/compare/v8.28.0...v8.29.0.patch
 grep -i linux /tmp/829
+
+fetch -o /tmp/830 https://github.com/signalapp/Signal-Desktop/compare/v8.29.0...v8.30.0.patch
+grep -i linux /tmp/830
