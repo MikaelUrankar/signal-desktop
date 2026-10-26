@@ -8,7 +8,7 @@
 # rsync /usr/ports/distfiles/node-sqlcipher-*cache.tar.gz freefall:public_distfiles/signal-desktop/
 
 PORTNAME=	node-sqlcipher
-DISTVERSION=	3.3.9
+DISTVERSION=	4.1.0
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/signalapp/node-sqlcipher/archive/refs/tags/v${DISTVERSION}/:sqlcipher
 DISTFILES=	node-sqlcipher-${DISTVERSION}.tar.gz:sqlcipher
@@ -38,7 +38,7 @@ post-patch:
 
 do-build:
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} npm install --nodedir=${PREFIX}
+		${SETENV} ${MAKE_ENV} npm_config_nodedir=${LOCALBASE} npm install
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/build/Release/obj.target/node_sqlcipher.node ${STAGEDIR}${PREFIX}/lib/
