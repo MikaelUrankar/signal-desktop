@@ -55,7 +55,6 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		cast-0.3.0 \
 		cbc-0.2.1 \
 		cc-1.2.66 \
-		cesu8-1.1.0 \
 		cexpr-0.6.0 \
 		cfg-if-1.0.4 \
 		chacha20-0.9.1 \
@@ -234,10 +233,8 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		itoa-1.0.18 \
 		jiff-0.2.31 \
 		jiff-static-0.2.31 \
-		jni-0.21.1 \
 		jni-0.22.4 \
 		jni-macros-0.22.4 \
-		jni-sys-0.3.1 \
 		jni-sys-0.4.1 \
 		jni-sys-macros-0.4.1 \
 		js-sys-0.3.103 \
@@ -389,12 +386,12 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		rusticata-macros-4.1.0 \
 		rustix-0.38.44 \
 		rustix-1.1.4 \
-		rustls-0.23.45 \
+		rustls-0.23.46 \
 		rustls-native-certs-0.8.4 \
 		rustls-pki-types-1.15.0 \
-		rustls-platform-verifier-0.5.3 \
-		rustls-platform-verifier-android-0.1.1 \
-		rustls-webpki-0.103.15 \
+		rustls-platform-verifier-0.7.1 \
+		rustls-platform-verifier-android-0.2.0 \
+		rustls-webpki-0.103.16 \
 		rustversion-1.0.23 \
 		rusty-fork-0.3.1 \
 		ryu-1.0.23 \
@@ -524,8 +521,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		wasm-bindgen-macro-support-0.2.126 \
 		wasm-bindgen-shared-0.2.126 \
 		web-sys-0.3.103 \
-		webpki-root-certs-0.26.11 \
-		webpki-root-certs-1.0.8 \
+		webpki-root-certs-1.0.10 \
 		webpsan-0.5.4 \
 		which-4.4.2 \
 		winapi-0.3.9 \
@@ -538,26 +534,17 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		windows-link-0.2.1 \
 		windows-result-0.4.1 \
 		windows-strings-0.5.1 \
-		windows-sys-0.45.0 \
 		windows-sys-0.52.0 \
 		windows-sys-0.59.0 \
 		windows-sys-0.61.2 \
-		windows-targets-0.42.2 \
 		windows-targets-0.52.6 \
-		windows_aarch64_gnullvm-0.42.2 \
 		windows_aarch64_gnullvm-0.52.6 \
-		windows_aarch64_msvc-0.42.2 \
 		windows_aarch64_msvc-0.52.6 \
-		windows_i686_gnu-0.42.2 \
 		windows_i686_gnu-0.52.6 \
 		windows_i686_gnullvm-0.52.6 \
-		windows_i686_msvc-0.42.2 \
 		windows_i686_msvc-0.52.6 \
-		windows_x86_64_gnu-0.42.2 \
 		windows_x86_64_gnu-0.52.6 \
-		windows_x86_64_gnullvm-0.42.2 \
 		windows_x86_64_gnullvm-0.52.6 \
-		windows_x86_64_msvc-0.42.2 \
 		windows_x86_64_msvc-0.52.6 \
 		winnow-1.0.3 \
 		wit-bindgen-0.57.1 \
