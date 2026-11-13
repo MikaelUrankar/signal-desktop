@@ -1,0 +1,6 @@
+cat .config/environment.d/electron-wayland.conf 
+ELECTRON_ENABLE_FEATURES=UseOzonePlatform
+ELECTRON_OZONE_PLATFORM_HINT=wayland
+
+
+signal-desktop --ozone-platform=wayland
