@@ -1,5 +1,5 @@
-TIMESTAMP = 1794832987
-SHA256 (signal-desktop-8.35.0-npm-cache.tar.gz) = 8d4f7450a4bf7280b3f0239b2c4de870c0ea05ff7e5d1f20e7cfc59b39fdfcd9
-SIZE (signal-desktop-8.35.0-npm-cache.tar.gz) = 768154621
-SHA256 (signalapp-Signal-Desktop-v8.35.0_GH0.tar.gz) = 9d03a0d87142f1a561da85a935592affad1352999ec8a9464b29f34015eb86dd
-SIZE (signalapp-Signal-Desktop-v8.35.0_GH0.tar.gz) = 85051287
+TIMESTAMP = 1795166043
+SHA256 (signal-desktop-8.36.0-npm-cache.tar.gz) = 6914f3a8515d8d6b4ddc66e6b1aaffd0c0fbc0faba8eaa1ff409c1015fce7ed1
+SIZE (signal-desktop-8.36.0-npm-cache.tar.gz) = 762116880
+SHA256 (signalapp-Signal-Desktop-v8.36.0_GH0.tar.gz) = fbbf2866af48691eebe2be14e6c4e8549f01f79d42a721137961aac51f88771c
+SIZE (signalapp-Signal-Desktop-v8.36.0_GH0.tar.gz) = 85088560
