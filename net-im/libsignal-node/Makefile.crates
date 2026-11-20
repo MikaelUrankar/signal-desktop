@@ -5,6 +5,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		aes-0.8.4 \
 		aes-0.9.1 \
 		aes-gcm-0.10.3 \
+		aes-gcm-0.11.1 \
 		aes-gcm-siv-0.12.0 \
 		aho-corasick-1.1.4 \
 		android_system_properties-0.1.5 \
@@ -252,7 +253,7 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		libcrux-traits-0.0.8 \
 		libloading-0.8.9 \
 		libm-0.2.16 \
-		libz-sys-1.1.29 \
+		libz-sys-1.1.31 \
 		linkme-0.3.36 \
 		linkme-impl-0.3.36 \
 		linux-raw-sys-0.4.15 \
@@ -565,5 +566,5 @@ CARGO_CRATES=	addr2line-0.25.1 \
 		zerovec-0.11.6 \
 		zerovec-derive-0.11.3 \
 		zmij-1.0.21 \
-		boring,boring-sys,tokio-boring@git+https://github.com/signalapp/boring?tag=signal-v5.2.0\#1405df0a23a0335618f88ed328c76f67646b088f \
+		boring,boring-sys,tokio-boring@git+https://github.com/signalapp/boring?tag=signal-v5.3.0\#b518db81426b8b53e84b1cb1cda43fdfd021022c \
 		spqr@git+https://github.com/signalapp/SparsePostQuantumRatchet.git?tag=v1.6.0\#06959b4708f9b7b1e94d0f8cc835f3958c077e94

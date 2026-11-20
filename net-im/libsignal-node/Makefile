@@ -1,6 +1,6 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.106.0
+DISTVERSION=	0.106.2
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm
 PKGNAMESUFFIX=	-node
@@ -29,11 +29,11 @@ GH_ACCOUNT=	signalapp
 # git checkout correct_tag (grep boring Makefile.crates)
 # git submodule update --init --recursive
 # the hash for boringssl and fips should be printed on screen
-# or browse https://github.com/signalapp/boring/tree/signal-v5.2.0/boring-sys/deps (with the correct tag: grep boring Makefile.crates)
+# or browse https://github.com/signalapp/boring/tree/signal-v5.3.0/boring-sys/deps (with the correct tag: grep boring Makefile.crates)
 GH_TUPLE=	google:boringssl:${BORING_REV}:boringssl
 
-BORING_REV=	e2a57cfb4d915b4ba820585aef9fdee7bca13fe5
-BORING_VER=	v5.2.0
+BORING_REV=	427ec40cc8edc545253289232e885708c409e5ea
+BORING_VER=	v5.3.0
 
 # RUSTFLAGS=-Clink-dead-code is required to have a functional libsignal-node binary:
 # linkme is broken with https://github.com/dtolnay/linkme/commit/64e7c63c106848481bea8f66c4885b52c26ca9ec
